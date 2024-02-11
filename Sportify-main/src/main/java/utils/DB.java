@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public class DB {
     public final String URL = "jdbc:mysql://localhost:3306/sportify";
     public final String USERNAME = "root";
-    public final String PWD = "root";
+    public final String PWD = null;
 
 
     public static DB instance;
@@ -18,7 +18,7 @@ public class DB {
     private DB() {
 
         try {
-            connection = DriverManager.getConnection(URL,USERNAME,PWD);
+            connection = DriverManager.getConnection(URL,USERNAME,null);
             System.out.println("Connected");
         } catch (SQLException e) {
             System.out.println(e.getMessage());

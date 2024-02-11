@@ -1,42 +1,37 @@
 package entities;
 
 import java.sql.Date;
+import java.sql.Time;
 
 public class Match {
-    int id ;
+    int ID_Matc ;
     String nom,type,description;
-    Date date,heure;
-    int id_equipe1,id_equipe2;
+    Date date;
+    Time heure;
+    Equipe equipe1,equipe2;
 
-    public Match(int id, String nom, String type, String description, Date date, Date heure, int id_equipe1, int id_equipe2) {
-        this.id = id;
+    public Match(int ID_Matc, String nom, String type, String description, Date date, Time heure, Equipe equipe1, Equipe equipe2) {
+        this.ID_Matc = ID_Matc;
         this.nom = nom;
         this.type = type;
         this.description = description;
         this.date = date;
         this.heure = heure;
-        this.id_equipe1 = id_equipe1;
-        this.id_equipe2 = id_equipe2;
+        this.equipe1 = equipe1;
+        this.equipe2 = equipe2;
     }
-    public Match( String nom, String type, String description, Date date, Date heure, int id_equipe1, int id_equipe2) {
+    public Match( String nom, String type, String description, Date date, Time heure, Equipe equipe1, Equipe equipe2) {
 
         this.nom = nom;
         this.type = type;
         this.description = description;
         this.date = date;
         this.heure = heure;
-        this.id_equipe1 = id_equipe1;
-        this.id_equipe2 = id_equipe2;
+        this.equipe1 = equipe1;
+        this.equipe2 = equipe2;
     }
     public Match(){}
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getNom() {
         return nom;
@@ -70,41 +65,49 @@ public class Match {
         this.date = date;
     }
 
-    public Date getHeure() {
+    public Time getHeure() {
         return heure;
     }
 
-    public void setHeure(Date heure) {
+    public void setHeure(Time heure) {
         this.heure = heure;
     }
 
-    public int getId_equipe1() {
-        return id_equipe1;
+    public int getID_Matc() {
+        return ID_Matc;
     }
 
-    public void setId_equipe1(int id_equipe1) {
-        this.id_equipe1 = id_equipe1;
+    public void setID_Matc(int ID_Matc) {
+        this.ID_Matc = ID_Matc;
     }
 
-    public int getId_equipe2() {
-        return id_equipe2;
+    public Equipe getEquipe1() {
+        return equipe1;
     }
 
-    public void setId_equipe2(int id_equipe2) {
-        this.id_equipe2 = id_equipe2;
+    public void setEquipe1(Equipe equipe1) {
+        this.equipe1 = equipe1;
     }
 
-    @java.lang.Override
+    public Equipe getEquipe2() {
+        return equipe2;
+    }
+
+    public void setEquipe2(Equipe equipe2) {
+        this.equipe2 = equipe2;
+    }
+
+    @Override
     public String toString() {
         return "Match{" +
-                "id=" + id +
+                "ID_Matc=" + ID_Matc +
                 ", nom='" + nom + '\'' +
                 ", type='" + type + '\'' +
                 ", description='" + description + '\'' +
                 ", date=" + date +
                 ", heure=" + heure +
-                ", id_equipe1=" + id_equipe1 +
-                ", id_equipe2=" + id_equipe2 +
+                ", equipe1=" + equipe1.getNom() + /*equipe1.getId_createur().getNom()+*/
+                ", equipe2=" + equipe2.getNom() +/*equipe2.getId_createur().getNom()+*/
                 '}';
     }
 }

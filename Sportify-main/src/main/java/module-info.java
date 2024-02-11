@@ -4,6 +4,9 @@ module com.example.sportify {
     requires java.sql;
 
 
-    opens com.example.sportify to javafx.fxml;
-    exports com.example.sportify;
+    opens controllers to javafx.fxml;
+    opens entities;
+    exports controllers;
+    exports test;
+
 }

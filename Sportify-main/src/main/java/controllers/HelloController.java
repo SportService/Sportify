@@ -1,4 +1,4 @@
-package com.example.sportify;
+package controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
