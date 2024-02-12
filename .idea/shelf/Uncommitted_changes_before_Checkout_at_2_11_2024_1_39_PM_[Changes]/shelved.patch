@@ -1,0 +1,94 @@
+Index: src/main/java/entities/Match.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package entities;\r\n\r\npublic class Match {\r\n}\r\n
+===================================================================
+diff --git a/src/main/java/entities/Match.java b/src/main/java/entities/Match.java
+--- a/src/main/java/entities/Match.java	
++++ b/src/main/java/entities/Match.java	
+@@ -1,4 +1,6 @@
+ package entities;
+ 
+ public class Match {
++
++
+ }
+Index: src/main/java/utils/DB.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package utils;\r\n\r\nimport java.sql.Connection;\r\nimport java.sql.DriverManager;\r\nimport java.sql.SQLException;\r\n\r\npublic class DB {\r\n    public final String URL = \"jdbc:mysql://localhost:3306/sportify\";\r\n    public final String USERNAME = \"root\";\r\n\r\n\r\n    public static DB instance;\r\n\r\n    private Connection connection;\r\n\r\n\r\n    private DB() {\r\n\r\n        try {\r\n            connection = DriverManager.getConnection(URL,USERNAME,null);\r\n            System.out.println(\"Connected\");\r\n        } catch (SQLException e) {\r\n            System.out.println(e.getMessage());\r\n        }\r\n    }\r\n\r\n\r\n    public static DB getInstance(){\r\n        if(instance==null){\r\n            instance = new DB();\r\n        }\r\n        return instance;\r\n\r\n    }\r\n\r\n    public Connection getConnection() {\r\n        return connection;\r\n    }\r\n}\r\n
+===================================================================
+diff --git a/src/main/java/utils/DB.java b/src/main/java/utils/DB.java
+--- a/src/main/java/utils/DB.java	
++++ b/src/main/java/utils/DB.java	
+@@ -5,9 +5,12 @@
+ import java.sql.SQLException;
+ 
+ public class DB {
+-    public final String URL = "jdbc:mysql://localhost:3306/sportify";
++    public final String URL = "jdbc:mysql://127.0.0.1:3306/sportify";
+     public final String USERNAME = "root";
+ 
++    public final String MDP = "root";
++
++
+ 
+     public static DB instance;
+ 
+@@ -17,7 +20,7 @@
+     private DB() {
+ 
+         try {
+-            connection = DriverManager.getConnection(URL,USERNAME,null);
++            connection = DriverManager.getConnection(URL,USERNAME,MDP);
+             System.out.println("Connected");
+         } catch (SQLException e) {
+             System.out.println(e.getMessage());
+Index: src/main/java/entities/Competition.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package entities;\r\n\r\npublic class Competition {\r\n}\r\n
+===================================================================
+diff --git a/src/main/java/entities/Competition.java b/src/main/java/entities/Competition.java
+--- a/src/main/java/entities/Competition.java	
++++ b/src/main/java/entities/Competition.java	
+@@ -1,4 +1,6 @@
+ package entities;
+ 
+-public class Competition {
++public class Competition extends Match {
++
++
+ }
+Index: src/main/java/entities/Participant.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package entities;\r\n\r\npublic class Participant {\r\n}\r\n
+===================================================================
+diff --git a/src/main/java/entities/Participant.java b/src/main/java/entities/Participant.java
+--- a/src/main/java/entities/Participant.java	
++++ b/src/main/java/entities/Participant.java	
+@@ -1,4 +1,6 @@
+ package entities;
+ 
+ public class Participant {
++
++
+ }
+Index: .idea/vcs.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"VcsDirectoryMappings\">\r\n    <mapping directory=\"$PROJECT_DIR$/..\" vcs=\"Git\" />\r\n    <mapping directory=\"$PROJECT_DIR$\" vcs=\"Git\" />\r\n  </component>\r\n</project>
+===================================================================
+diff --git a/.idea/vcs.xml b/.idea/vcs.xml
+--- a/.idea/vcs.xml	
++++ b/.idea/vcs.xml	
+@@ -1,7 +1,6 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+   <component name="VcsDirectoryMappings">
+-    <mapping directory="$PROJECT_DIR$/.." vcs="Git" />
+     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+   </component>
+ </project>
+\ No newline at end of file

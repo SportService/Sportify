@@ -1,4 +1,10 @@
 package entities;
-public class Equipe {
+
+import java.util.Date;
+
+public class Equipe  {
+
 
 }
+
+
