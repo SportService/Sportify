@@ -1,6 +1,5 @@
 #sportify
-<<<<<<< HEAD
-// Your changes
-=======
+ HEAD
+//  changes
 // Changes from the remote repository
->>>>>>> <commit hash>
+ <commit hash>
