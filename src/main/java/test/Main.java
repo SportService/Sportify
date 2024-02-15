@@ -158,7 +158,7 @@ public class Main {
 
     private static Categorie getCategorieFromDatabase() throws SQLException {
         ServiceCategorie serviceCategorie = new ServiceCategorie();
-        List<Categorie> categories = serviceCategorie.afficher(); // Assuming afficher() returns a list of categories from the database
+        List<Categorie> categories = serviceCategorie.afficher();
         if (!categories.isEmpty()) {
             // Return the first category found (you may need to modify this logic based on your requirements)
             return categories.get(0);
@@ -172,12 +172,12 @@ public class Main {
 
     private static int retrieveGeneratedIdFromDatabase() throws SQLException {
         Connection
-                connection = DB.getInstance().getConnection(); // Assuming you have a method to get the database connection
-        String query = "SELECT LAST_INSERT_ID()"; // Assuming you're using MySQL and LAST_INSERT_ID() function
+                connection = DB.getInstance().getConnection();
+        String query = "SELECT LAST_INSERT_ID()";
         try (PreparedStatement statement = connection.prepareStatement(query);
              ResultSet resultSet = statement.executeQuery()) {
             if (resultSet.next()) {
-                return resultSet.getInt(1); // Assuming the generated ID is in the first column of the first row
+                return resultSet.getInt(1);
             } else {
                 throw new SQLException("Failed to retrieve generated ID from the database.");
             }
