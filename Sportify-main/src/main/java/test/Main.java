@@ -34,12 +34,12 @@ public class Main {
             s.supprimer(m2);
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
-        }
-        /*try {
+        }*/
+        try {
             s.ajouter(m1);
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
-        }*/
+        }
         try {
             System.out.println(s.afficher());
         } catch (SQLException ex) {
