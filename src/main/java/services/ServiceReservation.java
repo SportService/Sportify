@@ -6,7 +6,9 @@ import utils.DB;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ServiceReservation implements IService<Reservation> {
     private Connection con = DB.getInstance().getConnection();
@@ -72,8 +74,8 @@ public class ServiceReservation implements IService<Reservation> {
 
 
     @Override
-    public void supprimer(int id) {
-        try {
+    public void supprimer(int id) throws SQLException {
+
             String query = "DELETE FROM Reservation WHERE ID_reservation=?";
             PreparedStatement pstmt = con.prepareStatement(query);
 
@@ -86,14 +88,12 @@ public class ServiceReservation implements IService<Reservation> {
             } else {
                 System.out.println("Aucune réservation n'a été supprimée.");
             }
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        }
+
     }
 
     @Override
-    public List<Reservation> afficher() {
-        List<Reservation> reservations = new ArrayList<>();
+    public Set<Reservation> afficher() {
+        Set<Reservation> reservations = new HashSet<>();
 
         try {
             Statement stm = con.createStatement();

@@ -33,25 +33,25 @@ public class Main {
 
         // System.out.println( t.afficher().toString());
 
-       // Terrain c = new Terrain(2, "Kenza","ss","aa",33.2);
+        Terrain c = new Terrain(2, "Kenza","ss","aa",33.2);
 
-         // t.ajouter(c);
+          t.ajouter(c);
 
 
         //Reservation z = new Reservation(3,1,2, maintenant,"sss");
-        Terrain k = new Terrain(2,2, "sss","aa","axxa",35.2);
+       // Terrain k = new Terrain(2,2, "sss","aa","axxa",35.2);
 
         //r.ajouter(z);
   // r.modifierReservation(z);
        // t.modifier(k);
        // t.modifertr(k);
 
-        r.supprimer(3);
+       // r.supprimer(3);
 
         //t.supprimer(1);
      //   System.out.println( t.afficher().toString());
 
-       System.out.println( r.afficher().toString());
+       //System.out.println( t.afficher().toString());
 
        // t.supprimer(1);
 

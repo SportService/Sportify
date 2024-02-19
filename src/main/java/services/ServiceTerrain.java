@@ -5,7 +5,9 @@ import utils.DB;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ServiceTerrain implements IService<Terrain> {
 
@@ -64,48 +66,31 @@ public class ServiceTerrain implements IService<Terrain> {
 
 
     @Override
-    public void supprimer(int id) {
+    public void supprimer(int id_Terrain) throws SQLException {
+        String sql = "delete from terrain where id_Terrain = ?";
 
-            try {
-                String querry = "DELETE FROM `terrain` WHERE ID_Terrain="+id;
-                Statement stm =con.createStatement();
-                stm.executeUpdate(querry);
-                System.out.println("Terrain supprimée !");
-            } catch (SQLException ex) {
-                System.out.println(ex.getMessage());
-            }
-
-        }
+        PreparedStatement preparedStatement = con.prepareStatement(sql);
+        preparedStatement.setInt(1, id_Terrain);
+        preparedStatement.executeUpdate();
+    }
 
     @Override
-    public List<Terrain> afficher() {
-        List<Terrain> terrain = new ArrayList();
-
-        try {
+    public Set<Terrain> afficher() throws SQLException {
+        Set<Terrain> terrain = new HashSet<>();
+        String querry ="SELECT * FROM `terrain`";
             Statement stm =con.createStatement();
-            String querry ="SELECT * FROM `terrain`";
-
             ResultSet rs= stm.executeQuery(querry);
-
             while(rs.next()){
                 Terrain a = new Terrain();
                 a.setID_Terrain(rs.getInt(1));
                 a.setNom(rs.getString(2));
                 a.setType_surface(rs.getString(3));
                 a.setLocalisation(rs.getString(4));
-
                 a.setPrix(rs.getDouble(5));
-
                 a.setID_Proprietaire(rs.getInt(6));
-
-
-
                 terrain.add(a);
             }
 
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        }
 
         return terrain;
 
