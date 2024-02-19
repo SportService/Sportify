@@ -41,14 +41,12 @@ public class Main{
         try {
             cS.modifier(c4);
         } catch (SQLException s) {
-        System.out.println(s.getMessage());
-    }
-
-
-
-
-
+            System.out.println(s.getMessage());
+        }
 
     }
 
 }
+
+
+

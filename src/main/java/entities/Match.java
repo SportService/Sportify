@@ -11,16 +11,22 @@ public class Match {
       Date Heure ;
       Date Date ;
 
+      private Equipe equipe1 ;
+
+      private Equipe equipe2 ;
+
       public Match() {
       }
 
-      public Match(int ID_Match, String description, String nom, String type, java.util.Date heure, java.util.Date date) {
+      public Match(int ID_Match, String description, String nom, String type, java.util.Date heure, java.util.Date date , Equipe equipe1 , Equipe equipe2) {
             this.ID_Match = ID_Match;
             Description = description;
             Nom = nom;
             Type = type;
             Heure = heure;
             Date = date;
+            equipe1=equipe1 ;
+            equipe2=equipe2 ;
       }
 
       public int getID_Match() {
@@ -71,15 +77,32 @@ public class Match {
             Date = date;
       }
 
+      public Equipe getEquipe1() {
+            return equipe1;
+      }
+
+      public void setEquipe1(Equipe equipe1) {
+            this.equipe1 = equipe1;
+      }
+
+      public Equipe getEquipe2() {
+            return equipe2;
+      }
+
+      public void setEquipe2(Equipe equipe2) {
+            this.equipe2 = equipe2;
+      }
+
       @Override
       public String toString() {
             return "Match{" +
                     "ID_Match=" + ID_Match +
                     ", Description='" + Description + '\'' +
-                    ", Nom='" + Nom + '\'' +
                     ", Type='" + Type + '\'' +
                     ", Heure=" + Heure +
                     ", Date=" + Date +
+                    ", equipe1=" + equipe1 +
+                    ", equipe2=" + equipe2 +
                     '}';
       }
 }

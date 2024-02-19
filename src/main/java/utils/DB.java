@@ -9,15 +9,10 @@ public class DB {
     public final String USERNAME = "root";
     public final String PWD = "root";
 
-
-
-    public static DB instance;
-
+    private static DB instance;
     private Connection connection;
 
-
     private DB() {
-
         try {
             connection = DriverManager.getConnection(URL,USERNAME,PWD);
             System.out.println("Connected");
@@ -26,13 +21,11 @@ public class DB {
         }
     }
 
-
-    public static DB getInstance(){
-        if(instance==null){
+    public static DB getInstance() {
+        if (instance == null) {
             instance = new DB();
         }
         return instance;
-
     }
 
     public Connection getConnection() {

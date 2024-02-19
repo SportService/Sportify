@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact name="fontawesomefx-8_9_jar_">
+    <output-path>$PROJECT_DIR$/out/artifacts/fontawesomefx_8_9_jar_</output-path>
+    <root id="root">
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../fontawesomefx-8.9.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

@@ -40,11 +40,22 @@ public class CompetitionService implements IService<Competition> {
     }
 
     @Override
-    public void supprimer(Competition competition) throws SQLException {
+    public void supprimer(int id) throws SQLException {
         String req="DELETE FROM competition WHERE ID_Competition=?" ;
         PreparedStatement pre = con.prepareStatement(req);
-        pre.setInt(1,competition.getID_competiton()) ;
+        pre.setInt(1,id) ;
         pre.executeUpdate() ;
+    }
+
+    @Override
+    public void modifiert(int id, Competition competition) throws SQLException {
+
+    }
+
+
+    @Override
+    public Competition authentifier(String email, String password) throws SQLException {
+        return null;
     }
 
     @Override
