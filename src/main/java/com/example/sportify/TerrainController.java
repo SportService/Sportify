@@ -24,7 +24,30 @@ import java.util.ResourceBundle;
 public class TerrainController{
     private final ServiceTerrain ST = new ServiceTerrain();
 
+<<<<<<< HEAD
 
+=======
+    @FXML
+    private TableView<Terrain> affichetr;
+
+    @FXML
+    private TableColumn<Terrain, Integer> idtr;
+
+    @FXML
+    private TableColumn<Terrain, String> localtr;
+
+    @FXML
+    private TableColumn<Terrain, String> nomtr;
+
+    @FXML
+    private TableColumn<Terrain, String> prixtr;
+
+    @FXML
+    private TableColumn<Terrain, String> typetr;
+
+    @FXML
+    private TableColumn<Terrain, String> idproptr;
+>>>>>>> ad3df5a6931f001522d89c62a060c387855daa9a
 
     @FXML
     private TextField typet;
@@ -35,18 +58,45 @@ public class TerrainController{
     private TextField nomt;
     @FXML
     private TextField loclt;
+<<<<<<< HEAD
 
     @FXML
     private Button affter;
+=======
+    @FXML
+    private TextField idt;
+
+>>>>>>> ad3df5a6931f001522d89c62a060c387855daa9a
 
     @FXML
     private Button suptr;
     @FXML
     private Button modtr;
 
+<<<<<<< HEAD
 
 
 
+=======
+/* try
+    @FXML
+    public void afficher() {
+        {
+            ServiceTerrain ST = new ServiceTerrain();
+            List<Terrain> Ps = ST.afficher(); // Assuming ST.afficher() throws SQLException
+            ObservableList<Terrain> observableList = FXCollections.observableList(Ps);
+            affichetr.setItems(observableList);
+
+            // Set the cell factories outside of the try-catch block
+            nomtr.setCellValueFactory(new PropertyValueFactory<>("nom"));
+            typetr.setCellValueFactory(new PropertyValueFactory<>("typeSurface"));
+            localtr.setCellValueFactory(new PropertyValueFactory<>("localisation"));
+            prixtr.setCellValueFactory(new PropertyValueFactory<>("prix"));
+        } catch (SQLException e) {
+            e.printStackTrace(); // Or handle the exception as you see fit
+
+    }}*/
+>>>>>>> ad3df5a6931f001522d89c62a060c387855daa9a
 
     @FXML
     private void ajt(ActionEvent event) throws IOException {
@@ -94,6 +144,7 @@ public class TerrainController{
 
 
     @FXML
+<<<<<<< HEAD
     void initialize() {
 
     }
@@ -108,6 +159,124 @@ public class TerrainController{
 
 
 
+=======
+    void modtr(ActionEvent event) {
+
+        Terrain c = new Terrain();
+        StringBuilder errors = new StringBuilder();
+
+        if (idt.getText().trim().isEmpty()) {
+            errors.append("Please enter an ID.\n");
+        } else {
+            try {
+                c.setID_Terrain(Integer.parseInt(idt.getText().trim()));
+            } catch (NumberFormatException e) {
+                errors.append("ID must be a positive integer.\n");
+            }
+        }
+
+        if (nomt.getText().trim().isEmpty()) {
+            errors.append("Please enter a name.\n");
+        } else {
+            c.setNom(nomt.getText().trim());
+        }
+
+        if (typet.getText().trim().isEmpty()) {
+            errors.append("Please enter a type.\n");
+        } else {
+            c.setType_surface(typet.getText().trim());
+        }
+
+        if (loclt.getText().trim().isEmpty()) {
+            errors.append("Please enter a location.\n");
+        } else {
+            c.setLocalisation(loclt.getText().trim());
+        }
+
+        if (prixt.getText().trim().isEmpty()) {
+            errors.append("Please enter a price.\n");
+        } else {
+            try {
+                c.setPrix(Double.parseDouble(prixt.getText().trim()));
+            } catch (NumberFormatException e) {
+                errors.append("Please enter a valid price.\n");
+            }
+        }
+
+        if (errors.length() > 0) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erreur");
+            alert.setHeaderText("Validation Error");
+            alert.setContentText(errors.toString());
+            alert.showAndWait();
+        } else {
+            try {
+                ServiceTerrain sm = new ServiceTerrain();
+                sm.modifertr(c);
+
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Success");
+                alert.setHeaderText(null);
+                alert.setContentText("The modification was successful.");
+                alert.showAndWait();
+
+                // Clear input fields
+                idt.setText("");
+                nomt.setText("");
+                typet.setText("");
+                loclt.setText("");
+                prixt.setText("");
+
+                // Refresh the table view here if necessary
+                // refreshTable();
+
+            } catch (Exception e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Erreur");
+                alert.setHeaderText("Modification Error");
+                alert.setContentText("An error occurred while modifying the record: " + e.getMessage());
+                alert.showAndWait();
+            }
+        }
+    }
+
+
+
+
+    @FXML
+    void suptr(ActionEvent event) throws IOException, SQLException {
+
+        ServiceTerrain sm = new ServiceTerrain() ;
+        StringBuilder errors=new StringBuilder();
+        if(idt.getText().trim().isEmpty()){
+            errors.append("Please enter an id\n");
+        }
+        if(errors.length()>0){
+            Alert alert=new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erreur");
+            alert.setContentText(errors.toString());
+            alert.showAndWait();
+        }
+        sm.supprimer(Integer.parseInt(idt.getText()));
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Success");
+        alert.setContentText("Terrain is deleted successfully!");
+        alert.show();
+    }
+    @FXML
+    void initialize() {
+        try {
+            List<Terrain> Ps = new ArrayList<>(ST.afficher());
+            ObservableList<Terrain> observableList = FXCollections.observableList(Ps);
+            affichetr.setItems(observableList);
+        } catch (SQLException e) {
+        }
+            nomtr.setCellValueFactory(new PropertyValueFactory<>("Nom"));
+            typetr.setCellValueFactory(new PropertyValueFactory<>("Type_surface"));
+            localtr.setCellValueFactory(new PropertyValueFactory<>("Localisation"));
+            prixtr.setCellValueFactory(new PropertyValueFactory<>("Prix"));
+    }
+>>>>>>> ad3df5a6931f001522d89c62a060c387855daa9a
 
 }
 
