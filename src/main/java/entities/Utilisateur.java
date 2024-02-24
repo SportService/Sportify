@@ -1,56 +1,39 @@
 package entities;
 
+import java.util.Date;
+
 public class Utilisateur {
-    int id;
-    String nom, prenom, mot_de_passe, email, image, adresse, niveau_competence, role, date_de_naissance;
+    private int id;
+    private String nom, prenom, mot_de_passe, email, image, adresse, niveau_competence;
+    private Date date_de_naissance;
+    private Role role;
 
-    public Utilisateur(int id, String nom, String prenom, String image,String mot_de_passe, String adresse, String date_de_naissance, String role,String email,  String niveau_competence) {
-        this.id = id;
-        this.nom = nom;
-        this.prenom = prenom;
-        this.image = image;
-        this.mot_de_passe = mot_de_passe;
-        this.adresse = adresse;
-        this.date_de_naissance = date_de_naissance;
-
-        this.role = role;
-        this.email = email;
-
-        this.niveau_competence = niveau_competence;
-
-    }
-
-    public Utilisateur( String nom, String prenom, String image,String mot_de_passe, String adresse, String date_de_naissance, String role,String email,  String niveau_competence) {
-        this.nom = nom;
-        this.prenom = prenom;
-        this.image = image;
-        this.mot_de_passe = mot_de_passe;
-        this.adresse = adresse;
-        this.date_de_naissance = date_de_naissance;
-
-        this.role = role;
-        this.email = email;
-
-        this.niveau_competence = niveau_competence;
-
-    }
     public Utilisateur() {
     }
 
-    @Override
-    public String toString() {
-        return "Utilisateur{" +
-                "id=" + id +
-                ", nom='" + nom + '\'' +
-                ", prenom='" + prenom + '\'' +
-                ", image='" + image + '\'' +
-                ", mot_de_passe='" + mot_de_passe + '\'' +
-                ", adresse='" + adresse + '\'' +
-                ", date_de_naissance='" + date_de_naissance + '\'' +
-                ", role='" + role + '\'' +
-                ", email='" + email + '\'' +
-                ", niveau_competence='" + niveau_competence + '\'' +
-                '}';
+    public Utilisateur(String nom, String prenom, String mot_de_passe, String email, String image, String adresse, String niveau_competence, Date date_de_naissance, Role role) {
+        this.nom = nom;
+        this.prenom = prenom;
+        this.mot_de_passe = mot_de_passe;
+        this.email = email;
+        this.image = image;
+        this.adresse = adresse;
+        this.niveau_competence = niveau_competence;
+        this.date_de_naissance = date_de_naissance;
+        this.role = role;
+    }
+
+    public Utilisateur(int id, String nom, String prenom, String mot_de_passe, String email, String image, String adresse, String niveau_competence, Date date_de_naissance, Role role) {
+        this.id = id;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.mot_de_passe = mot_de_passe;
+        this.email = email;
+        this.image = image;
+        this.adresse = adresse;
+        this.niveau_competence = niveau_competence;
+        this.date_de_naissance = date_de_naissance;
+        this.role = role;
     }
 
     public int getId() {
@@ -60,8 +43,6 @@ public class Utilisateur {
     public void setId(int id) {
         this.id = id;
     }
-
-
 
     public String getNom() {
         return nom;
@@ -87,13 +68,20 @@ public class Utilisateur {
         this.mot_de_passe = mot_de_passe;
     }
 
-
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public String getAdresse() {
@@ -104,13 +92,6 @@ public class Utilisateur {
         this.adresse = adresse;
     }
 
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
     public String getNiveau_competence() {
         return niveau_competence;
     }
@@ -119,20 +100,35 @@ public class Utilisateur {
         this.niveau_competence = niveau_competence;
     }
 
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public String getDate_de_naissance() {
+    public Date getDate_de_naissance() {
         return date_de_naissance;
     }
 
-    public void setDate_de_naissance(String date_de_naissance) {
+    public void setDate_de_naissance(Date date_de_naissance) {
         this.date_de_naissance = date_de_naissance;
     }
 
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    @Override
+    public String toString() {
+        return "Utilisateur{" +
+                "id=" + id +
+                ", nom='" + nom + '\'' +
+                ", prenom='" + prenom + '\'' +
+                ", mot_de_passe='" + mot_de_passe + '\'' +
+                ", email='" + email + '\'' +
+                ", image='" + image + '\'' +
+                ", adresse='" + adresse + '\'' +
+                ", niveau_competence='" + niveau_competence + '\'' +
+                ", date_de_naissance=" + date_de_naissance +
+                ", role=" + role +
+                '}';
+    }
 }

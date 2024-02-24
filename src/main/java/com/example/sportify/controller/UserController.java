@@ -23,7 +23,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class UserController {
+public class UserController {/*
     @FXML
     private TextField nomField;
 
@@ -116,8 +116,8 @@ public class UserController {
             emailField.setText(loggedInUser.getEmail());
             adresseField.setText(loggedInUser.getAdresse());
             niveauCompetenceField.setText(loggedInUser.getNiveau_competence());
-            roleField.setText(loggedInUser.getRole());
-            dateNaissanceField.setText(loggedInUser.getDate_de_naissance());
+            //roleField.setText(loggedInUser.getRole());
+            //dateNaissanceField.setText(loggedInUser.getDate_de_naissance());
         }
     }
 
@@ -141,8 +141,8 @@ public class UserController {
                 modifiedUser.setImage(imageField.getText());
                 modifiedUser.setMot_de_passe(passwordField.getText());
                 modifiedUser.setAdresse(adresseField.getText());
-                modifiedUser.setDate_de_naissance(dateNaissanceField.getText());
-                modifiedUser.setRole(roleField.getText());
+               // modifiedUser.setDate_de_naissance(dateNaissanceField.getText());
+               // modifiedUser.setRole(roleField.getText());
                 modifiedUser.setEmail(emailField.getText());
                 modifiedUser.setNiveau_competence(niveauCompetenceField.getText());
 
@@ -429,7 +429,7 @@ public class UserController {
             e.printStackTrace();
         }
     }
-
+*/
 
 }
 

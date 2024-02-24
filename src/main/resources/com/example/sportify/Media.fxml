@@ -60,7 +60,7 @@
                                 <StackPane>
                                     <ImageView fitWidth="978" fitHeight="716">
                                         <image>
-                                            <Image url="https://img.freepik.com/photos-gratuite/outils-sport_53876-138077.jpg" />
+                                            <Image url="https://com.example.sportify.img.freepik.com/photos-gratuite/outils-sport_53876-138077.jpg" />
                                         </image>
                                     </ImageView>
                                     <Text fill="#e7e7e7" strokeType="OUTSIDE" strokeWidth="0.0" text="SPORTIFY: WELCOME ABOARD" wrappingWidth="300.0">

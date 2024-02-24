@@ -25,7 +25,7 @@
                                     <children>
                                         <ImageView fitHeight="106.0" fitWidth="72.0" layoutX="875.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true">
                                             <image>
-                                                <Image url="https://img.freepik.com/photos-gratuite/outils-sport_53876-138077.jpg" />
+                                                <Image url="https://com.example.sportify.img.freepik.com/photos-gratuite/outils-sport_53876-138077.jpg" />
                                             </image>
                                         </ImageView>
 

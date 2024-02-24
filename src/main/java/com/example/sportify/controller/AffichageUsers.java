@@ -22,7 +22,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class AffichageUsers {
-
+/*
   ServicUtilisateur userService = new ServicUtilisateur();
 
   @FXML
@@ -223,5 +223,5 @@ public class AffichageUsers {
     user.setNiveau_competence(niveauCompetenceField.getText());
     user.setRole(roleField.getText());
     user.setAdresse(adresseField.getText());
-  }
+  }*/
 }

@@ -1,5 +1,6 @@
 package services;
 
+import entities.Role;
 import entities.Utilisateur;
 import utils.DB;
 
@@ -16,39 +17,39 @@ public class ServicUtilisateur implements IService<Utilisateur> {
 
     @Override
     public void ajouter(Utilisateur utilisateur) throws SQLException {
-        String req = "INSERT INTO utilisateur (nom, prenom, image,mot_de_passe,adresse,date_de_naissance,  role,email,   niveau_competence ) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        PreparedStatement pre = con.prepareStatement(req);
-        pre.setString(1, utilisateur.getNom());
-        pre.setString(2, utilisateur.getPrenom());
-        pre.setString(3, utilisateur.getImage());
-        pre.setString(4, utilisateur.getMot_de_passe());
-        pre.setString(5, utilisateur.getAdresse());
-        pre.setString(6, utilisateur.getDate_de_naissance());
-        pre.setString(7, utilisateur.getRole());
-        pre.setString(8, utilisateur.getEmail());
-        pre.setString(9, utilisateur.getNiveau_competence());
+        String query = "INSERT INTO utilisateur (nom, prenom, mot_de_passe, email, image, adresse, niveau_competence, date_de_naissance, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        PreparedStatement pst = con.prepareStatement(query);
+            pst.setString(1, utilisateur.getNom());
+            pst.setString(2, utilisateur.getPrenom());
+            pst.setString(3, utilisateur.getMot_de_passe()); // Consider hashing the password
+            pst.setString(4, utilisateur.getEmail());
+            pst.setString(5, utilisateur.getImage());
+            pst.setString(6, utilisateur.getAdresse());
+            pst.setString(7, utilisateur.getNiveau_competence());
+            pst.setDate(8, new java.sql.Date(utilisateur.getDate_de_naissance().getTime()));
+            pst.setString(9, utilisateur.getRole().toString());
 
-        pre.executeUpdate();
+            pst.executeUpdate();
+
     }
 
     @Override
     public void modifier(int id, Utilisateur utilisateur) throws SQLException {
-        String req = "UPDATE utilisateur SET nom=?, prenom=?, image=?, mot_de_passe=?, adresse=?, date_de_naissance=?, role=?, email=?, niveau_competence=? WHERE id=?";
-        try (PreparedStatement pre = con.prepareStatement(req)) {
-            pre.setString(1, utilisateur.getNom());
-            pre.setString(2, utilisateur.getPrenom());
-            pre.setString(3, utilisateur.getImage());
-            pre.setString(4, utilisateur.getMot_de_passe());
-            pre.setString(5, utilisateur.getAdresse());
-            pre.setString(6, utilisateur.getDate_de_naissance());
-            pre.setString(7, utilisateur.getRole());
-            pre.setString(8, utilisateur.getEmail());
-            pre.setString(9, utilisateur.getNiveau_competence());
-            pre.setInt(10, id);
+        String query = "UPDATE utilisateur SET nom=?, prenom=?, mot_de_passe=?, email=?, image=?, adresse=?, niveau_competence=?, date_de_naissance=?, role=? WHERE id=?";
+        PreparedStatement pst = con.prepareStatement(query);
+        pst.setString(1, utilisateur.getNom());
+        pst.setString(2, utilisateur.getPrenom());
+        pst.setString(3, utilisateur.getMot_de_passe());
+        pst.setString(4, utilisateur.getEmail());
+        pst.setString(5, utilisateur.getImage());
+        pst.setString(6, utilisateur.getAdresse());
+        pst.setString(7, utilisateur.getNiveau_competence());
+        pst.setDate(8, new java.sql.Date(utilisateur.getDate_de_naissance().getTime()));
+        pst.setString(9, utilisateur.getRole().toString());
+        pst.setInt(10, id);
 
-            pre.executeUpdate();
-        }
+        pst.executeUpdate();
+
     }
 
 
@@ -64,30 +65,43 @@ public class ServicUtilisateur implements IService<Utilisateur> {
     @Override
     public List<Utilisateur> afficher() throws SQLException {
         List<Utilisateur> utilisateurs = new ArrayList<>();
+        String query = "SELECT * FROM utilisateur";
+        try (Statement st = con.createStatement(); ResultSet rs = st.executeQuery(query)) {
+            while (rs.next()) {
+                Utilisateur utilisateur = new Utilisateur();
+                utilisateur.setId(rs.getInt("id"));
+                utilisateur.setNom(rs.getString("nom"));
+                utilisateur.setPrenom(rs.getString("prenom"));
+                utilisateur.setMot_de_passe(rs.getString("mot_de_passe")); // Consider security implications
+                utilisateur.setEmail(rs.getString("email"));
+                utilisateur.setImage(rs.getString("image"));
+                utilisateur.setAdresse(rs.getString("adresse"));
+                utilisateur.setNiveau_competence(rs.getString("niveau_competence"));
+                utilisateur.setDate_de_naissance(rs.getDate("date_de_naissance"));
+                utilisateur.setRole(Role.valueOf(rs.getString("role")));
 
-        String req = "SELECT * FROM utilisateur";
-        PreparedStatement pre = con.prepareStatement(req);
-        ResultSet res = pre.executeQuery();
-        while (res.next()) {
-            Utilisateur utilisateur = new Utilisateur();
-            utilisateur.setId(res.getInt("id"));
-            utilisateur.setNom(res.getString("nom"));
-            utilisateur.setPrenom(res.getString("prenom"));
-            utilisateur.setImage(res.getString("image"));
-            utilisateur.setMot_de_passe(res.getString("mot_de_passe"));
-            utilisateur.setAdresse(res.getString("adresse"));
-            utilisateur.setDate_de_naissance(res.getString("date_de_naissance"));
-            utilisateur.setRole(res.getString("role"));
-            utilisateur.setEmail(res.getString("email"));
-            utilisateur.setNiveau_competence(res.getString("niveau_competence"));
-            utilisateurs.add(utilisateur);
+                utilisateurs.add(utilisateur);
+            }
+        } catch (SQLException e) {
+            System.out.println("Erreur lors de l'affichage des utilisateurs: " + e.getMessage());
         }
-
         return utilisateurs;
     }
+    public Utilisateur getById(int id)throws SQLException{
+        return afficher().stream().filter(u->u.getId()==id).findFirst().orElse(null);
+    }
+    public Utilisateur login(String email, String password) throws SQLException {
+        List<Utilisateur> utilisateurs = afficher();
+
+        return utilisateurs.stream()
+                .filter(u -> u.getEmail().equals(email) && u.getMot_de_passe().equals(password))
+                .findFirst()
+                .orElse(null);
+    }
+
 
     public Utilisateur authentifier(String email, String password) throws SQLException {
-        String req = "SELECT * FROM utilisateur WHERE email = ? AND mot_de_passe = ?";
+        /*String req = "SELECT * FROM utilisateur WHERE email = ? AND mot_de_passe = ?";
 
         try (PreparedStatement pre = con.prepareStatement(req)) {
             pre.setString(1, email);
@@ -100,21 +114,9 @@ public class ServicUtilisateur implements IService<Utilisateur> {
                     return null;
                 }
             }
-        }
+        }*/
+        return null;
     }
 
-    private Utilisateur mapUtilisateur(ResultSet result) throws SQLException {
-        return new Utilisateur(
-                result.getInt("id"),
-                result.getString("nom"),
-                result.getString("prenom"),
-                result.getString("image"),
-                result.getString("mot_de_passe"),
-                result.getString("adresse"),
-                result.getString("date_de_naissance"),
-                result.getString("role"),
-                result.getString("email"),
-                result.getString("niveau_competence")
-        );
-    }
+
 }
