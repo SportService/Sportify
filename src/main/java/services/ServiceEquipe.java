@@ -71,10 +71,9 @@ public class ServiceEquipe implements IService<Equipe> {
 
     public List<Equipe> afficher() throws SQLException {
         List<Equipe> eq = new ArrayList<>();
-        String req = "SELECT e.*, c.*, u.* " +
+        String req = "SELECT e.*, c.* " +
                 "FROM equipe e " +
-                "INNER JOIN categorie c ON e.IDCateg = c.IDCateg " +
-                "INNER JOIN utilisateur u ON e.id_createur = u.ID_User";
+                "INNER JOIN categorie c ON e.IDCateg = c.IDCateg " ;
         try (PreparedStatement pre = con.prepareStatement(req);
              ResultSet res = pre.executeQuery()) {
             while (res.next()) {
@@ -84,7 +83,7 @@ public class ServiceEquipe implements IService<Equipe> {
                 e.setNiveau(res.getString("Niveau"));
                 e.setRank(res.getInt("rank"));
                 e.setRandom(res.getBoolean("isRandom"));
-
+/*
                 Utilisateur createur = new Utilisateur();
                 createur.setID_User(res.getInt("ID_User"));
                 createur.setNom(res.getString("Nom"));
@@ -99,7 +98,7 @@ public class ServiceEquipe implements IService<Equipe> {
 
 
                 e.setId_createur(createur);
-
+*/
                 Categorie categorie = new Categorie();
                 categorie.setIDCateg(res.getInt("IDCateg"));
                 categorie.setNom(res.getString("Nom"));
@@ -148,7 +147,37 @@ public class ServiceEquipe implements IService<Equipe> {
         }
     }
 
+    // Method to retrieve the category ID associated with an Equipe
+    public int getCategoryID(Equipe equipe) throws SQLException {
+        int idCategorie = -1; // Default value if not found
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
 
+        try {
+            conn = DB.getInstance().getConnection(); // Your method to get database connection
+
+            // Prepare SQL query
+            String query = "SELECT IDCateg FROM Equipe WHERE id = ?";
+            stmt = conn.prepareStatement(query);
+            stmt.setInt(1, equipe.getIDCateg().getID_Categ());
+
+            // Execute query
+            rs = stmt.executeQuery();
+
+            // If result found, retrieve the category ID
+            if (rs.next()) {
+                idCategorie = rs.getInt("IDCateg");
+            }
+        } finally {
+            // Close resources
+            if (rs != null) rs.close();
+            if (stmt != null) stmt.close();
+            if (conn != null) conn.close();
+        }
+
+        return idCategorie;
+    }
 
 
 }

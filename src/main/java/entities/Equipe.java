@@ -15,7 +15,7 @@ public class Equipe {
     String Niveau;
 
     Categorie IDCateg;
-    Boolean isRandom;
+    public Boolean isRandom;
     Utilisateur id_createur;
     int rank;
 
@@ -38,7 +38,20 @@ public class Equipe {
         this.id_createur = id_createur;
         this.rank = rank;
     }
+
+    public Equipe(String nom, String niveau, Categorie IDCateg, Boolean isRandom, int rank) {
+        Nom = nom;
+        Niveau = niveau;
+        this.IDCateg = IDCateg;
+        this.isRandom = isRandom;
+        this.rank = rank;
+    }
+
     public Equipe(){
+
+    }
+
+    public Equipe(String nomEquipe, String membre1, String membre2, String membre3, String membre4, String membre5, String membre6, String membre7, String membre8, String membre9, String membre10, String membre11) {
 
     }
 

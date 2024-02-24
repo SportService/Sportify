@@ -109,6 +109,11 @@ public class Main {
             e.printStackTrace();
             // Handle the exception as needed
         }
+        try {
+            System.out.println(serviceEquipe.afficher());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
 
         try {
@@ -122,11 +127,12 @@ public class Main {
 */
             // Update an existing category
             Categorie categoryToUpdate = new Categorie();
-            categoryToUpdate.setIDCateg(1); // ID of the category to update
-            categoryToUpdate.setNom("Updated Category");
-            categoryToUpdate.setDescription("Updated description");
-            categoryToUpdate.setImage("updated_image_path");
+            categoryToUpdate.setIDCateg(1);
+            categoryToUpdate.setNom("Volleyball");
+            categoryToUpdate.setDescription("your ultimate sport gathering");
+            categoryToUpdate.setImage("src/main/resources/img/istockphoto-1371823675-612x612.jpg");
             serviceCategorie.modifier(categoryToUpdate);
+            System.out.println("Category updated successfully.");
 
             // Retrieve all categories
             List<Categorie> categories = serviceCategorie.afficher();

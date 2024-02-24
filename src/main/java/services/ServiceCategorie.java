@@ -7,9 +7,11 @@ import utils.DB;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 public class ServiceCategorie implements IService<Categorie> {
     private Connection con;
+
 
     public ServiceCategorie() {
         con = DB.getInstance().getConnection();
@@ -48,7 +50,6 @@ public class ServiceCategorie implements IService<Categorie> {
     }*/
     @Override
     public void supprimer(Categorie categorie) throws SQLException {
-        // Check if any equipe records reference the category
         String checkEquipeQuery = "SELECT COUNT(*) FROM equipe WHERE IDCateg = ?";
         try (PreparedStatement checkEquipeStatement = con.prepareStatement(checkEquipeQuery)) {
             checkEquipeStatement.setInt(1, categorie.getID_Categ());
@@ -56,14 +57,13 @@ public class ServiceCategorie implements IService<Categorie> {
                 if (resultSet.next()) {
                     int equipeCount = resultSet.getInt(1);
                     if (equipeCount > 0) {
-                        // If equipe records exist, throw an exception to indicate that deletion is not allowed
                         throw new SQLException("Cannot delete the category as it is referenced by equipe records.");
                     }
                 }
             }
         }
 
-        // If no equipe records reference the category, proceed with deletion
+
         String deleteCategoryQuery = "DELETE FROM categorie WHERE IDCateg = ?";
         try (PreparedStatement deleteCategoryStatement = con.prepareStatement(deleteCategoryQuery)) {
             deleteCategoryStatement.setInt(1, categorie.getID_Categ());
@@ -75,7 +75,7 @@ public class ServiceCategorie implements IService<Categorie> {
 
 
     @Override
-    public List<Categorie> afficher() throws SQLException {
+    public ObservableList<Categorie> afficher() throws SQLException {
         List<Categorie> categories = new ArrayList<>();
         String req = "SELECT * FROM categorie";
         try (PreparedStatement pre = con.prepareStatement(req);
@@ -83,12 +83,61 @@ public class ServiceCategorie implements IService<Categorie> {
             while (res.next()) {
                 Categorie c = new Categorie();
                 c.setIDCateg(res.getInt("IDCateg"));
-                c.setNom(res.getString("nom"));
-                c.setDescription(res.getString("description"));
-                c.setImage(res.getString("image"));
+                c.setNom(res.getString("Nom"));
+                c.setDescription(res.getString("Description"));
+                c.setImage(res.getString("Image"));
                 categories.add(c);
             }
         }
-        return categories;
+        return FXCollections.observableArrayList(categories);
     }
+    public Categorie getCategorieById(int id) throws SQLException {
+        Categorie categorie = null;
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/sportify", "root", null);
+            String query = "SELECT * FROM Categorie WHERE IDCateg = ?";
+            statement = connection.prepareStatement(query);
+            statement.setInt(1, id);
+            resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                categorie = new Categorie(
+                        resultSet.getInt("IDCateg"),
+                        resultSet.getString("Nom"),
+                        resultSet.getString("Description"),
+                        resultSet.getString("Image")
+                );
+            }
+        } finally {
+            if (resultSet != null) {
+                resultSet.close();
+            }
+            if (statement != null) {
+                statement.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
+        }
+
+        return categorie;
+    }
+    public List<String> afficherImages() throws SQLException {
+        List<String> imagePaths = new ArrayList<>();
+        String query = "SELECT Image FROM categorie";
+        try (PreparedStatement statement = con.prepareStatement(query);
+             ResultSet resultSet = statement.executeQuery()) {
+            while (resultSet.next()) {
+                String imagePath = resultSet.getString("Image");
+                imagePaths.add(imagePath);
+            }
+        }
+        return imagePaths;
+    }
+
+
 }
