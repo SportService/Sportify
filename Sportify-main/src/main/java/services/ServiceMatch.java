@@ -1,7 +1,9 @@
 package services;
 
+import entities.Arbitre;
 import entities.Equipe;
 import entities.Match;
+import javafx.collections.ObservableList;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -9,14 +11,14 @@ import java.util.List;
 
 public class ServiceMatch implements services.IService<Match> {
     private Connection con;
-
+    private ServiceArbitre s;
     public ServiceMatch(){
         con = utils.DB.getInstance().getConnection();
     }
 
     @Override
     public void ajouter(Match match) throws SQLException {
-        String req = "INSERT INTO `matc` (nom, type, description, date, heure, equipe1, equipe2) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String req = "INSERT INTO `matc` (nom, type, description, date, heure, equipe1, equipe2,arbitre) VALUES (?, ?, ?, ?, ?, ?, ?,?)";
 
         PreparedStatement pstmt = con.prepareStatement(req);
         pstmt.setString(1, match.getNom());
@@ -26,6 +28,7 @@ public class ServiceMatch implements services.IService<Match> {
         pstmt.setTime(5, match.getHeure());
         pstmt.setInt(6, match.getEquipe1().getID());
         pstmt.setInt(7, match.getEquipe2().getID());
+        pstmt.setInt(8, match.getArbitre().getId_arbitre());
 
         pstmt.executeUpdate();
     }
@@ -33,7 +36,7 @@ public class ServiceMatch implements services.IService<Match> {
     @Override
     public void modifier(Match match) throws SQLException {
         String req = "UPDATE `matc` " +
-                "SET nom=?, type=?, description=?, date=?, heure=?, equipe1=?, equipe2=? " +
+                "SET nom=?, type=?, description=?, date=?, heure=?, equipe1=?, equipe2=? ,arbitre=? " +
                 "WHERE ID_Matc=?";
         PreparedStatement pre = con.prepareStatement(req);
         pre.setString(1, match.getNom());
@@ -41,9 +44,10 @@ public class ServiceMatch implements services.IService<Match> {
         pre.setString(3, match.getDescription());
         pre.setDate(4, match.getDate());
         pre.setTime(5, match.getHeure());
-        pre.setInt(6, match.getEquipe1().getID()); // Utilisez l'identifiant d'équipe pour equipe1
-        pre.setInt(7, match.getEquipe2().getID()); // Utilisez l'identifiant d'équipe pour equipe2
-        pre.setInt(8, match.getID_Matc());
+        pre.setInt(6, match.getEquipe1().getID());
+        pre.setInt(7, match.getEquipe2().getID());
+        pre.setInt(8, match.getArbitre().getId_arbitre());
+        pre.setInt(9, match.getID_Matc());
 
         pre.executeUpdate();
     }
@@ -66,7 +70,7 @@ public class ServiceMatch implements services.IService<Match> {
             equipe = new Equipe();
             equipe.setID(rs.getInt("IDEquipe"));
             equipe.setNom(rs.getString("nom"));
-            // Définissez d'autres attributs de votre objet Equipe si nécessaire
+
         }
 
         return equipe;
@@ -75,31 +79,95 @@ public class ServiceMatch implements services.IService<Match> {
 
     @Override
     public List<Match> afficher() throws SQLException {
-        List<Match> pers = new ArrayList<>();
-
-        String req = "SELECT * FROM `matc`";
-        PreparedStatement pre = con.prepareStatement(req);
-        ResultSet res = pre.executeQuery();
-
-        while (res.next()) {
-            Match p = new Match();
-            p.setID_Matc(res.getInt(1));
-            p.setNom(res.getString("nom"));
-            p.setType(res.getString("type"));
-            p.setDescription(res.getString("description"));
-            p.setDate(res.getDate("date"));
-            p.setHeure(res.getTime("heure"));
-            Equipe equipe1 = getEquipeById(res.getInt("equipe1"));
-            Equipe equipe2 = getEquipeById(res.getInt("equipe2"));
-
-            p.setEquipe1(equipe1);
-            p.setEquipe2(equipe2);
-
-            pers.add(p);
-
-        }
+        List<Match> matches = new ArrayList<>();
 
 
-        return pers;
+            String query = "SELECT * FROM matc";
+            try (PreparedStatement pstmt = con.prepareStatement(query)) {
+                try (ResultSet resultSet = pstmt.executeQuery()) {
+                    while (resultSet.next()) {
+                        int id = resultSet.getInt("ID_Matc");
+                        String nom = resultSet.getString("nom");
+                        String type = resultSet.getString("type");
+                        String description = resultSet.getString("description");
+                        Date date = resultSet.getDate("date");
+                        Time heure = resultSet.getTime("heure");
+                       Equipe equipe1Nom= getTeamName(resultSet.getInt("Equipe1"));
+                        Equipe equipe2Nom= getTeamName(resultSet.getInt("Equipe1"));
+                        Arbitre arbitre= getRefereeName(resultSet.getInt("Arbitre"));
+
+
+
+
+
+
+
+                        Match match = new Match(id, nom, type, description, date, heure, equipe1Nom, equipe2Nom,  arbitre);
+                        matches.add(match);
+                    }
+                }
+            }
+
+
+        return matches;
     }
+    private Equipe getTeamName(int teamId) throws SQLException {
+        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/sportify", "root", "root");
+        String query = "SELECT Nom,Niveau,`rank` FROM equipe WHERE IDEquipe = ?";
+        try (PreparedStatement statement = conn.prepareStatement(query)) {
+            statement.setInt(1, teamId);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+
+                Equipe equipe = new Equipe();
+                equipe.setNom(resultSet.getString("Nom"));
+                equipe.setNiveau(resultSet.getString("Niveau"));
+                equipe.setRank(resultSet.getInt("Rank"));
+                return equipe;
+
+            }
+        }
+        return null;
+    }
+
+    private Arbitre getRefereeName(int refereeId) throws SQLException {
+        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/sportify", "root", "root");
+        String query = "SELECT Age,Nom,Prenom FROM arbitre WHERE id_arbitre = ?";
+        try (PreparedStatement statement = conn.prepareStatement(query)) {
+            statement.setInt(1, refereeId);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                Arbitre arbitre =new Arbitre();
+                arbitre.setAge(resultSet.getInt("Age"));
+                arbitre.setNom(resultSet.getString("Nom"));
+                arbitre.setPrenom(resultSet.getString("Prenom"));
+
+
+                return arbitre;
+            }
+        }
+        return null;
+    }
+
+
+    public List<Equipe> getAllEquipes() throws SQLException {
+        List<Equipe> equipes = new ArrayList<>();
+        String query = "SELECT * FROM equipe";
+        try (        PreparedStatement pstmt = con.prepareStatement(query);
+
+                     ResultSet resultSet = pstmt.executeQuery(query)) {
+            while (resultSet.next()) {
+                int id = resultSet.getInt("IDEquipe");
+                String nom = resultSet.getString("nom");
+
+
+                Equipe equipe = new Equipe(id,nom);
+                equipes.add(equipe);
+            }
+        }
+        return equipes;
+    }
+
+
+
 }

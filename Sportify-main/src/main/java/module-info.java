@@ -1,4 +1,4 @@
-module com.example.sportify {
+module sportify {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.sql;

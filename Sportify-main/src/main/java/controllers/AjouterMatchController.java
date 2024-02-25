@@ -1,352 +1,318 @@
 package controllers;
 
-import entities.Custom;
+import entities.Arbitre;
 import entities.Equipe;
 import entities.Match;
-import entities.Utilisateur;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import services.ServiceCustom;
+import services.ServiceArbitre;
 import services.ServiceMatch;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.time.LocalDate;
-import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class AjouterMatchController implements Initializable  {
-
-    ServiceMatch s= new ServiceMatch();
-    ServiceCustom serviceCustom=new ServiceCustom(s);
+public class AjouterMatchController implements Initializable {
     @FXML
-    private Spinner<Integer> hoursSpinner;
+    private ListView<Match> matchListView;
 
     @FXML
-    private Spinner<Integer> minutesSpinner;
+    private TextField idMatchField;
 
     @FXML
-    private Spinner<Integer> secondsSpinner;
-    @FXML
-    private TextField nomTextField;
+    private TextField nomField;
 
     @FXML
-    private TextField typeTextField;
+    private ComboBox<String> typeComboBox;
+
+
+    @FXML
+    private TextField descriptionField;
+
     @FXML
     private DatePicker datePicker;
 
-    //@FXML
-   // private DatePicker dateTextField;
-   // @FXML
-    //private TextField heureTextField;
+    @FXML
+    private TextField heureField;
 
     @FXML
-    private TextField descriptionTextField;
+    private TextField minField;
 
     @FXML
-    private TextField equipe1TextField;
-    @FXML
-    private TextField equipe2TextField;
+    private ComboBox<Equipe> equipe1ComboBox;
 
     @FXML
-    private TextField utilisateurTextField;
+    private ComboBox<Equipe> equipe2ComboBox;
 
     @FXML
-    private TextField dureeEstimeeTextField;
-    @FXML
-    private TextField dateCreationTextField;
+    private ComboBox<Arbitre> arbitreComboBox;
 
     @FXML
-    private TextField commentairesClientTextField;
-
-
-    @FXML
-    private TableView<Match> ListMatch;
+    private Button addButton;
 
     @FXML
-    private TableColumn<Match, Integer> ID_Matc;
-
-    @FXML
-    private TableColumn<Match, String> Nom;
-
-    @FXML
-    private TableColumn<Match, String> Type;
-
-    @FXML
-    private TableColumn<Match, Date> Date;
-    @FXML
-    private TableColumn<Match, Time> Heure;
-    @FXML
-    private TableColumn<Match, String> Description;
-    @FXML
-    private TableColumn<Match, Integer> Equipe1;
-    @FXML
-    private TableColumn<Match, Integer> Equipe2;
-    @FXML
-    private TableColumn<Match, Void> ACTION;
-
-    ObservableList<Match> observableList = FXCollections.observableArrayList();
-    LocalDate currentDate = LocalDate.now();
-    LocalTime heureActuelle = LocalTime.now();
+    private Button supprimerButton;
 
 
 
 
+    private ServiceMatch serviceMatch;
+    private ServiceArbitre serviceArbitre;
+    private Match newMatch;
 
-
-    public AjouterMatchController() throws SQLException {
+    public Match getNewlyAddedMatch() {
+        return newMatch;
     }
-
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        datePicker.setValue(currentDate);
-       // hoursSpinner.valueProperty().addListener((observable, oldValue, newValue) -> updateValues());
-       // minutesSpinner.valueProperty().addListener((observable, oldValue, newValue) -> updateValues());
-        //secondsSpinner.valueProperty().addListener((observable, oldValue, newValue) -> updateValues());
+    public void initialize(URL location, ResourceBundle resources) {
+        serviceMatch = new ServiceMatch();
+        serviceArbitre = new ServiceArbitre();
 
+
+
+        loadEquipes();
+        loadArbitres();
+
+    }
+
+    private void loadEquipes() {
         try {
-            observableList.addAll(s.afficher());
-            ID_Matc.setCellValueFactory(new PropertyValueFactory<>("ID_Matc"));
-            Nom.setCellValueFactory(new PropertyValueFactory<>("Nom"));
-            Type.setCellValueFactory(new PropertyValueFactory<>("Type"));
-            Date.setCellValueFactory(new PropertyValueFactory<>("Date"));
-            Heure.setCellValueFactory(new PropertyValueFactory<>("Heure"));
-            Description.setCellValueFactory(new PropertyValueFactory<>("Description"));
-            Equipe1.setCellValueFactory(new PropertyValueFactory<>("Equipe1"));
-            Equipe2.setCellValueFactory(new PropertyValueFactory<>("Equipe2"));
-            ACTION.setCellFactory(param -> new ButtonTableCell<>());
-
-
-            ListMatch.setItems(observableList);
+            ObservableList<Equipe> equipes = FXCollections.observableArrayList(serviceMatch.getAllEquipes());
+            equipe1ComboBox.setItems(equipes);
+            equipe2ComboBox.setItems(equipes);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            showAlert("Erreur lors du chargement des équipes : " + e.getMessage());
+        }
+    }
+    public void showMatch(ObservableList<Match> matchList) {
+        matchListView.setItems(matchList);
+    }
+
+
+    private void loadArbitres() {
+        try {
+            ObservableList<Arbitre> arbitres = FXCollections.observableArrayList(serviceArbitre.getAllArbitres());
+           arbitreComboBox.setItems(arbitres);
+
+        } catch (SQLException e) {
+            showAlert("Erreur lors du chargement des arbitres : " + e.getMessage());
+        }
+    }
+
+    @FXML
+    private void ajouterMatch() {
+        // Récupérer les informations du match depuis les champs de texte et les éléments ComboBox
+        String nom = nomField.getText();
+        if (nom.isEmpty() || nom.length() < 3 || nom.length() > 25) {
+            showAlert("Le nom doit contenir entre 3 et 25 caractères !");
+            return;
+        }
+
+        String type = typeComboBox.getValue();
+        if (type == null || type.isEmpty()) {
+            showAlert("Veuillez sélectionner un type !");
+            return;
+        }
+
+        String description = descriptionField.getText();
+        if (description.isEmpty() || description.length() < 5 || description.length() > 50) {
+            showAlert("La description doit contenir entre 5 et 50 caractères !");
+            return;
+        }
+
+        LocalDate localDate = datePicker.getValue();
+        if (localDate == null) {
+            showAlert("Veuillez sélectionner une date !");
+            return;
+        }
+
+        if (localDate.isBefore(LocalDate.now())) {
+            showAlert("Veuillez sélectionner une date future !");
+            return;
+        }
+
+        if (localDate.isAfter(LocalDate.now().plusDays(15))) {
+            showAlert("La date sélectionnée ne peut pas être plus de 15 jours dans le futur !");
+            return;
+        }
+
+        int heures;
+        try {
+            heures = Integer.parseInt(heureField.getText());
+        } catch (NumberFormatException e) {
+            showAlert("Veuillez entrer une valeur numérique pour les heures !");
+            return;
+        }
+
+        if (heures < 0 || heures > 23) {
+            showAlert("Veuillez entrer une valeur entre 0 et 23 pour les heures !");
+            return;
+        }
+
+        int minutes;
+        try {
+            minutes = Integer.parseInt(minField.getText());
+        } catch (NumberFormatException e) {
+            showAlert("Veuillez entrer une valeur numérique pour les minutes !");
+            return;
+        }
+
+        if (minutes < 0 || minutes > 59) {
+            showAlert("Veuillez entrer une valeur entre 0 et 59 pour les minutes !");
+            return;
+        }
+
+        String heureString = heureField.getText() + ":" + minField.getText() + ":00";
+        Time heure = Time.valueOf(heureString);
+
+        Equipe equipe1 = equipe1ComboBox.getValue();
+        if (equipe1 == null) {
+            showAlert("Veuillez sélectionner une équipe 1 !");
+            return;
+        }
+
+        Equipe equipe2 = equipe2ComboBox.getValue();
+        if (equipe2 == null) {
+            showAlert("Veuillez sélectionner une équipe 2 !");
+            return;
+        }
+
+        if (equipe1.equals(equipe2)) {
+            showAlert("Les équipes sélectionnées ne peuvent pas être les mêmes !");
+            return;
+        }
+
+        Arbitre arbitre = arbitreComboBox.getValue();
+        if (arbitre == null) {
+            showAlert("Veuillez sélectionner un arbitre !");
+            return;
+        }
+
+        Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmation.setTitle("Confirmation");
+        confirmation.setHeaderText("Voulez-vous vraiment ajouter ce match ?");
+        confirmation.setContentText("Nom: " + nom + "\n"
+                + "Type: " + type + "\n"
+                + "Description: " + description + "\n"
+                + "Date: " + localDate + "\n"
+                + "Heure: " + heure + "\n"
+                + "Équipe 1: " + equipe1.getNom() + "\n"
+                + "Équipe 2: " + equipe2.getNom() + "\n"
+                + "Arbitre: " + arbitre.getNom() + " " + arbitre.getPrenom());
+
+        Optional<ButtonType> result = confirmation.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+
+            try {
+                serviceMatch.ajouter(new Match(nom, type, description, Date.valueOf(localDate), heure, equipe1, equipe2, arbitre));
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+
+
+            Stage stage = (Stage) nomField.getScene().getWindow();
+            stage.close();
+        } else {
+            System.out.println("L'utilisateur a annulé l'ajout du match.");
+
+            nomField.clear();
+            typeComboBox.setValue(null);
+            descriptionField.clear();
+            datePicker.setValue(null);
+            heureField.clear();
+            minField.clear();
+            equipe1ComboBox.setValue(null);
+            equipe2ComboBox.setValue(null);
+            arbitreComboBox.setValue(null);
+        }}
+
+        private void showAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+    @FXML
+    private void modifierMatch() {
+
+        String nom = nomField.getText();
+        String type = typeComboBox.getValue();
+        String description = descriptionField.getText();
+        LocalDate localDate = datePicker.getValue();
+        Date date = Date.valueOf(localDate);
+        int heures = Integer.parseInt(heureField.getText());
+        int minutes = Integer.parseInt(minField.getText());
+
+        if (heures < 0 || heures > 23 || minutes < 0 || minutes > 59) {
+            showAlert("Veuillez entrer des valeurs valides pour les heures et les minutes.");
+            return;
+        }
+        String heureString  = heureField.getText()+":"+minField.getText()+":00";
+        Time heure = Time.valueOf(heureString);
+        Equipe equipe1 = equipe1ComboBox.getValue();
+        Equipe equipe2 = equipe2ComboBox.getValue();
+        Arbitre arbitre= arbitreComboBox.getValue();
+        if (heures < 0 || heures > 23 || minutes < 0 || minutes > 59) {
+            showAlert("Veuillez entrer des valeurs valides pour les heures et les minutes.");
+            return;
+        }
+
+
+        Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmation.setTitle("Confirmation");
+        confirmation.setHeaderText("Voulez-vous vraiment ajouter ce match ?");
+        confirmation.setContentText("Nom: " + nom + "\n"
+                + "Type: " + type + "\n"
+                + "Description: " + description + "\n"
+                + "Date: " + date + "\n"
+                + "Heure: " + heure + "\n"
+                + "Équipe 1: " + equipe1 + "\n"
+                + "Équipe 2: " + equipe2 + "\n"
+                + "Arbitre: " + arbitre);
+
+
+        Optional<ButtonType> result = confirmation.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+
+            try {
+                serviceMatch.modifier(new Match(nom, type, description, date, heure, equipe1, equipe2, arbitre));
+
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+
+
+
+        } else {
+            System.out.println("L'utilisateur a annulé l'ajout du match.");
+
+            // Réinitialiser les champs du formulaire
+            nomField.setText("");
+            typeComboBox.setValue(null);
+            descriptionField.setText("");
+            datePicker.setValue(null);
+            heureField.setText("");
+            equipe1ComboBox.setValue(null);
+            equipe2ComboBox.setValue(null);
+            arbitreComboBox.setValue(null);
         }
 
     }
 
-    /*@FXML
-    void AjouterCustom(ActionEvent event) throws SQLException {
-        String idUtilisateurString = tf_user.getText(); // Récupérer l'identifiant de l'utilisateur sous forme de String
-        int idUtilisateur = Integer.parseInt(idUtilisateurString); // Convertir le String en int
-
-        // Utiliser l'identifiant pour récupérer l'utilisateur correspondant à partir de la base de données
-        Utilisateur utilisateur = serviceCustom.getUtilisateurById(idUtilisateur); // Assurez-vous d'avoir une méthode pour récupérer un utilisateur par son identifiant dans votre service utilisateur
-
-        int dureeEstimee = Integer.parseInt(tf_dureeEstimee.getText());
-        Date dateCreation = java.sql.Date.valueOf(tf_dateCreation.getText());
-        String commentairesClient = tf_commentairesClient.getText();
-        String nom = tf_Nom.getText();
-        String type = tf_Type.getText();
-        String description = tf_Description.getText();
-        Date date = java.sql.Date.valueOf(tf_Date.getText());
-        Time heure = Time.valueOf(tf_Heure.getText());
-        String idEquipe1String = tf_Equipe1.getText(); // Récupérer l'identifiant de l'utilisateur sous forme de String
-        int idEquipe1 = Integer.parseInt(idEquipe1String); // Convertir le String en int
-
-        // Utiliser l'identifiant pour récupérer l'utilisateur correspondant à partir de la base de données
-        Equipe equipe1 = s.getEquipeById(idEquipe1); // Assurez-vous d'avoir une méthode pour récupérer un utilisateur par son identifiant dans votre service utilisateur
-
-        String idEquipe2String = tf_Equipe2.getText(); // Récupérer l'identifiant de l'utilisateur sous forme de String
-        int idEquipe2 = Integer.parseInt(idEquipe2String); // Convertir le String en int
-
-        // Utiliser l'identifiant pour récupérer l'utilisateur correspondant à partir de la base de données
-        Equipe equipe2 = s.getEquipeById(idEquipe1); // Assurez-vous d'avoir une méthode pour récupérer un utilisateur par son identifiant dans votre service utilisateur
-
-        try {
-            serviceCustom.ajouter(new Custom(utilisateur,dureeEstimee,dateCreation,commentairesClient,nom,type,description,date,heure,equipe1,equipe2));
-            Alert alert= new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Success");
-            alert.setContentText("personne ajoute");
-            alert.showAndWait();
-        } catch (SQLException e) {
-            Alert alert= new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
-        }
-
-    }*/
-    @FXML
-    private Button creerCustomButton;
-
-    @FXML
-    private void creerCustomButtonClicked(ActionEvent event) {
-
-        LocalDate selectedDate = datePicker.getValue();
-        // Créez une nouvelle fenêtre modale
-        Stage customStage = new Stage();
-        customStage.initModality(Modality.APPLICATION_MODAL);
-
-        // Créez une disposition pour le formulaire
-        //AnchorPane formLayout = new AnchorPane();
-
-        // Ajoutez des champs de saisie au formulaire
-
-        TextField utilisateurTextField = new TextField();
-        utilisateurTextField.setPromptText("Utilisateur");
-
-        TextField dureeEstimeeTextField = new TextField();
-        dureeEstimeeTextField.setPromptText("Durée estimée");
-
-        //TextField dateCreationTextField = new TextField();
-        //dateCreationTextField.setPromptText("Date de création");
-
-        TextField commentairesClientTextField = new TextField();
-        commentairesClientTextField.setPromptText("Commentaires du client");
-
-        TextField nomTextField = new TextField();
-        nomTextField.setPromptText("Nom");
-
-        TextField typeTextField = new TextField();
-        typeTextField.setPromptText("Type");
-
-        TextField descriptionTextField = new TextField();
-        descriptionTextField.setPromptText("Description");
-
-        DatePicker dateTextField = new DatePicker();
-        dateTextField.setValue(LocalDate.now());
-
-        //TextField heureTextField = new TextField();
-        //heureTextField.setPromptText("Heure");
-        //int hours = hoursSpinner.getValue();
-        //int minutes = minutesSpinner.getValue();
-        //int seconds = secondsSpinner.getValue();
-
-        TextField equipe1TextField = new TextField();
-        equipe1TextField.setPromptText("ID Equipe 1");
-
-        TextField equipe2TextField = new TextField();
-        equipe2TextField.setPromptText("ID Equipe 2");
-
-
-        // Ajoutez un bouton pour valider le formulaire
-        Button validerButton = new Button("Valider");
-
-        validerButton.setOnAction(e -> {
-            hoursSpinner.increment(0);
-            minutesSpinner.increment(0);
-            secondsSpinner.increment(0);
-
-            String idUtilisateurString = utilisateurTextField.getText(); // Récupérer l'identifiant de l'utilisateur sous forme de String
-            int idUtilisateur = Integer.parseInt(idUtilisateurString); // Convertir le String en int
-
-            // Utiliser l'identifiant pour récupérer l'utilisateur correspondant à partir de la base de données
-            Utilisateur utilisateur = null; // Assurez-vous d'avoir une méthode pour récupérer un utilisateur par son identifiant dans votre service utilisateur
-            try {
-                utilisateur = serviceCustom.getUtilisateurById(idUtilisateur);
-            } catch (SQLException ex) {
-                throw new RuntimeException(ex);
-            }
-
-            int dureeEstimee = Integer.parseInt(dureeEstimeeTextField.getText());
-            Date dateCreation = java.sql.Date.valueOf(currentDate);
-            String commentairesClient = commentairesClientTextField.getText();
-            String nom = nomTextField.getText();
-            String type = typeTextField.getText();
-            String description = descriptionTextField.getText();
-            java.sql.Date date = java.sql.Date.valueOf(datePicker.getValue());
-            int hours = hoursSpinner.getValue();
-            int minutes = minutesSpinner.getValue();
-            int seconds = secondsSpinner.getValue();
-            Time time = Time.valueOf(String.format("%02d:%02d:%02d", hours, minutes, seconds));
-            String idEquipe1String = equipe1TextField.getText(); // Récupérer l'identifiant de l'utilisateur sous forme de String
-            int idEquipe1 = Integer.parseInt(idEquipe1String); // Convertir le String en int
-
-            // Utiliser l'identifiant pour récupérer l'utilisateur correspondant à partir de la base de données
-            Equipe equipe1 = null; // Assurez-vous d'avoir une méthode pour récupérer un utilisateur par son identifiant dans votre service utilisateur
-            try {
-                equipe1 = s.getEquipeById(idEquipe1);
-            } catch (SQLException ex) {
-                throw new RuntimeException(ex);
-            }
-
-            String idEquipe2String = equipe2TextField.getText(); // Récupérer l'identifiant de l'utilisateur sous forme de String
-            int idEquipe2 = Integer.parseInt(idEquipe2String); // Convertir le String en int
-
-            // Utiliser l'identifiant pour récupérer l'utilisateur correspondant à partir de la base de données
-            Equipe equipe2 = null; // Assurez-vous d'avoir une méthode pour récupérer un utilisateur par son identifiant dans votre service utilisateur
-            try {
-                equipe2 = s.getEquipeById(idEquipe1);
-            } catch (SQLException ex) {
-                throw new RuntimeException(ex);
-            }
-
-
-
-            try {
-                // Appel de la méthode d'enregistrement dans le service de données
-                // Remplacez "service" par l'instance de votre service de données
-                serviceCustom.ajouter(new Custom(utilisateur, dureeEstimee, dateCreation, commentairesClient, nom, type, description, date, time, equipe1, equipe2));
-
-                // Affichage d'un message de succès
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Succès");
-                alert.setContentText("Données enregistrées avec succès !");
-                alert.showAndWait();
-
-                // Fermeture de la fenêtre modale
-                customStage.close();
-            } catch (SQLException ex) {
-                // Gestion des exceptions
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Erreur");
-                alert.setContentText("Veuillez saisir des valeurs valides pour les champs numériques.");
-                alert.showAndWait();
-            }
-
-
-
-            // Fermez la fenêtre modale après avoir traité les données du formulaire
-            customStage.close();
-        });
-        VBox formLayout = new VBox(10); // 10 est l'espace vertical entre les éléments (en pixels)
-        formLayout.getStyleClass().add("framelayout");
-// Ajoutez des champs de saisie au formulaire
-        formLayout.getChildren().addAll(
-                utilisateurTextField,
-                dureeEstimeeTextField,
-                //dateCreationTextField,
-                commentairesClientTextField,
-                nomTextField,
-                typeTextField,
-                descriptionTextField,
-                dateTextField,
-                hoursSpinner,
-                minutesSpinner,
-                secondsSpinner,
-               // heureTextField,
-                equipe1TextField,
-                equipe2TextField,
-                validerButton
-        );
-
-        // Créez une scène pour la nouvelle fenêtre avec la disposition du formulaire
-        Scene customScene = new Scene(formLayout, 600, 600);
-
-        // Configurez la scène et affichez la fenêtre modale
-        customStage.setScene(customScene);
-        customStage.show();
-    }
-    /*private void updateValues() {
-        int hours = hoursSpinner.getValue();
-        int minutes = minutesSpinner.getValue();
-        int seconds = secondsSpinner.getValue();
-        Time time = Time.valueOf(String.format("%02d:%02d:%02d", hours, minutes, seconds));
-
-        // Utilisez les valeurs mises à jour au besoin
-    }*/
 }
-

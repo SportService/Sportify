@@ -16,6 +16,12 @@ public class Equipe {
 
     Categorie IDCateg;
     Boolean isRandom;
+
+    public Equipe(int IDEquipe, String nom) {
+        this.IDEquipe = IDEquipe;
+        Nom = nom;
+    }
+
     Utilisateur id_createur;
     int rank;
 
@@ -103,4 +109,8 @@ public class Equipe {
 
                      Nom ;
         }
+    public String toString1() {
+        return " Nom: " + getNom() + " Niveau: " + getNiveau()+ " Rank: " + getRank();
+
+    }
     }

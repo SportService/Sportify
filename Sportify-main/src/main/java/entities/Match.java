@@ -1,7 +1,10 @@
 package entities;
 
+import javafx.collections.ObservableList;
+
 import java.sql.Date;
 import java.sql.Time;
+import java.util.List;
 
 public class Match {
     int ID_Matc ;
@@ -10,7 +13,19 @@ public class Match {
     Time heure;
     Equipe equipe1,equipe2;
 
-    public Match(int ID_Matc, String nom, String type, String description, Date date, Time heure, Equipe equipe1, Equipe equipe2) {
+    public Arbitre getArbitre() {
+        return arbitre;
+    }
+
+    public void setArbitre(Arbitre arbitre) {
+        this.arbitre = arbitre;
+    }
+
+     Arbitre arbitre;
+
+
+
+    public Match(int ID_Matc, String nom, String type, String description, Date date, Time heure, Equipe equipe1, Equipe equipe2, Arbitre arbitre) {
         this.ID_Matc = ID_Matc;
         this.nom = nom;
         this.type = type;
@@ -19,8 +34,9 @@ public class Match {
         this.heure = heure;
         this.equipe1 = equipe1;
         this.equipe2 = equipe2;
+        this.arbitre=arbitre;
     }
-    public Match( String nom, String type, String description, Date date, Time heure, Equipe equipe1, Equipe equipe2) {
+    public Match( String nom, String type, String description, Date date, Time heure, Equipe equipe1, Equipe equipe2, Arbitre arbitre) {
 
         this.nom = nom;
         this.type = type;
@@ -29,6 +45,7 @@ public class Match {
         this.heure = heure;
         this.equipe1 = equipe1;
         this.equipe2 = equipe2;
+        this.arbitre=arbitre;
     }
     public Match(){}
 
@@ -100,14 +117,14 @@ public class Match {
     @Override
     public String toString() {
         return "Match{" +
-                "ID_Matc=" + ID_Matc +
-                ", nom='" + nom + '\'' +
+                "nom='" + nom + '\'' +
                 ", type='" + type + '\'' +
                 ", description='" + description + '\'' +
                 ", date=" + date +
                 ", heure=" + heure +
-                ", equipe1=" + equipe1.getNom() + /*equipe1.getId_createur().getNom()+*/
-                ", equipe2=" + equipe2.getNom() +/*equipe2.getId_createur().getNom()+*/
+                ", equipe1=" + equipe1.getNom() +
+                ", equipe2=" + equipe2.getNom() +
+                ", arbitre=" + arbitre.toString1() +
                 '}';
     }
 }
