@@ -5,30 +5,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c1690012-a5ed-42cd-9aca-88afcc146081" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/sportify/controller/UserController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/sportify/controller/VideoController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/services/ServicUtilisateur.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/sportify/Media.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/sportify/admin.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/sportify/login.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/sportify/profile.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/sportify/register.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2_11_2024_1_39_PM_[Changes]1/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2_11_2024_1_39_PM__Changes_1.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase_[Changes]1/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase__Changes_.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase__Changes_1.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/sportify/HelloApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/sportify/HelloApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/entities/Match.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/Match.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/entities/Utilisateur.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/Utilisateur.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/sportify/background-sportify.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/image/background-sportify.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/sportify/controller/Addcompetiton.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/sportify/controller/Addcompetiton.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/sportify/controller/CompetitionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/sportify/controller/CompetitionController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/sportify/controller/Playercard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/sportify/controller/Playercard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entities/Competition.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/Competition.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entities/Equipe.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/Equipe.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entities/Terrain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/Terrain.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/services/CompetitionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/services/CompetitionService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/services/IService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/services/IService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/test/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/test/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/services/ServiceEquipe.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/services/ServiceEquipe.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/utils/DB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/DB.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/sportify/AdminMatchCompetition.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/sportify/AdminMatchCompetition.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/sportify/Playercard.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/sportify/Playercard.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/sportify/addcompetiton.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/sportify/addcompetiton.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,6 +31,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="CSS File" />
         <option value="FxmlFile" />
         <option value="Class" />
       </list>
@@ -71,36 +65,43 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Downloaded.Files.Path.Enabled": "false",
-    "Repository.Attach.Annotations": "false",
-    "Repository.Attach.JavaDocs": "false",
-    "Repository.Attach.Sources": "false",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "Merging wassim",
-    "last_opened_file_path": "C:/Users/wassim/Downloads/fontawesomefx-commons-9.1.2.jar",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Problems",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.4827586",
-    "settings.editor.selected.configurable": "reference.settings.project.maven.repository.indices",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;wassim&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/wassim/Desktop/PIDEV/dev/Sportify/src/css&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.4827586&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.project.maven.repository.indices&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\wassim\Desktop\PIDEV\dev\Sportify\src\css" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\wassim\Desktop\PIDEV\dev\Sportify\src" />
+      <recent name="C:\Users\wassim\Desktop\PIDEV\dev\Sportify\src\css" />
+      <recent name="C:\Users\wassim\Desktop\PIDEV\dev\Sportify\src\main\resources\com\example\sportify\image" />
       <recent name="C:\Users\wassim\Desktop\PIDEV\dev\Sportify\src\main\resources" />
       <recent name="C:\Users\wassim\Desktop\PIDEV\dev\Sportify\src\main\resources\com\example\sportify" />
-      <recent name="C:\Users\wassim\Desktop\PIDEV\dev\Sportify\src\main\java\com\example\sportify" />
-      <recent name="C:\Users\wassim\Desktop\PIDEV\dev\Sportify\src\Images" />
-      <recent name="C:\Users\wassim\Desktop\PIDEV\dev\Sportify\src" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com.example.sportify" />
     </key>
   </component>
   <component name="RunManager" selected="Application.HelloApplication">
@@ -160,7 +161,24 @@
       <workItem from="1708320218449" duration="5058000" />
       <workItem from="1708332514502" duration="339000" />
       <workItem from="1708333328603" duration="4066000" />
-      <workItem from="1708348392512" duration="5473000" />
+      <workItem from="1708348392512" duration="7061000" />
+      <workItem from="1708443261023" duration="15782000" />
+      <workItem from="1708515848681" duration="3781000" />
+      <workItem from="1708521866293" duration="1705000" />
+      <workItem from="1708558493386" duration="983000" />
+      <workItem from="1708592419835" duration="6222000" />
+      <workItem from="1708605367421" duration="1847000" />
+      <workItem from="1708609224671" duration="42000" />
+      <workItem from="1708609285098" duration="6531000" />
+      <workItem from="1708620278984" duration="4300000" />
+      <workItem from="1708675269499" duration="9560000" />
+      <workItem from="1708711873243" duration="2633000" />
+      <workItem from="1708777681366" duration="366000" />
+      <workItem from="1708778487316" duration="2022000" />
+      <workItem from="1708780560039" duration="1608000" />
+      <workItem from="1708782194290" duration="6988000" />
+      <workItem from="1708829065540" duration="1286000" />
+      <workItem from="1708847464087" duration="37696000" />
     </task>
     <servers />
   </component>

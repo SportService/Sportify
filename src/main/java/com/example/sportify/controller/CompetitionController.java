@@ -25,6 +25,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
@@ -110,7 +111,60 @@ public class CompetitionController {
                                     }
                                 });
 
+                                Button editButton = new Button("Modifier");
+                                editButton.setStyle(
+                                        "-fx-cursor: hand ;"
+                                                + "-fx-background-color: green;"
+                                                + "-fx-text-fill: white;"
+                                                + "-fx-font-size: 14px;"
+                                                + "-fx-start-margin: 12;" + "-fx-end-margin: 25;"
+
+
+                                );
+                                editButton.setOnAction(event -> {
+                                    Competition competition = getTableView().getItems().get(getIndex());
+                                    FXMLLoader fxmlLoaderr = new FXMLLoader(HelloApplication.class.getResource("addcompetiton.fxml"));
+                                    try {
+                                        fxmlLoaderr.load() ;
+                                        Addcompetiton editcompetiton = fxmlLoaderr.getController();
+                                        editcompetiton.setCompetitionController(CompetitionController.this);
+                                        editcompetiton.setUpdate(true);
+                                    } catch (IOException e) {
+                                        throw new RuntimeException(e);
+                                    }
+
+
+
+                                    Addcompetiton addCompetitionController = fxmlLoaderr.getController() ;
+                                        addCompetitionController.setTextField(competition.getID_competiton(),competition.getNom(),competition.getDescription(),competition.getType(),competition.getDate());
+
+
+                                        Scene scene = new Scene(fxmlLoaderr.getRoot());
+                                        Image icon = new Image("https://i.ibb.co/dgpN1Hj/logo-SPORTIFY.png") ;
+                                        Stage stage = new Stage();
+                                        stage.getIcons().add(icon) ;
+                                        stage.setResizable(false);
+                                        stage.setTitle("Modifier competition match");
+                                        stage.setScene(scene);
+                                        stage.show();
+                                        loadAll() ;
+                                        // Assuming you have a refreshTable() method
+
+                                });
+
+
+
                                 setGraphic(new HBox(deleteButton));
+                                setGraphic(new HBox(editButton));
+
+                                HBox managebtn = new HBox(deleteButton, editButton);
+                                managebtn.setStyle("-fx-alignment:center");
+                                HBox.setMargin(deleteButton, new Insets(2, 2, 0, 3));
+                                HBox.setMargin(editButton, new Insets(2, 3, 0, 2));
+
+                                setGraphic(managebtn);
+
+                                setText(null);
                             }
                         }
                     };
@@ -191,7 +245,11 @@ public class CompetitionController {
         Scene scene = new Scene(fxmlLoader.load());
         Image icon = new Image("https://i.ibb.co/dgpN1Hj/logo-SPORTIFY.png") ;
         Stage stage = new Stage();
+        Addcompetiton addcompetitioncontroller= fxmlLoader.getController() ;
+        addcompetitioncontroller.setCompetitionController(this);
         stage.getIcons().add(icon) ;
+        scene.setFill(Color.TRANSPARENT); // to make rounded corners
+        stage.initStyle(StageStyle.TRANSPARENT); // to make rounded corners
         stage.setResizable(false);
         stage.setTitle("Ajouter competition match");
         stage.setScene(scene);

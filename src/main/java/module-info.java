@@ -5,6 +5,8 @@ module com.example.sportify {
     requires java.sql;
     requires javafx.web;
     requires de.jensd.fx.glyphs.commons; // Add this line if you haven't already
+    requires de.jensd.fx.glyphs.materialdesignicons;
+    requires de.jensd.fx.glyphs.fontawesome;
 
     opens entities to javafx.base;
 

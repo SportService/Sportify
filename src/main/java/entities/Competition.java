@@ -1,20 +1,14 @@
 package entities;
 
+import javafx.scene.control.DatePicker;
+
 import java.sql.Time;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.sql.Date;
 
 public class Competition  {
     int ID_competiton ;
 
-    // cosntructor with super
-/*
-    public Competition(int ID_Match, String description, String nom, String type, java.util.Date heure, java.util.Date date, int ID_competiton) {
-        super(ID_Match, description, nom, type, heure, date);
-        this.ID_competiton = ID_competiton;
-    }
-*/
+
      String Nom;
     String Description ;
 
@@ -22,6 +16,11 @@ public class Competition  {
 
     Time Heure ;
     Date Date ;
+
+    private Equipe equipe1;
+    private Equipe equipe2;
+    private Terrain terrain;
+
 
     public Competition() {
     }
@@ -89,6 +88,30 @@ public class Competition  {
 
     public void setDate(Date date) {
         Date = date;
+    }
+
+    public Equipe getEquipe1() {
+        return equipe1;
+    }
+
+    public void setEquipe1(Equipe equipe1) {
+        this.equipe1 = equipe1;
+    }
+
+    public Equipe getEquipe2() {
+        return equipe2;
+    }
+
+    public void setEquipe2(Equipe equipe2) {
+        this.equipe2 = equipe2;
+    }
+
+    public Terrain getTerrain() {
+        return terrain;
+    }
+
+    public void setTerrain(Terrain terrain) {
+        this.terrain = terrain;
     }
 
     @Override
