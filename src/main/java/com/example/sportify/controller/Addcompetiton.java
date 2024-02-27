@@ -2,22 +2,34 @@ package com.example.sportify.controller;
 
 import com.example.sportify.HelloApplication;
 import entities.Competition;
+import entities.Equipe;
+import entities.Terrain;
+import io.github.palexdev.materialfx.controls.MFXSpinner;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.fxml.Initializable;
+import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.util.converter.LocalTimeStringConverter;
 import services.CompetitionService;
 import javafx.scene.input.MouseEvent;
+import services.ServiceEquipe;
+import services.ServiceTerrain;
 
+import java.net.URL;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.text.DateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.*;
+import java.util.stream.Collectors;
+import io.github.palexdev.materialfx.controls.MFXTextField;
 
-public class Addcompetiton {
+
+public class Addcompetiton implements Initializable {
 
     @FXML
     private DatePicker Datee;
@@ -26,23 +38,40 @@ public class Addcompetiton {
     private TextField DescText;
 
     @FXML
-    private TextField TypeText;
+    private ChoiceBox<String> TypeChoice;
 
     @FXML
     private Button annuler_btn;
 
     @FXML
-    private TextField nomText;
+    private ChoiceBox<Integer> hhChoice;
 
+    @FXML
+    private ChoiceBox<Integer> mmChoice;
+
+    @FXML
+    private MFXTextField nomText;
     @FXML
     private Button save_btn;
 
+
+
+    @FXML
+    private AnchorPane Pane;
+
+
     private CompetitionController competitionController;
 
+    @FXML
+    private ChoiceBox<String> terrainliste;
     private boolean update ;
 
     private int competitonId ;
-    CompetitionService competitionService = new CompetitionService(); // Create an instance of CompetitionService
+    CompetitionService competitionService = new CompetitionService();
+    ServiceTerrain TerrainService = new ServiceTerrain();
+    // Create an instance of CompetitionService
+    private Map<String, Terrain> terrainMap = new HashMap<>();
+
     @FXML
     void close(MouseEvent event) {
         Stage stage = (Stage) annuler_btn.getScene().getWindow();
@@ -51,74 +80,86 @@ public class Addcompetiton {
 
     @FXML
     void save(MouseEvent event) {
-   /*     String name = nomText.getText();
-        String desc = DescText.getText();
-        String type = TypeText.getText();
-        String birth = String.valueOf(Date.getValue());
 
-*/
-        if (nomText.getText().isEmpty() || DescText.getText().isEmpty() || TypeText.getText().isEmpty() ) {
+
+
+        if (nomText.getText().isEmpty() || DescText.getText().isEmpty() || TypeChoice.getValue()==null || terrainliste.getValue()==null || Datee.getValue()==null)  {
                 Alert alertt = new Alert(Alert.AlertType.ERROR);
                 alertt.setHeaderText(null);
                 alertt.setContentText("Please Fill All DATA");
                 alertt.showAndWait(); }
-
-        try {
-            String birth = String.valueOf(Datee.getValue());
-            System.out.println(birth);
-            Competition compet = new Competition(competitonId,nomText.getText(), DescText.getText(), TypeText.getText(), Time.valueOf("12:12:00"), Date.valueOf(String.valueOf(Datee.getValue())));
-            if (update == false) {
-                competitionService.ajouter(compet);
+        else {
+            try {
 
 
-                Stage stage = (Stage) save_btn.getScene().getWindow();
-                stage.close();
+                String selectedNomTerrain=terrainliste.getValue() ;
+                Terrain selectedTerrain = terrainMap.get(selectedNomTerrain) ;
 
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Success");
-                alert.setContentText("competition ajoute");
+                int selectedHh = hhChoice.getValue();
+                int selectedMm = mmChoice.getValue();
+
+
+                LocalTime selectedTime = LocalTime.of(selectedHh, selectedMm);
+
+                Competition compet = new Competition(nomText.getText(), DescText.getText(), TypeChoice.getValue(), Time.valueOf(selectedTime), Date.valueOf(Datee.getValue()),selectedTerrain);
+                Competition competedit = new Competition(competitonId, nomText.getText(), DescText.getText(), TypeChoice.getValue(), Time.valueOf(selectedTime), Date.valueOf(Datee.getValue()),selectedTerrain);
+                if (update == false) {
+                    competitionService.ajouter(compet);
+
+
+                    Stage stage = (Stage) save_btn.getScene().getWindow();
+                    stage.close();
+
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Success");
+                    alert.setContentText("competition ajoute");
+                    alert.showAndWait();
+                    clean();
+
+                } else {
+                    competitionService.modifier(competedit);
+                    Stage stage = (Stage) save_btn.getScene().getWindow();
+                    stage.close();
+
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Success");
+                    alert.setContentText("Match Competition est modifiée");
+                    alert.showAndWait();
+                    clean();
+                }
+
+                competitionController.loadAll();
+
+
+            } catch (SQLException e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setContentText(e.getMessage());
                 alert.showAndWait();
-                clean();
-
-        }else { competitionService.modifier(compet);
-                Stage stage = (Stage) save_btn.getScene().getWindow();
-                stage.close();
-
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Success");
-                alert.setContentText("Match Competition est modifiée");
-                alert.showAndWait();
-                clean();
             }
-
-            competitionController.loadAll();
-
-
-        } catch (SQLException e) {
-            Alert alert= new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
         }
 
     }
 
     @FXML
     private void clean() {
-        DescText.setText(null);
+        DescText.setText("");
         Datee.setValue(null);
-        TypeText.setText(null);
-        nomText.setText(null);
+        TypeChoice.setValue(null);
+        nomText.setText("");
 
     }
 
 
-    void setTextField(int id ,  String nom , String desc , String Type , Date date) {
+    void setTextField(int id ,  String nom , String desc , String Type ,int hh,int mm , Date date,String TerrainNomEdit) {
         competitonId=id ;
         nomText.setText(nom);
         DescText.setText(desc);
-        TypeText.setText(Type);
+        TypeChoice.setValue(Type);
         Datee.setValue(date.toLocalDate());
+        terrainliste.setValue(TerrainNomEdit) ;
+        hhChoice.setValue(hh);
+        mmChoice.setValue(mm);
     }
 
     public void setCompetitionController(CompetitionController competitionController) {
@@ -126,4 +167,45 @@ public class Addcompetiton {
     }
 
     public void setUpdate( boolean bo) {this.update=bo ; }
+
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        for ( int i=0 ; i<60 ; i++) {
+            mmChoice.getItems().add(i) ;
+        }
+        for ( int i=0 ; i<24 ; i++) {
+            hhChoice.getItems().add(i) ;
+        }
+        String[] Types = {"SOLO" , "EQUIPE"} ;
+        TypeChoice.getItems().addAll(Types) ;
+        try {
+            List<Terrain> terrains = TerrainService.afficherNom();
+            /*List<String> terrainNoms = terrains.stream()
+                    .map(Terrain::getNomTerrain)
+                    .collect(Collectors.toList());*/
+            for ( Terrain terrain: terrains) {
+                String terrainNom=terrain.getNomTerrain()  ;
+                terrainliste.getItems().add(terrainNom);
+                terrainMap.put(terrainNom , terrain) ;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        Datee.setDayCellFactory(picker -> new DateCell() {
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                LocalDate today = LocalDate.now();
+                setDisable(empty || date.compareTo(today) < 0);
+            }
+        });
+    }
+
+
+
+
+
+
+
 }

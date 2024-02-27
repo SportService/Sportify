@@ -25,21 +25,30 @@ public class Competition  {
     public Competition() {
     }
 
-    public Competition(int ID_competiton, String nom, String description, String type, Time heure, Date date) {
+    public Competition(int ID_competiton, String nom, String description, String type, Time heure, Date date , Terrain terrain) {
         this.ID_competiton = ID_competiton;
         Nom = nom;
         Description = description;
         Type = type;
         Heure = heure;
         Date = date;
+        this.terrain=terrain ;
     }
 
-    public Competition(String nom, String description, String type, Time heure, Date date) {
+    public Competition(String nom, String description, String type, Time heure) {
+        Nom = nom;
+        Description = description;
+        Type = type;
+        Heure = heure;
+    }
+
+    public Competition(String nom, String description, String type, Time heure, java.sql.Date date,Terrain terrain) {
         Nom = nom;
         Description = description;
         Type = type;
         Heure = heure;
         Date = date;
+        this.terrain=terrain ;
     }
 
     public int getID_competiton() {

@@ -27,6 +27,7 @@ public class PropListeCompetitionController implements Initializable {
             List<Competition> competitions= competitonService.afficher() ;
 
             for (Competition compet:competitions) {
+         //   for (int i=0 ; i <10 ; i++ ) {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/sportify/propItemMatch.fxml"));
                 HBox hboxitems = fxmlLoader.load();
 

@@ -70,8 +70,6 @@ public class CompetitionController {
 
     @FXML
     public void loadAll() {
-
-
         try {
             ObservableList<Competition> observableList = FXCollections.observableList(competitionService.afficher());
             System.out.println(observableList);
@@ -83,6 +81,8 @@ public class CompetitionController {
             col_type.setCellValueFactory(new PropertyValueFactory<>("Type"));
             col_heure.setCellValueFactory(new PropertyValueFactory<>("Heure"));
             col_date.setCellValueFactory(new PropertyValueFactory<>("Date"));
+
+
 
 
             Callback<TableColumn<Competition, String>, TableCell<Competition, String>> cellFactory =
@@ -117,7 +117,6 @@ public class CompetitionController {
                                                 + "-fx-background-color: green;"
                                                 + "-fx-text-fill: white;"
                                                 + "-fx-font-size: 14px;"
-                                                + "-fx-start-margin: 12;" + "-fx-end-margin: 25;"
 
 
                                 );
@@ -136,7 +135,7 @@ public class CompetitionController {
 
 
                                     Addcompetiton addCompetitionController = fxmlLoaderr.getController() ;
-                                        addCompetitionController.setTextField(competition.getID_competiton(),competition.getNom(),competition.getDescription(),competition.getType(),competition.getDate());
+                                        addCompetitionController.setTextField(competition.getID_competiton(),competition.getNom(),competition.getDescription(),competition.getType(),competition.getHeure().getHours(),competition.getHeure().getMinutes(),competition.getDate(),competition.getTerrain().getNomTerrain());
 
 
                                         Scene scene = new Scene(fxmlLoaderr.getRoot());
@@ -175,68 +174,6 @@ public class CompetitionController {
         }
     }
 
-
-
-
-
-
-
-
-
-                         /*   editIcon.setOnMouseClicked((MouseEvent event) -> {
-
-                                student = studentsTable.getSelectionModel().getSelectedItem();
-                                FXMLLoader loader = new FXMLLoader ();
-                                loader.setLocation(getClass().getResource("/tableView/addStudent.fxml"));
-                                try {
-                                    loader.load();
-                                } catch (IOException ex) {
-                                    Logger.getLogger(TableViewController.class.getName()).log(Level.SEVERE, null, ex);
-                                }
-
-                                AddStudentController addStudentController = loader.getController();
-                                addStudentController.setUpdate(true);
-                                addStudentController.setTextField(student.getId(), student.getName(),
-                                        student.getBirth().toLocalDate(),student.getAdress(), student.getEmail());
-                                Parent parent = loader.getRoot();
-                                Stage stage = new Stage();
-                                stage.setScene(new Scene(parent));
-                                stage.initStyle(StageStyle.UTILITY);
-                                stage.show();
-
-
-
-
-                            });
-
-                            HBox managebtn = new HBox(editIcon, deleteIcon);
-                            managebtn.setStyle("-fx-alignment:center");
-                            HBox.setMargin(deleteIcon, new Insets(2, 2, 0, 3));
-                            HBox.setMargin(editIcon, new Insets(2, 3, 0, 2));
-
-                            setGraphic(managebtn);
-
-                            setText(null);
-
-                        }
-                    }
-
-                };
-
-                return cell;
-            };
-            editCol.setCellFactory(cellFoctory);
-            studentsTable.setItems(StudentList);
-
-
-        }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-
-                          */
 
     @FXML
     public void AddButton(MouseEvent event) throws IOException {

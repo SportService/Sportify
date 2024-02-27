@@ -27,7 +27,7 @@
                         <columns>
                             <TableColumn fx:id="col_nom" prefWidth="244.7999725341797" text="NOM MATCH COMPETITION" />
                             <TableColumn fx:id="col_desc" minWidth="0.0" prefWidth="152.80001831054688" text="DESCRIPTION" />
-                            <TableColumn fx:id="col_type" minWidth="0.0" prefWidth="99.20001220703125" style="-fx-background-color: #030E14;" text="TYPE" />
+                            <TableColumn fx:id="col_type" minWidth="0.0" prefWidth="99.20001220703125" text="TYPE" />
                             <TableColumn fx:id="col_date" minWidth="0.0" prefWidth="118.39996337890625" text="DATE" />
                             <TableColumn fx:id="col_heure" prefWidth="103.2000732421875" text="HEURE" />
                             <TableColumn fx:id="col_edit" prefWidth="176.7999267578125" text="ACTION" />
@@ -36,7 +36,7 @@
                             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                         </columnResizePolicy>
                     </TableView>
-                    <Button fx:id="addcompet" layoutX="757.0" layoutY="65.0" mnemonicParsing="false" onMouseClicked="#AddButton" prefHeight="52.0" prefWidth="174.0" style="-fx-background-radius: green; -fx-border-radius: 4px;" text="Ajouter Competition Match" />
+                    <Button fx:id="addcompet" layoutX="757.0" layoutY="65.0" mnemonicParsing="false" onMouseClicked="#AddButton" prefHeight="52.0" prefWidth="174.0" text="Ajouter Competition Match" />
                 </children>
             </AnchorPane>
     </children>

@@ -6,6 +6,7 @@ import entities.Terrain;
 import utils.DB;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,22 +21,34 @@ public class CompetitionService implements IService<Competition> {
 
     @Override
     public void ajouter(Competition competition) throws SQLException {
-        String req = "insert into competition (Nom,Description,Type,Date,Heure,Terrain_id)"+
-                "values ('"+competition.getNom()+"','"+competition.getDescription()+"','"+competition.getType()+"','"+competition.getDate()+"','"+competition.getHeure()+"','"+competition.getTerrain().getID_Terrain()+"')" ;
-        Statement ste = con.createStatement();
-        ste.executeUpdate(req);
+        String req = "INSERT INTO competition (Nom, Description, Type, Heure,Date,terrain_id) VALUES (?, ?, ?, ?, ?, ?)";
+        PreparedStatement pstmt = con.prepareStatement(req);
+        pstmt.setString(1, competition.getNom());
+        pstmt.setString(2, competition.getDescription());
+        pstmt.setString(3, competition.getType());
+        pstmt.setTime(4, competition.getHeure());
+        pstmt.setDate(5, competition.getDate());
+        pstmt.setInt(6, competition.getTerrain().getID_Terrain());
+
+
+
+
+
+        pstmt.executeUpdate();
+        pstmt.close();
     }
 
     @Override
     public void modifier(Competition competition) throws SQLException {
-        String req = "update competition set nom=? , Description=? , Type=? , Heure=? , Date=? where ID_Competition=?";
+        String req = "update competition set nom=? , Description=? , Type=? , Heure=? , Date=? , terrain_id=?  where ID_Competition=?";
         PreparedStatement pre = con.prepareStatement(req);
         pre.setString(1,competition.getNom());
         pre.setString(2,competition.getDescription());
         pre.setString(3,competition.getType());
         pre.setTime(4,competition.getHeure());
         pre.setDate(5,competition.getDate());
-        pre.setInt(6,competition.getID_competiton());
+        pre.setInt(6, competition.getTerrain().getID_Terrain());
+        pre.setInt(7,competition.getID_competiton());
 
 
         pre.executeUpdate();
@@ -62,33 +75,51 @@ public class CompetitionService implements IService<Competition> {
 
     @Override
     public List<Competition> afficher() throws SQLException {
-       List<Competition> pers = new ArrayList<>();
+        List<Competition> competitions = new ArrayList<>();
 
-        String req = "SELECT c.*, t.* FROM Competition c INNER JOIN Terrain t ON c.Terrain_id = t.ID_Terrain";
-        PreparedStatement pre = con.prepareStatement(req);
-        ResultSet res= pre.executeQuery();
-        while (res.next()){
-            Competition c = new Competition();
-            c.setID_competiton(res.getInt(1));
-            c.setNom(res.getString("nom"));
-            c.setDescription(res.getString(6));
-            c.setType(res.getString("Type"));
-            c.setDate(res.getDate("Date"));
-            c.setHeure(res.getTime("Heure"));
+        String req = "SELECT c.*, t.* FROM Competition c LEFT JOIN Terrain t ON c.Terrain_id = t.ID_Terrain";
+        try (PreparedStatement pre = con.prepareStatement(req);
+             ResultSet res = pre.executeQuery()) {
+            while (res.next()) {
+                Competition c = new Competition();
+                c.setID_competiton(res.getInt(1));
+                c.setNom(res.getString("nom"));
+                c.setDescription(res.getString("Description"));
+                c.setType(res.getString("Type"));
+                c.setHeure(res.getTime("Heure"));
+                try {
+                    Date date = res.getDate("Date");
+                    if (date != null && !date.toLocalDate().equals(LocalDate.of(0000, 1, 1))) {
+                        c.setDate(date);
+                    } else {
+                        // Set a default date or handle the zero date case
+                        c.setDate(null); // Or set to a default date
+                    }
+                } catch (SQLException e) {
+                    // Handle SQLException
+                    e.printStackTrace();
+                }
 
-           Terrain terrain = new Terrain();
-            terrain.setID_Terrain(res.getInt("ID_Terrain"));
-            terrain.setNomTerrain(res.getString("NomTerrain")); // Issue might be here
-            terrain.setType_surface(res.getString("Type_surface"));
-            terrain.setLocalisation(res.getString("Localisation"));
-            terrain.setPrix(res.getDouble("Prix"));
-            terrain.setID_Proprietaire(res.getInt("ID_Propriétaire"));
-
-            c.setTerrain(terrain);
-            pers.add(c);
+                if (res.getObject("Terrain_id") != null) {
+                    Terrain terrain = new Terrain();
+                    terrain.setID_Terrain(res.getInt("ID_Terrain"));
+                    terrain.setNomTerrain(res.getString("NomTerrain"));
+                    terrain.setType_surface(res.getString("Type_surface"));
+                    terrain.setLocalisation(res.getString("Localisation"));
+                    terrain.setPrix(res.getDouble("Prix"));
+                    terrain.setID_Proprietaire(res.getInt("ID_Propriétaire"));
+                    c.setTerrain(terrain);
+                } else {
+                    Terrain defaultTerrain = new Terrain();
+                    // Set default values or leave them as null
+                    c.setTerrain(defaultTerrain); // Set the terrain to null if it's not associated
+                }
+                competitions.add(c);
+            }
         }
-        return pers;
+        return competitions;
     }
+
 
     public Competition getById(int id) throws SQLException {
         Competition competition = null;

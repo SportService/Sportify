@@ -47,6 +47,25 @@ public class ServiceEquipe implements IService<Equipe> {
         return null;
     }
 
+
+    public List<Equipe> afficherNom() throws SQLException {
+            List<Equipe> equipes = new ArrayList<>() ;
+            String query = "SELECT IDEquipe , Nom FROM Equipe ";
+            try (PreparedStatement statement = con.prepareStatement(query)) {
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    while (resultSet.next()) {
+                        Equipe equipe = new Equipe();
+                        equipe.setID(resultSet.getInt("IDEquipe"));
+                        equipe.setNom(resultSet.getString("Nom"));
+
+                        equipes.add(equipe) ;
+                    }
+                }
+            }
+            return equipes;
+
+    }
+
     public Equipe getById(int id) throws SQLException {
         Equipe equipe = null;
         String query = "SELECT * FROM Equipe WHERE IDEquipe = ?";
@@ -62,4 +81,6 @@ public class ServiceEquipe implements IService<Equipe> {
         }
         return equipe;
     }
+
+
 }
