@@ -26,27 +26,27 @@
             </ScrollPane>
             <HBox alignment="CENTER_LEFT" prefHeight="42.0" prefWidth="946.0" style="-fx-background-color: transparent;">
                <children>
-                  <Label alignment="CENTER" prefHeight="23.0" prefWidth="238.0" text="NOM MATCH" textFill="#050505">
+                  <Label alignment="CENTER" prefHeight="23.0" prefWidth="238.0" text="NOM MATCH" textFill="WHITE">
                      <font>
                         <Font name="Corbel Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" layoutX="10.0" layoutY="24.0" prefHeight="23.0" prefWidth="250.0" text="DATE" textFill="#080808">
+                  <Label alignment="CENTER" layoutX="10.0" layoutY="24.0" prefHeight="23.0" prefWidth="250.0" text="DATE" textFill="WHITE">
                      <font>
                         <Font name="Corbel Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" layoutX="73.0" layoutY="24.0" prefHeight="23.0" prefWidth="292.0" text="HEURE" textFill="#080808">
+                  <Label alignment="CENTER" layoutX="73.0" layoutY="24.0" prefHeight="23.0" prefWidth="292.0" text="HEURE" textFill="WHITE">
                      <font>
                         <Font name="Corbel Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" layoutX="167.0" layoutY="24.0" prefHeight="23.0" prefWidth="308.0" text="TERRAIN" textFill="#080808">
+                  <Label alignment="CENTER" layoutX="167.0" layoutY="24.0" prefHeight="23.0" prefWidth="308.0" text="TERRAIN" textFill="WHITE">
                      <font>
                         <Font name="Corbel Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" layoutX="660.0" layoutY="20.0" prefHeight="23.0" prefWidth="308.0" text="ACTIONS" textFill="#080808">
+                  <Label alignment="CENTER" layoutX="660.0" layoutY="20.0" prefHeight="23.0" prefWidth="308.0" text="ACTION" textFill="WHITE">
                      <font>
                         <Font name="Corbel Bold" size="20.0" />
                      </font>

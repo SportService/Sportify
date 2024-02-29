@@ -86,9 +86,13 @@ public class ServiceScore implements IService<Score>{
 
                 CompetitionService competitionService = new CompetitionService() ;
                        Competition compet=competitionService.getById(resultSet.getInt("competitionId"));
+                score.setCompetition(compet);
+
                 ServiceEquipe EquipeService = new ServiceEquipe() ;
                 Equipe winner=EquipeService.getById(resultSet.getInt("winnerId"));
                 Equipe loser=EquipeService.getById(resultSet.getInt("loserId"));
+                score.setWinner(winner);
+                score.setLoser(loser);
 
                  score.setEquipe1Score(resultSet.getInt("equipe1Score"));
                  score.setEquipe2Score(resultSet.getInt("equipe2Score"));
@@ -99,5 +103,31 @@ public class ServiceScore implements IService<Score>{
         }
         return scores;
     }
+
+    public Score getScoreByCompet(Competition compet) throws SQLException {
+        Score score = null;
+        String query = "SELECT * FROM score WHERE competitionId = ?";
+        try (PreparedStatement statement = con.prepareStatement(query)) {
+            statement.setInt(1, compet.getID_competiton());
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    score = new Score();
+                    score.setIdScore(resultSet.getInt("idScore"));
+                    score.setCompetition(compet);
+                    ServiceEquipe EquipeService = new ServiceEquipe() ;
+                    Equipe winner=EquipeService.getById(resultSet.getInt("winnerId"));
+                    Equipe loser=EquipeService.getById(resultSet.getInt("loserId"));
+                    score.setWinner(winner);
+                    score.setLoser(loser);
+                    score.setEquipe1Score(resultSet.getInt("equipe1Score"));
+                    score.setEquipe2Score(resultSet.getInt("equipe2Score"));
+                    score.setResultat(resultSet.getString("resultat"));
+                    score.setReclamation(resultSet.getString("reclamation"));
+                }
+            }
+        }
+        return score;
+    }
+
 
 }

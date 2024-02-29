@@ -20,6 +20,7 @@ public class ServiceEquipe implements IService<Equipe> {
     @Override
     public void ajouter(Equipe equipe) throws SQLException {
 
+
     }
 
     @Override
@@ -65,7 +66,6 @@ public class ServiceEquipe implements IService<Equipe> {
             return equipes;
 
     }
-
     public Equipe getById(int id) throws SQLException {
         Equipe equipe = null;
         String query = "SELECT * FROM Equipe WHERE IDEquipe = ?";

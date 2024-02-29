@@ -77,7 +77,11 @@ public class CompetitionService implements IService<Competition> {
     public List<Competition> afficher() throws SQLException {
         List<Competition> competitions = new ArrayList<>();
 
-        String req = "SELECT c.*, t.* FROM Competition c LEFT JOIN Terrain t ON c.Terrain_id = t.ID_Terrain";
+        String req ="SELECT c.*, t.*, e1.*, e2.* " +
+                "FROM Competition c " +
+                "LEFT JOIN Terrain t ON c.Terrain_id = t.ID_Terrain " +
+                "LEFT JOIN Equipe e1 ON c.equipe1_id = e1.IDEquipe " +
+                "LEFT JOIN Equipe e2 ON c.equipe2_id = e2.IDEquipe";
         try (PreparedStatement pre = con.prepareStatement(req);
              ResultSet res = pre.executeQuery()) {
             while (res.next()) {
@@ -114,6 +118,24 @@ public class CompetitionService implements IService<Competition> {
                     // Set default values or leave them as null
                     c.setTerrain(defaultTerrain); // Set the terrain to null if it's not associated
                 }
+                Equipe equipe1 = new Equipe();
+                equipe1.setID(res.getInt("e1.IDEquipe"));
+                equipe1.setNom(res.getString("e1.Nom"));
+                equipe1.setRandom(res.getBoolean("e1.isRandom"));
+                // Set other attributes for equipe1
+
+                // Set equipe2 attributes
+                Equipe equipe2 = new Equipe();
+                equipe2.setID(res.getInt("e2.IDEquipe"));
+                equipe2.setNom(res.getString("e2.Nom"));
+                equipe2.setRandom(res.getBoolean("e2.isRandom"));
+
+
+
+                // Set other attributes for equipe2
+
+                c.setEquipe1(equipe1);
+                c.setEquipe2(equipe2);
                 competitions.add(c);
             }
         }

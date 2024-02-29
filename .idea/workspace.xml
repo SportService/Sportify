@@ -6,17 +6,15 @@
   <component name="ChangeListManager">
     <list default="true" id="c1690012-a5ed-42cd-9aca-88afcc146081" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/sportify/controller/Addcompetiton.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/sportify/controller/Addcompetiton.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/sportify/controller/CompetitionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/sportify/controller/CompetitionController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/sportify/HelloApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/sportify/HelloApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/sportify/controller/PropListeCompetitionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/sportify/controller/PropListeCompetitionController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/entities/Competition.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/Competition.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/sportify/controller/PropScoreInterfaceController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/sportify/controller/PropScoreInterfaceController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/sportify/controller/propItemMatch.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/sportify/controller/propItemMatch.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/services/CompetitionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/services/CompetitionService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/services/ServiceEquipe.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/services/ServiceEquipe.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/test/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/test/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/sportify/AdminMatchCompetition.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/sportify/AdminMatchCompetition.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/sportify/addcompetiton.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/sportify/addcompetiton.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/services/ServiceScore.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/services/ServiceScore.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/sportify/PropListeCompetition.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/sportify/PropListeCompetition.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/sportify/propScoreInterface.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/sportify/propScoreInterface.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -180,7 +178,10 @@
       <workItem from="1708986273506" duration="4000000" />
       <workItem from="1709019619343" duration="4792000" />
       <workItem from="1709024514610" duration="7778000" />
-      <workItem from="1709036518770" duration="5770000" />
+      <workItem from="1709036518770" duration="7864000" />
+      <workItem from="1709112186550" duration="1950000" />
+      <workItem from="1709119430064" duration="11193000" />
+      <workItem from="1709193708273" duration="6693000" />
     </task>
     <servers />
   </component>

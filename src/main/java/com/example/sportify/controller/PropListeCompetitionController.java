@@ -32,7 +32,7 @@ public class PropListeCompetitionController implements Initializable {
                 HBox hboxitems = fxmlLoader.load();
 
                 propItemMatch items = fxmlLoader.getController();
-                items.SetText(compet.getNom(),compet.getDate(),compet.getHeure(),compet.getTerrain().getNomTerrain());
+                items.SetText(compet);
                 //color start
                 if (color1) {
                     hboxitems.setStyle("-fx-background-color: #3A2F05");

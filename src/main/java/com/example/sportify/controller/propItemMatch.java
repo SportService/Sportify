@@ -1,8 +1,11 @@
 package com.example.sportify.controller;
 
 import com.example.sportify.HelloApplication;
+import entities.Competition;
+import entities.Equipe;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -13,10 +16,14 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
+import java.net.URL;
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ResourceBundle;
 
-public class propItemMatch {
+public class propItemMatch  {
     @FXML
     private Button Scorebutton;
 
@@ -32,25 +39,51 @@ public class propItemMatch {
     @FXML
     private Label time;
 
-    void SetText(String nomm , Date datee, Time heure, String terrainnom) {
-        nomcompetition.setText(nomm);
-        date.setText(String.valueOf(datee));
-        time.setText(String.valueOf(heure));
-        terrain.setText(terrainnom);
+    private Equipe equipe1 ;
+    private Equipe equipe2 ;
+
+    private Competition competition ;
+    private int id ;
+
+    void SetText(Competition compet) {
+        competition = compet;
+        nomcompetition.setText(compet.getNom());
+        date.setText(String.valueOf(compet.getDate()));
+        time.setText(String.valueOf(compet.getHeure()));
+        terrain.setText(compet.getTerrain().getNomTerrain());
+
+        LocalDate currentDate = LocalDate.now();
+        LocalTime currentTime = LocalTime.now();
+
+        // Get the competition date and time
+        LocalDate competitionDate = competition.getDate().toLocalDate();
+        LocalTime competitionTime = competition.getHeure().toLocalTime();
+
+        if (competitionDate.isAfter(currentDate) ||
+                (competitionDate.isEqual(currentDate) && competitionTime.isAfter(currentTime))) {
+            Scorebutton.setDisable(true); // Optionally, change the appearance of the button to indicate that it is disabled
+            Scorebutton.setStyle("-fx-opacity: 0.5;");
+        }
     }
 
     @FXML
     void Score(MouseEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/sportify/propScoreInterface.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        Image icon = new Image("https://i.ibb.co/dgpN1Hj/logo-SPORTIFY.png");
-        Stage stage = new Stage();
-        stage.getIcons().add(icon);
-        scene.setFill(Color.TRANSPARENT); // to make rounded corners
-        stage.initStyle(StageStyle.TRANSPARENT); // to make rounded corners
-        stage.setResizable(false);
-        stage.setTitle("SCORE");
-        stage.setScene(scene);
-        stage.show();
-    }
+
+
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/sportify/propScoreInterface.fxml"));
+            Scene scene = new Scene(fxmlLoader.load());
+            PropScoreInterfaceController score = fxmlLoader.getController();
+            score.setScore(competition);
+            Image icon = new Image("https://i.ibb.co/dgpN1Hj/logo-SPORTIFY.png");
+            Stage stage = new Stage();
+            stage.getIcons().add(icon);
+            scene.setFill(Color.TRANSPARENT); // to make rounded corners
+            stage.initStyle(StageStyle.TRANSPARENT); // to make rounded corners
+            stage.setResizable(false);
+            stage.setTitle("SCORE");
+            stage.setScene(scene);
+            stage.show();
+        }
+
+
 }
