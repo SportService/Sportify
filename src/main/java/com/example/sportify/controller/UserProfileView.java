@@ -126,7 +126,8 @@ public class UserProfileView {
             stage.setTitle("Sportify");
             stage.show();
         } catch (IOException e) {
-            e.printStackTrace();
+            e.
+                    printStackTrace();
         }
     }
 

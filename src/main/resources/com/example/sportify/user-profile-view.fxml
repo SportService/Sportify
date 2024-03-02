@@ -38,7 +38,7 @@
                                     <Font size="18.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="251.0" layoutY="24.0" prefHeight="54.0" prefWidth="77.0" text="Acceuil" textFill="#64b759">
+                              <Label layoutX="251.0" layoutY="24.0" onMouseClicked="#backToAcceuil" prefHeight="54.0" prefWidth="77.0" text="Acceuil" textFill="#64b759">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
