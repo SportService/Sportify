@@ -4,6 +4,7 @@ import entities.Role;
 import entities.Utilisateur;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,12 +17,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import org.controlsfx.control.Notifications;
 import services.ServicUtilisateur;
 
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.List;
 
 public class AfficherUserAdmin
 {
@@ -40,8 +43,7 @@ public class AfficherUserAdmin
     @FXML
     private TableColumn<Utilisateur, String> tcimage;
 
-    @FXML
-    private TableColumn<Utilisateur, String> tcmdp;
+
 
     @FXML
     private TableColumn<Utilisateur, String> tcniveau;
@@ -64,9 +66,15 @@ public class AfficherUserAdmin
     private ImageView imgprofile;
     @FXML
     private Label lusername;
+    @FXML
+    private TextField tfrecherche;
+    @FXML
+    private ComboBox<String> cbtri;
 
     @FXML
     public void initialize() {
+        cbtri.getItems().setAll("Nom","Prenom","Email","Date de naissance");
+
         try {
             Utilisateur u=servicUtilisateur.getById(AuthentificationView.idLogin);
             lusername.setText(u.getNom()+" "+u.getPrenom());
@@ -78,20 +86,22 @@ public class AfficherUserAdmin
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        refresh();
-    }
-    public void refresh(){
-        data.clear();
         try {
-            data=FXCollections.observableArrayList(servicUtilisateur.afficher());
+            refresh(servicUtilisateur.afficher());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        recherche_avance();
+    }
+    public void refresh(List<Utilisateur> users){
+        data.clear();
+            data=FXCollections.observableArrayList(users);
+
         tcnom.setCellValueFactory(new PropertyValueFactory<>("nom"));
         tcadresse.setCellValueFactory(new PropertyValueFactory<>("adresse"));
         tcrole.setCellValueFactory(new PropertyValueFactory<>("role"));
         tcdate.setCellValueFactory(new PropertyValueFactory<>("date_de_naissance"));
-        tcmdp.setCellValueFactory(new PropertyValueFactory<>("mot_de_passe"));
+
         tcemail.setCellValueFactory(new PropertyValueFactory<>("email"));
 
         tcniveau.setCellValueFactory(new PropertyValueFactory<>("niveau_competence"));
@@ -131,7 +141,11 @@ public class AfficherUserAdmin
                     } catch (SQLException e) {
                         throw new RuntimeException(e);
                     }
-                    refresh();
+                    try {
+                        refresh(servicUtilisateur.afficher());
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
                 });
                 btn.setStyle("-fx-background-color: #64dd17;" +
                         "-fx-text-fill:black;" +
@@ -174,6 +188,7 @@ public class AfficherUserAdmin
             }
         });
         tableuser.setItems(data);
+
     }
     private void openUpdateForm(Utilisateur user) {
         try {
@@ -235,4 +250,54 @@ public class AfficherUserAdmin
             e.printStackTrace();
         }
     }
+    public void recherche_avance() {
+        try {
+            data = FXCollections.observableArrayList(servicUtilisateur.afficher());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        FilteredList<Utilisateur> filteredData = new FilteredList<>(data, u -> true);
+
+        tfrecherche.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredData.setPredicate(utilisateur -> {
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+
+                String lowerCaseFilter = newValue.toLowerCase();
+
+                if (utilisateur.getAdresse().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                } else if (utilisateur.getEmail().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                } else if (utilisateur.getNom().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                } else if (utilisateur.getPrenom().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                }else if (utilisateur.getNiveau_competence().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                } else if (String.valueOf(utilisateur.getDate_de_naissance()).contains(lowerCaseFilter)) {
+                    return true;
+                } else if (String.valueOf(utilisateur.getRole()).toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+
+            });
+            tableuser.setItems(filteredData);
+        });
+    }
+    @FXML
+    void triUsers(ActionEvent event) {
+        try {
+            refresh(servicUtilisateur.triParCritere(cbtri.getValue()));
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

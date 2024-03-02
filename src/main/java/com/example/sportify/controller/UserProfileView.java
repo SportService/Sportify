@@ -11,6 +11,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import services.ServicUtilisateur;
@@ -183,6 +184,13 @@ public class UserProfileView {
 
     @FXML
     void uploadImage(ActionEvent event) {
+        FileChooser fileChooser=new FileChooser();
+        File file=fileChooser.showOpenDialog(tfimage.getScene().getWindow());
+        if(file!=null){
+            String filename=file.getName();
+            tfimage.setText(filename);
+        }
+
 
     }
     public String controleDeSaisie(){

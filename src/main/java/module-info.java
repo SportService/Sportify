@@ -5,6 +5,9 @@ module com.example.sportify {
     requires java.sql;
     requires javafx.web;
     requires javafx.media; // Add this line if you haven't already
+    requires jbcrypt;
+    requires javax.mail.api;
+    requires org.controlsfx.controls;
 
     opens com.example.sportify to javafx.fxml;
     opens com.example.sportify.controller to javafx.fxml; // Add this line to export the controller package

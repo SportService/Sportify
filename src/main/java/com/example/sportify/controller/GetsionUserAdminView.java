@@ -12,9 +12,11 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import services.ServicUtilisateur;
+import utils.BCryptPass;
 
 import java.io.File;
 import java.io.IOException;
@@ -142,6 +144,13 @@ public class GetsionUserAdminView {
 
     @FXML
     void uploadImage(ActionEvent event) {
+        FileChooser fileChooser=new FileChooser();
+        File file=fileChooser.showOpenDialog(tfimage.getScene().getWindow());
+        if(file!=null){
+            String filename=file.getName();
+            tfimage.setText(filename);
+        }
+
 
     }
     @FXML
@@ -159,7 +168,7 @@ public class GetsionUserAdminView {
                 updatedUser.setNom(tfnom.getText());
                 updatedUser.setPrenom(tfprenom.getText());
                 updatedUser.setEmail(tfemail.getText());
-                updatedUser.setMot_de_passe(tfmpd.getText());
+                updatedUser.setMot_de_passe(BCryptPass.hashPass(tfmpd.getText()));
                 updatedUser.setImage(tfimage.getText());
                 updatedUser.setAdresse(tfadresse.getText());
 

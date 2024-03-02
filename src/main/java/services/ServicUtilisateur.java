@@ -2,11 +2,14 @@ package services;
 
 import entities.Role;
 import entities.Utilisateur;
+import utils.BCryptPass;
 import utils.DB;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ServicUtilisateur implements IService<Utilisateur> {
     private Connection con;
@@ -17,17 +20,18 @@ public class ServicUtilisateur implements IService<Utilisateur> {
 
     @Override
     public void ajouter(Utilisateur utilisateur) throws SQLException {
-        String query = "INSERT INTO utilisateur (nom, prenom, mot_de_passe, email, image, adresse, niveau_competence, date_de_naissance, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO utilisateur (nom, prenom, mot_de_passe, email, image, adresse, niveau_competence, date_de_naissance, role,verified) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
         PreparedStatement pst = con.prepareStatement(query);
             pst.setString(1, utilisateur.getNom());
             pst.setString(2, utilisateur.getPrenom());
-            pst.setString(3, utilisateur.getMot_de_passe()); // Consider hashing the password
+            pst.setString(3, BCryptPass.hashPass(utilisateur.getMot_de_passe()));
             pst.setString(4, utilisateur.getEmail());
             pst.setString(5, utilisateur.getImage());
             pst.setString(6, utilisateur.getAdresse());
             pst.setString(7, utilisateur.getNiveau_competence());
             pst.setDate(8, new java.sql.Date(utilisateur.getDate_de_naissance().getTime()));
             pst.setString(9, utilisateur.getRole().toString());
+            pst.setBoolean(10, utilisateur.isVerified());
 
             pst.executeUpdate();
 
@@ -35,10 +39,11 @@ public class ServicUtilisateur implements IService<Utilisateur> {
 
     @Override
     public void modifier(int id, Utilisateur utilisateur) throws SQLException {
-        String query = "UPDATE utilisateur SET nom=?, prenom=?, mot_de_passe=?, email=?, image=?, adresse=?, niveau_competence=?, date_de_naissance=?, role=? WHERE id=?";
+        String query = "UPDATE utilisateur SET nom=?, prenom=?, mot_de_passe=?, email=?, image=?, adresse=?, niveau_competence=?, date_de_naissance=?, role=?, verified=? WHERE id=?";
         PreparedStatement pst = con.prepareStatement(query);
         pst.setString(1, utilisateur.getNom());
         pst.setString(2, utilisateur.getPrenom());
+
         pst.setString(3, utilisateur.getMot_de_passe());
         pst.setString(4, utilisateur.getEmail());
         pst.setString(5, utilisateur.getImage());
@@ -46,7 +51,8 @@ public class ServicUtilisateur implements IService<Utilisateur> {
         pst.setString(7, utilisateur.getNiveau_competence());
         pst.setDate(8, new java.sql.Date(utilisateur.getDate_de_naissance().getTime()));
         pst.setString(9, utilisateur.getRole().toString());
-        pst.setInt(10, id);
+        pst.setBoolean(10, utilisateur.isVerified());
+        pst.setInt(11, id);
 
         pst.executeUpdate();
 
@@ -79,6 +85,7 @@ public class ServicUtilisateur implements IService<Utilisateur> {
                 utilisateur.setNiveau_competence(rs.getString("niveau_competence"));
                 utilisateur.setDate_de_naissance(rs.getDate("date_de_naissance"));
                 utilisateur.setRole(Role.valueOf(rs.getString("role")));
+                utilisateur.setVerified(rs.getBoolean("verified"));
 
                 utilisateurs.add(utilisateur);
             }
@@ -90,11 +97,14 @@ public class ServicUtilisateur implements IService<Utilisateur> {
     public Utilisateur getById(int id)throws SQLException{
         return afficher().stream().filter(u->u.getId()==id).findFirst().orElse(null);
     }
+    public Utilisateur getByEmail(String email)throws SQLException{
+        return afficher().stream().filter(u->u.getEmail().equals(email)).findFirst().orElse(null);
+    }
     public Utilisateur login(String email, String password) throws SQLException {
         List<Utilisateur> utilisateurs = afficher();
 
         return utilisateurs.stream()
-                .filter(u -> u.getEmail().equals(email) && u.getMot_de_passe().equals(password))
+                .filter(u -> u.getEmail().equals(email) && BCryptPass.checkPass(password,u.getMot_de_passe()))
                 .findFirst()
                 .orElse(null);
     }
@@ -115,6 +125,22 @@ public class ServicUtilisateur implements IService<Utilisateur> {
                 }
             }
         }*/
+        return null;
+    }
+
+    public List<Utilisateur> triParCritere(String critere) throws SQLException {
+        switch (critere){
+            case "Nom":
+                return afficher().stream().sorted(Comparator.comparing(Utilisateur::getNom)).collect(Collectors.toList());
+            case "Prenom":
+                return afficher().stream().sorted((u1,u2)->u1.getPrenom().compareTo(u2.getPrenom())).collect(Collectors.toList());
+
+            case "Email":
+                return afficher().stream().sorted((u1,u2)->u1.getEmail().compareTo(u2.getEmail())).collect(Collectors.toList());
+            case "Date de naissance":
+                return afficher().stream().sorted((u1,u2)->u1.getDate_de_naissance().compareTo(u2.getDate_de_naissance())).collect(Collectors.toList());
+
+        }
         return null;
     }
 

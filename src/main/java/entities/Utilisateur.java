@@ -7,11 +7,12 @@ public class Utilisateur {
     private String nom, prenom, mot_de_passe, email, image, adresse, niveau_competence;
     private Date date_de_naissance;
     private Role role;
+    private boolean verified;
 
     public Utilisateur() {
     }
 
-    public Utilisateur(String nom, String prenom, String mot_de_passe, String email, String image, String adresse, String niveau_competence, Date date_de_naissance, Role role) {
+    public Utilisateur(String nom, String prenom, String mot_de_passe, String email, String image, String adresse, String niveau_competence, Date date_de_naissance, Role role, boolean verified) {
         this.nom = nom;
         this.prenom = prenom;
         this.mot_de_passe = mot_de_passe;
@@ -21,9 +22,10 @@ public class Utilisateur {
         this.niveau_competence = niveau_competence;
         this.date_de_naissance = date_de_naissance;
         this.role = role;
+        this.verified = verified;
     }
 
-    public Utilisateur(int id, String nom, String prenom, String mot_de_passe, String email, String image, String adresse, String niveau_competence, Date date_de_naissance, Role role) {
+    public Utilisateur(int id, String nom, String prenom, String mot_de_passe, String email, String image, String adresse, String niveau_competence, Date date_de_naissance, Role role, boolean verified) {
         this.id = id;
         this.nom = nom;
         this.prenom = prenom;
@@ -34,6 +36,7 @@ public class Utilisateur {
         this.niveau_competence = niveau_competence;
         this.date_de_naissance = date_de_naissance;
         this.role = role;
+        this.verified = verified;
     }
 
     public int getId() {
@@ -116,6 +119,14 @@ public class Utilisateur {
         this.role = role;
     }
 
+    public boolean isVerified() {
+        return verified;
+    }
+
+    public void setVerified(boolean verified) {
+        this.verified = verified;
+    }
+
     @Override
     public String toString() {
         return "Utilisateur{" +
@@ -129,6 +140,7 @@ public class Utilisateur {
                 ", niveau_competence='" + niveau_competence + '\'' +
                 ", date_de_naissance=" + date_de_naissance +
                 ", role=" + role +
+                ", verified=" + verified +
                 '}';
     }
 }

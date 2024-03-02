@@ -14,7 +14,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="defaultLayer" prefHeight="565.0" prefWidth="1075.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.sportify.controller.AuthentificationView">
+<AnchorPane fx:id="defaultLayer" prefHeight="565.0" prefWidth="1075.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.sportify.controller.AuthentificationView">
    <children>
       <AnchorPane fx:id="animLayer" prefHeight="565.0" prefWidth="386.0" style="-fx-background-color: linear-gradient(#000000, #4CBB17);">
          <children>
@@ -139,6 +139,11 @@
                   <Circle fx:id="closeBtn" fill="#fc5d57" onMouseClicked="#closeOnClick" radius="7.0" stroke="BLACK" strokeType="INSIDE" />
                </children>
             </HBox>
+            <Button fx:id="btnForgot" layoutX="334.0" layoutY="263.0" mnemonicParsing="false" onAction="#gotoforgotPassword" prefHeight="16.0" prefWidth="119.0" style="-fx-background-color: #121212;" text="Forgot password?" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="10.0" />
+               </font>
+            </Button>
          </children>
       </AnchorPane>
    </children>

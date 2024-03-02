@@ -15,11 +15,15 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Circle;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.util.Duration;
+import org.controlsfx.control.NotificationPane;
+import org.controlsfx.control.Notifications;
 import services.ServicUtilisateur;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.Instant;
@@ -88,6 +92,8 @@ public class AuthentificationView {
 
     @FXML
     private ImageView icon7;
+    @FXML
+    private Button btnForgot;
 
     @FXML
     private ImageView iconlogin1;
@@ -121,6 +127,7 @@ public class AuthentificationView {
     public static int idLogin=0;
     @FXML
     private ComboBox<Role> cbrole;
+    public static String email;
 
     @FXML
     public void initialize() {
@@ -129,11 +136,13 @@ public class AuthentificationView {
         tfloginemail.setVisible(false);
         tfloginmdp.setVisible(false);
         signUpBtn11.setVisible(false);
+        btnForgot.setVisible(false);
         //settingLB1.setVisible(false);
         iconlogin1.setVisible(false);
         iconlogin2.setVisible(false);
         signUpBtn.setVisible(false);
         swapbtn.setText("Login");
+        tfimage.setDisable(true);
     }
 
 
@@ -200,7 +209,7 @@ public class AuthentificationView {
             tfloginemail.setVisible(true);
             tfloginmdp.setVisible(true);
             signUpBtn11.setVisible(true);
-
+            btnForgot.setVisible(true);
 
 
             slide.setToX(689);
@@ -245,7 +254,7 @@ public class AuthentificationView {
             tfloginemail.setVisible(false);
             tfloginmdp.setVisible(false);
             signUpBtn11.setVisible(false);
-
+            btnForgot.setVisible(false);
 
             slide.setToX(0);
 
@@ -261,6 +270,13 @@ public class AuthentificationView {
 
     @FXML
     void uploadImage(ActionEvent event) {
+        FileChooser fileChooser=new FileChooser();
+        File file=fileChooser.showOpenDialog(tfimage.getScene().getWindow());
+        if(file!=null){
+            String filename=file.getName();
+            tfimage.setText(filename);
+        }
+
 
     }
 
@@ -327,13 +343,35 @@ public class AuthentificationView {
         Utilisateur u;
         try {
             u=su.login(tfloginemail.getText(),tfloginmdp.getText());
+            System.out.println(u);
             if(u==null){
                 Alert alert=new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("invalide");
                 alert.setContentText("Email ou mot de passe invalide");
                 alert.showAndWait();
-            }
-            else{
+            } else if (!u.isVerified()) {
+                email=u.getEmail();
+                Alert alert=new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("User unverified");
+                alert.setContentText("You need to verifie your account");
+                alert.showAndWait();
+                try {
+                    FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("otp-verification.fxml"));
+                    Parent root = loader.load();
+                    Window currentWindow = tfloginmdp.getScene().getWindow();
+                    if (currentWindow instanceof Stage) {
+                        ((Stage) currentWindow).close();
+                    }
+
+                    Stage stage = new Stage();
+                    stage.setScene(new Scene(root));
+                    stage.setTitle("Sportify");
+                    stage.show();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else{
                 idLogin=u.getId();
                 if(u.getRole().equals(Role.ADMIN)){
                     System.out.println("------------");
@@ -350,6 +388,9 @@ public class AuthentificationView {
                         stage.setScene(new Scene(root));
                         stage.setTitle("Sportify");
                         stage.show();
+                        //NOTIFICATION
+                        Notifications.create().title("Welcom").text("Login successfuls!").showConfirm();
+                        //NOTIFICATION
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -367,6 +408,8 @@ public class AuthentificationView {
                         stage.setScene(new Scene(root));
                         stage.setTitle("Sportify");
                         stage.show();
+                        Notifications.create().title("Welcom").text("Login successfuls!").showConfirm();
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -422,6 +465,24 @@ public class AuthentificationView {
         }
         return erreur;
 
+    }
+    @FXML
+    void gotoforgotPassword(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("forgot-password-view.fxml"));
+            Parent root = loader.load();
+            Window currentWindow = tfimage.getScene().getWindow();
+            if (currentWindow instanceof Stage) {
+                ((Stage) currentWindow).close();
+            }
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Sportify");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
