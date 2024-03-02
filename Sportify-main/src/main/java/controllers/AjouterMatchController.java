@@ -1,22 +1,26 @@
 package controllers;
 
-import entities.Arbitre;
-import entities.Equipe;
-import entities.Match;
+import entities.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import com.fasterxml.jackson.databind.JsonMappingException;
+
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import javafx.stage.Stage;
-import services.ServiceArbitre;
-import services.ServiceMatch;
+import org.json.JSONObject;
+import services.*;
 
+import javax.mail.MessagingException;
 import java.io.IOException;
 import java.net.URL;
+import java.security.GeneralSecurityException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Time;
@@ -27,6 +31,13 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class AjouterMatchController implements Initializable {
+    private ServiceArbitre arbitreService;
+    @FXML
+    private Label cityLabel;
+    @FXML
+    private Label temperatureLabel;
+
+
     @FXML
     private ListView<Match> matchListView;
 
@@ -38,6 +49,8 @@ public class AjouterMatchController implements Initializable {
 
     @FXML
     private ComboBox<String> typeComboBox;
+    @FXML
+    private ComboBox<Ville> villeComboBox;
 
 
     @FXML
@@ -82,13 +95,13 @@ public class AjouterMatchController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         serviceMatch = new ServiceMatch();
         serviceArbitre = new ServiceArbitre();
-
-
-
         loadEquipes();
         loadArbitres();
+        villeComboBox.getItems().addAll(Ville.values());
 
     }
+
+
 
     private void loadEquipes() {
         try {
@@ -116,6 +129,69 @@ public class AjouterMatchController implements Initializable {
 
     @FXML
     private void ajouterMatch() {
+        Ville selectedCity = villeComboBox.getValue();
+        try {
+            JSONObject weatherDetails = OpenWeatherMapService.getWeatherDataForCity(String.valueOf(selectedCity));
+
+            // Créer une alerte pour afficher les données météorologiques
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Météo pour " + selectedCity);
+            alert.setHeaderText(null);
+            StringBuilder contentText = new StringBuilder();
+
+// Ajoutez la température à la chaîne de caractères du contenu de l'alerte
+            contentText.append("Température: ").append(weatherDetails.getJSONObject("weather_details").getDouble("temperature")).append("°C\n");
+            contentText.append("Humidité: ").append(weatherDetails.getJSONObject("weather_details").getDouble("humidity")).append("%\n");
+            contentText.append("Pression atmosphérique: ").append(weatherDetails.getJSONObject("weather_details").getDouble("pressure")).append(" hPa\n");
+            contentText.append("Visibilité: ").append(weatherDetails.getJSONObject("weather_details").getInt("visibility")).append(" mètres\n");
+            contentText.append("Vitesse du vent: ").append(weatherDetails.getJSONObject("weather_details").getDouble("wind_speed")).append(" m/s\n");
+            contentText.append("Direction du vent: ").append(weatherDetails.getJSONObject("weather_details").getDouble("wind_direction")).append(" degrés\n");
+            contentText.append("Nuages: ").append(weatherDetails.getJSONObject("weather_details").getInt("cloudiness")).append("%\n");
+            Arbitre arbitre= arbitreComboBox.getValue();
+            Equipe equipe1 =equipe1ComboBox.getValue();
+            Equipe equipe2=equipe2ComboBox.getValue();
+            LocalDate localDate = datePicker.getValue();
+            String heureString = heureField.getText() + ":" + minField.getText() + ":00";
+            Time heure = Time.valueOf(heureString);
+            // Envoi d'un SMS à l'arbitre
+            String numeroArbitre = arbitre.getPhone();// Supposons que vous avez une méthode getNumero dans la classe Arbitre
+            // String emailArbitre= arbitre.getEmail();
+            System.out.println(equipe1.getId_createur().getEmail());
+
+            String emailContent = "Cher destinataire,\n\n"
+                    + "Nous avons le plaisir de vous informer de votre affectation pour le match entre "
+                    + equipe1.toString1() + " et " + equipe2.toString1() + " prévu pour le " + Date.valueOf(localDate) + ", Heure: " + heure+ ".\n\n"
+                    + "Détails du match :\n"
+                    + "- Lieu du match : " + selectedCity + "\n"
+                    + "Météo pour le match"+"\n"
+                    +contentText
+
+                    + "Veuillez vous assurer d'être prêt et disponible pour le match à l'heure convenue.\n\n"
+                    + "Cordialement,\n"
+                    + "Sportify";
+
+            String subject="Affectation de match : " + equipe1.getNom()+ " vs " + equipe2.getNom() + " - " + Date.valueOf(localDate);
+            String email1=equipe1.getId_createur().getEmail();
+            String email2=equipe2.getId_createur().getEmail();
+            // EmailSender.sendEmail(email1,subject,emailContent);
+            //  EmailSender.sendEmail(email2,subject,emailContent);
+            SmsSender.sendSms(numeroArbitre,emailContent);
+
+            //System.out.println(equipe2.getId_createur());
+            String message = "Nouveau match assigné. Date: " + localDate + ", Heure: " + heure;
+
+
+
+
+// Ajoutez la chaîne de caractères complète au contenu de l'alerte
+            alert.setContentText(contentText.toString());
+            alert.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Gérer les erreurs de récupération des données météorologiques
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Erreur lors de la récupération des données météorologiques.");
+            errorAlert.showAndWait();
+        }
         // Récupérer les informations du match depuis les champs de texte et les éléments ComboBox
         String nom = nomField.getText();
         if (nom.isEmpty() || nom.length() < 3 || nom.length() > 25) {
@@ -191,6 +267,8 @@ public class AjouterMatchController implements Initializable {
             showAlert("Veuillez sélectionner une équipe 2 !");
             return;
         }
+       // System.out.println("id createur"+equipe1.getId_createur());
+        //System.out.println("email");
 
         if (equipe1.equals(equipe2)) {
             showAlert("Les équipes sélectionnées ne peuvent pas être les mêmes !");
@@ -223,6 +301,7 @@ public class AjouterMatchController implements Initializable {
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
+
 
 
             Stage stage = (Stage) nomField.getScene().getWindow();
@@ -296,6 +375,9 @@ public class AjouterMatchController implements Initializable {
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
+            String numeroArbitre = arbitre.getPhone(); // Supposons que vous avez une méthode getNumero dans la classe Arbitre
+            String message = "Match assigné. Date: " + localDate + ", Heure: " + heure;
+
 
 
 
@@ -315,4 +397,7 @@ public class AjouterMatchController implements Initializable {
 
     }
 
-}
+
+
+    }
+

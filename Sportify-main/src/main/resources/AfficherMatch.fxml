@@ -178,11 +178,15 @@
                                 <Line endX="1635.4927978515625" endY="-6.999997138977051" layoutX="-363.0" layoutY="3.0" startX="363.0000305175781" startY="-6.999997138977051" stroke="#fff6f6" />
 
                                 <Button id="ipad" fx:id="addButton" layoutX="738.0" layoutY="34.0" mnemonicParsing="false" onAction="#handleAddButtonAction" prefHeight="42.0" prefWidth="190.0" styleClass="dark" stylesheets="@Style.css" text="Créer Match" textFill="WHITE" wrapText="true">
+
+
                                     <graphic>
                                         <ImageView fitHeight="24" fitWidth="24">
                                             <Image url="icons8-ajouter (1).gif"/>
                                         </ImageView>
                                     </graphic>
+
+
                                     <font>
                                         <Font name="Arial Nova Light Bold" size="19.0" />
                                     </font>
@@ -195,11 +199,35 @@
                                         </ImageView>
                                     </graphic>
                                 </Button>
+                                <Button fx:id="rate" layoutX="76.0" layoutY="160.0" onAction="#handleRateMatchButtonClick" styleClass="blue" stylesheets="@Style.css" text="Rate">
+
+                                    <graphic>
+                                        <ImageView fitHeight="24" fitWidth="24">
+                                            <Image url="rate.gif"/>
+                                        </ImageView>
+                                    </graphic>
 
 
-                                <Button id="dark" fx:id="rechercher" layoutX="56.0" layoutY="292.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="182.0" stylesheets="@css.css" text="Rechercher " />
+                                </Button>
+
+                                <Button fx:id="generatePDFButton" layoutX="76.0" layoutY="254.0" onAction="#handleGeneratePDFButtonAction" styleClass="blue" stylesheets="@Style.css" text="Generate PDF">
+
+                                    <graphic>
+                                        <ImageView fitHeight="24" fitWidth="24">
+                                            <Image url="download-pdf.png"/>
+                                        </ImageView>
+                                    </graphic>
+
+
+                                </Button>
+                                <Button fx:id="exportButton" layoutX="74.0" layoutY="340.0" onAction="#handleExportButtonAction" styleClass="blue" stylesheets="@Style.css" text="Generate EXEL">
+                                    <graphic>
+                                        <ImageView fitHeight="24" fitWidth="24">
+                                            <Image url="excel.png"/>
+                                        </ImageView>
+                                    </graphic>
+                                </Button>
                                 <VBox />
-                                <TextField layoutX="56.0" layoutY="236.0" prefHeight="34.0" prefWidth="182.0" style="-fx-background-color: #FFFFFF;" />
                                  <ListView fx:id="matchListView" layoutX="272.0" layoutY="140.0" prefHeight="400.0" prefWidth="762.0" stylesheets="@Style.css" />
                                 <HBox layoutX="522.0" layoutY="37.0">
                                     <Button fx:id="supprimerButton" onAction="#handleSupprimerButtonAction" prefHeight="42.0" prefWidth="189.0" styleClass="dark" stylesheets="@Style.css" text="Supprimer">
@@ -208,6 +236,7 @@
                                                 <Image url="icons8-annuler.gif"/>
                                             </ImageView>
                                         </graphic>
+
                                         <font>
                                  <Font name="Arial Nova Light Bold" size="19.0" />
                               </font></Button>
@@ -225,11 +254,13 @@
                                      </children>
                                  </HBox>
                                  <Button fx:id="modifierButton" layoutX="309.0" layoutY="37.0" onAction="#handleModifierButtonAction" prefHeight="42.0" prefWidth="190.0" styleClass="dark" stylesheets="@Style.css" text="Modifier">
+
                                      <graphic>
                                          <ImageView fitHeight="24" fitWidth="24">
                                              <Image url="icons8-installation-de-mises-à-jour.gif"/>
                                          </ImageView>
                                      </graphic>
+
                                      <font>
                               <Font name="Arial Nova Light Bold" size="19.0" />
                            </font></Button>

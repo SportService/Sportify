@@ -48,6 +48,12 @@ public class Equipe {
 
     }
 
+    public Equipe(int id, String nom, Utilisateur idCreateur) {
+        this.IDEquipe = id;
+        this.Nom = nom;
+        this.id_createur=idCreateur;
+    }
+
     public int getID() {
         return IDEquipe;
     }

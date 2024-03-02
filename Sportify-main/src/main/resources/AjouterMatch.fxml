@@ -9,6 +9,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.web.WebView?>
 
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
@@ -32,15 +33,15 @@
         <DatePicker fx:id="datePicker" layoutX="180.0" layoutY="301.0" prefHeight="26.0" prefWidth="179.0" styleClass="date-picker" stylesheets="@Scene.css" />
         <Label layoutX="43.0" layoutY="250.0" stylesheets="@css.css" text="Heure :" />
         <HBox spacing="5" />
-        <Label layoutX="39.0" layoutY="350.0" stylesheets="@css.css" text="Équipe 1 :" />
-        <ComboBox fx:id="equipe1ComboBox" layoutX="180.0" layoutY="346.0" prefHeight="28.0" prefWidth="179.0" styleClass="combo-box" stylesheets="@Scene.css" />
-        <Label layoutX="39.0" layoutY="400.0" stylesheets="@css.css" text="Équipe 2 :" />
-        <ComboBox fx:id="equipe2ComboBox" layoutX="180.0" layoutY="396.0" prefHeight="26.0" prefWidth="179.0" styleClass="combo-box" stylesheets="@Scene.css" />
-        <Label layoutX="39.0" layoutY="450.0" prefHeight="29.0" prefWidth="83.0" stylesheets="@css.css" text="Arbitre :" />
-        <ComboBox fx:id="arbitreComboBox" layoutX="180.0" layoutY="446.0" prefHeight="26.0" prefWidth="179.0" styleClass="combo-box" stylesheets="@Scene.css" />
+        <Label layoutX="39.0" layoutY="386.0" stylesheets="@css.css" text="Équipe 1 :" />
+        <ComboBox fx:id="equipe1ComboBox" layoutX="180.0" layoutY="386.0" prefHeight="28.0" prefWidth="179.0" styleClass="combo-box" stylesheets="@Scene.css" />
+        <Label layoutX="39.0" layoutY="436.0" stylesheets="@css.css" text="Équipe 2 :" />
+        <ComboBox fx:id="equipe2ComboBox" layoutX="180.0" layoutY="436.0" prefHeight="26.0" prefWidth="179.0" styleClass="combo-box" stylesheets="@Scene.css" />
+        <Label layoutX="33.0" layoutY="479.0" prefHeight="29.0" prefWidth="83.0" stylesheets="@css.css" text="Arbitre :" />
+        <ComboBox fx:id="arbitreComboBox" layoutX="180.0" layoutY="480.0" prefHeight="26.0" prefWidth="179.0" styleClass="combo-box" stylesheets="@Scene.css" />
 
 
-        <Button fx:id="ajouterButton" layoutX="201.0" layoutY="498.0" mnemonicParsing="false" onAction="#ajouterMatch" prefHeight="47.0" prefWidth="102.0" style="-fx-background-color: transparent;" styleClass="rnd" stylesheets="@Style.css">
+        <Button fx:id="ajouterButton" layoutX="201.0" layoutY="527.0" mnemonicParsing="false" onAction="#ajouterMatch" prefHeight="47.0" prefWidth="102.0" style="-fx-background-color: transparent;" styleClass="rnd" stylesheets="@Style.css">
             <graphic>
                 <ImageView fitHeight="47" fitWidth="102">
                     <Image url="ajouter.gif"/>
@@ -50,5 +51,10 @@
          <TextField fx:id="heureField" layoutX="180.0" layoutY="251.0" prefHeight="26.0" prefWidth="60.0" promptText="HH" styleClass="Text-field" stylesheets="@Scene.css" />
          <TextField fx:id="minField" layoutX="270.0" layoutY="251.0" prefHeight="26.0" prefWidth="60.0" promptText="mm" styleClass="Text-field" stylesheets="@Scene.css" />
          <Label layoutX="250.0" layoutY="255.0" text=":" />
+      <ComboBox fx:id="villeComboBox" layoutX="180.0" layoutY="345.0" prefHeight="26.0" prefWidth="179.0">
+      </ComboBox>
+      <Label layoutX="55.0" layoutY="345.0" stylesheets="@css.css" text="Ville :" />
+
+
     </children>
 </AnchorPane>

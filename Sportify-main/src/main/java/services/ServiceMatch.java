@@ -3,6 +3,7 @@ package services;
 import entities.Arbitre;
 import entities.Equipe;
 import entities.Match;
+import entities.Utilisateur;
 import javafx.collections.ObservableList;
 
 import java.sql.*;
@@ -29,6 +30,7 @@ public class ServiceMatch implements services.IService<Match> {
         pstmt.setInt(6, match.getEquipe1().getID());
         pstmt.setInt(7, match.getEquipe2().getID());
         pstmt.setInt(8, match.getArbitre().getId_arbitre());
+
 
         pstmt.executeUpdate();
     }
@@ -113,16 +115,21 @@ public class ServiceMatch implements services.IService<Match> {
     }
     private Equipe getTeamName(int teamId) throws SQLException {
         Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/sportify", "root", "root");
-        String query = "SELECT Nom,Niveau,`rank` FROM equipe WHERE IDEquipe = ?";
+        String query = "SELECT Nom,Niveau,`rank`,id_createur FROM equipe WHERE IDEquipe = ?";
         try (PreparedStatement statement = conn.prepareStatement(query)) {
             statement.setInt(1, teamId);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
 
                 Equipe equipe = new Equipe();
+                equipe.setID(resultSet.getInt("IDEquipe"));
                 equipe.setNom(resultSet.getString("Nom"));
                 equipe.setNiveau(resultSet.getString("Niveau"));
                 equipe.setRank(resultSet.getInt("Rank"));
+                int id_createur = resultSet.getInt("id_createur");
+
+                // Utiliser la méthode getUserById pour obtenir l'objet Utilisateur correspondant à id_createur
+                Utilisateur createur = getUserById(id_createur);
                 return equipe;
 
             }
@@ -157,17 +164,51 @@ public class ServiceMatch implements services.IService<Match> {
 
                      ResultSet resultSet = pstmt.executeQuery(query)) {
             while (resultSet.next()) {
-                int id = resultSet.getInt("IDEquipe");
-                String nom = resultSet.getString("nom");
+                Equipe equipe = new Equipe();
+                equipe.setID( resultSet.getInt("IDEquipe"));
+                equipe.setNom(resultSet.getString("Nom"));
+                equipe.setNiveau(resultSet.getString("Niveau"));
+                equipe.setRank(resultSet.getInt("Rank"));
+
+                int id_createur = resultSet.getInt("id_createur");
+
+                // Utiliser la méthode getUserById pour obtenir l'objet Utilisateur correspondant à id_createur
+                Utilisateur createur = getUserById(id_createur);
+                equipe.setId_createur(createur);
 
 
-                Equipe equipe = new Equipe(id,nom);
                 equipes.add(equipe);
             }
         }
         return equipes;
     }
 
+    public Utilisateur getUserById(int userId) {
+        // Code pour récupérer l'utilisateur en fonction de son ID depuis votre source de données (base de données, fichier, etc.)
+        // Par exemple, si vous utilisez une base de données :
+        try {
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/sportify", "root", "root");
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM utilisateur WHERE ID_User = ?");
+            statement.setInt(1, userId);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                // Créer un objet Utilisateur avec les détails récupérés de la base de données
+                Utilisateur utilisateur = new Utilisateur();
+                utilisateur.setId(resultSet.getInt("ID_User"));
+                utilisateur.setNom(resultSet.getString("nom"));
+                utilisateur.setPrenom(resultSet.getString("prenom"));
+                utilisateur.setEmail(resultSet.getString("email"));
+                // Définir d'autres attributs de l'utilisateur selon votre structure de base de données
+
+                return utilisateur;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Gérer les exceptions appropriées
+        }
+
+        return null; // Retourner null si aucun utilisateur n'est trouvé avec l'ID donné
+    }
 
 
 }

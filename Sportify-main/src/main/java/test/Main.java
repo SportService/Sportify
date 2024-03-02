@@ -3,8 +3,11 @@ package test;
 
 import entities.*;
 
+import services.EmailSender;
 import services.ServiceMatch;
+import services.SmsSender;
 
+import javax.mail.MessagingException;
 import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalTime;
@@ -22,6 +25,12 @@ public class Main {
         Time time = Time.valueOf(heureActuelle);
         Utilisateur utilisateur=new Utilisateur(1,"ghnima","louay1","ghnima","123456","louay@gmail.com","moulares","haut","admin","17/08/2001");
         Categorie categorie=new Categorie(1,"cat1","enjoy","cccc");
+        //SmsSender.main("+1234567890", "Hello from JavaFX!");
+        try {
+            EmailSender.sendEmail("louaygnima123@gmail.com","test","test");
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
 
         Equipe e1=new Equipe(1,"louay","bas",categorie,true,utilisateur,10);
         Equipe e2=new Equipe(2,"louay2","bas",categorie,true,utilisateur,10);

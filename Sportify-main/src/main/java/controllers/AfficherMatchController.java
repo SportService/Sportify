@@ -17,6 +17,8 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import services.ExcelGenerator;
+import services.PDFGenerator;
 import services.ServiceArbitre;
 import services.ServiceMatch;
 
@@ -28,9 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+
 
 public class AfficherMatchController implements Initializable {
     private ServiceMatch s= new ServiceMatch();
@@ -260,7 +260,92 @@ public class AfficherMatchController implements Initializable {
             System.out.println("Aucun match sélectionné.");
         }
     }
+
+    @FXML
+    private TextField searchTextField;
+    @FXML
+    private void handleGeneratePDFButtonAction(ActionEvent event) {
+        Match selectedMatch = matchListView.getSelectionModel().getSelectedItem();
+        PDFGenerator.generatePDF(selectedMatch);
+    }
+    @FXML
+    private void searchButtonAction(ActionEvent event) {
+        String searchText = searchTextField.getText();
+        searchMatches(searchText);
+        System.out.println("Search text: " + searchText);
+    }
+    private void searchMatches(String searchText) {
+        ObservableList<Match> searchResult = FXCollections.observableArrayList();
+        System.out.println("Search matches for: " + searchText);
+        System.out.println("Match list size: " + matchList.size());
+
+
+
+        // Recherche par nom d'équipe, nom d'arbitre, type de match ou date
+        for (Match match : matchList) {
+            if (match.getEquipe1().getNom().toLowerCase().contains(searchText.toLowerCase()) ||
+                    match.getEquipe2().getNom().toLowerCase().contains(searchText.toLowerCase()) ||
+                    match.getArbitre().getNom().toLowerCase().contains(searchText.toLowerCase()) ||
+                    match.getType().toLowerCase().contains(searchText.toLowerCase()) ||
+                    match.getDate().toString().contains(searchText)) {
+                searchResult.add(match);
+            }
+        }
+
+        matchListView.setItems(searchResult);
+    }
+    @FXML
+    private void handleRateMatchButtonClick() {
+        try {
+            Match selectedMatch = matchListView.getSelectionModel().getSelectedItem();
+
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/RatingMatch.fxml"));
+            Parent root = loader.load();
+
+            // Récupérer le contrôleur de la fenêtre de notation
+            RatingMatchController ratingController = loader.getController();
+            selectedMatch.setRating(ratingController.getRating());
+
+            // Créer une nouvelle fenêtre modale pour la notation du match
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(new Scene(root));
+            stage.setWidth(800);
+            stage.setHeight(400);
+
+            stage.showAndWait();
+
+            // Récupérer la note attribuée au match et mettre à jour les données du match
+            int rating = ratingController.getRating();
+            stage.close();
+
+            // Mettre à jour la note du match dans votre modèle de données
+
+            // Rafraîchir l'affichage pour refléter la nouvelle note
+            refreshMatchDetails();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void refreshMatchDetails() {
+        // Rafraîchir l'affichage des détails du match pour refléter les changements (y compris la note mise à jour)
+    }
+    @FXML
+    private Button exportButton;
+
+    // Méthode appelée lorsqu'on clique sur le bouton "Exporter"
+    @FXML
+    private void handleExportButtonAction() {
+        List<Match> matches =  matchListView.getItems(); // Récupérer les matchs depuis la base de données
+        ExcelGenerator.generateMatchExcel(matches); // Générer le fichier Excel des matchs
+        System.out.println("Fichier Excel des matchs généré avec succès !");
+    }
 }
+
+
+
 
 
 
