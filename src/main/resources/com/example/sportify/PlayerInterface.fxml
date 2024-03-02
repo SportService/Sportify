@@ -23,7 +23,7 @@
                         <Image url="https://cdn-icons-png.flaticon.com/512/6833/6833605.png" />
                     </image>
                 </ImageView>
-                <Label layoutX="1140.0" layoutY="19.0" prefHeight="37.0" prefWidth="141.0" text="Wassim" textAlignment="CENTER" textFill="WHITE">
+                <Label fx:id="UserloggedNom" layoutX="1140.0" layoutY="19.0" prefHeight="37.0" prefWidth="141.0" text="Wassim" textAlignment="CENTER" textFill="WHITE">
                     <font>
                         <Font size="18.0" />
                     </font>

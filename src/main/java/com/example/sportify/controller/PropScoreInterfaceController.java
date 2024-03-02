@@ -73,7 +73,6 @@ public class PropScoreInterfaceController implements Initializable {
             e.printStackTrace(); // Handle the exception appropriately
         }
 
-
         competsave=compet ;
     }
 

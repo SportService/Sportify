@@ -1,6 +1,7 @@
 package com.example.sportify.controller;
 
 import com.example.sportify.HelloApplication;
+import entities.Utilisateur;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -30,36 +31,47 @@ public class RommrankedController implements Initializable {
     @FXML
     private AnchorPane interfaceranked;
 
+    private Utilisateur loggedInUser;
 
 
-
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+    }
    @FXML
     void searchButton(MouseEvent event) throws IOException {
        System.out.println("BONOJORJ3426666--------------------------");
        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/sportify/Listecompetition.fxml"));
         AnchorPane listeinterface = fxmlLoader.load();
+        ListecompetitonController PlayerListeCompetition = fxmlLoader.getController() ;
+        PlayerListeCompetition.initData(loggedInUser) ;
         // Pass the interfacechanger to the RommrankedController
 
         interfaceranked.getChildren().add(listeinterface) ;
 
     }
 
+    void initData(Utilisateur user) {
+        this.loggedInUser=user ;
+        loadPlayerCards() ;
+    }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    private void loadPlayerCards() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/sportify/Playercard.fxml"));
             VBox vbox = fxmlLoader.load();
+            Playercard cardcontrol = fxmlLoader.getController();
+            cardcontrol.setCard(loggedInUser.getNom());
+
             // Optionally, you can get the controller instance if needed
             PlayerCardd.getChildren().add(vbox);
 
             //second card vide
-            FXMLLoader fxmlLoaderr = new FXMLLoader(getClass().getResource("/com/example/sportify/Playercard.fxml"));
-            VBox vboxvide = fxmlLoaderr.load();
-            Playercard cardcontrol = fxmlLoaderr.getController();
-            cardcontrol.setCard("Inconnue");
+            FXMLLoader fxmlLoadergauche = new FXMLLoader(getClass().getResource("/com/example/sportify/Playercard.fxml"));
+            VBox vboxvide = fxmlLoadergauche.load();
+            Playercard cardcontrolgauche = fxmlLoadergauche.getController();
+            cardcontrolgauche.setCard("Inconnue");
 
-            cardvide.getChildren().add(vboxvide) ;
+            cardvide.getChildren().add(vboxvide);
             cardvide.setOpacity(0.4);
 
             FXMLLoader fxmlLoaderdroit = new FXMLLoader(getClass().getResource("/com/example/sportify/Playercard.fxml"));
@@ -67,12 +79,14 @@ public class RommrankedController implements Initializable {
             Playercard cardcontroldroit = fxmlLoaderdroit.getController();
             cardcontroldroit.setCard("Inconnue");
 
-            cardvidedroit.getChildren().add(vboxvidedroit) ;
+            cardvidedroit.getChildren().add(vboxvidedroit);
             cardvidedroit.setOpacity(0.4);
         } catch (IOException e) {
             e.printStackTrace(); // Handle the exception properly in your application
         }
-
-
     }
+
+
+
+
 }

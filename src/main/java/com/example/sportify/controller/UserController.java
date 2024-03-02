@@ -218,10 +218,11 @@ public class UserController {
                     // Redirect to admin page
                     redirectToAdminPage();
                 } else {
+
                     // Set the logged-in user
                     loggedInUser = user;
 
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/sportify/profile.fxml"));
+                    /*FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/sportify/profile.fxml"));
                     Parent root = loader.load();
 
                     UserController profileController = loader.getController();
@@ -231,6 +232,18 @@ public class UserController {
                     Stage stage = new Stage();
                     stage.setScene(new Scene(root));
                     stage.setTitle("Profile");
+                    stage.show();*/
+
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/sportify/PlayerInterface.fxml"));
+                    Parent root = loader.load();
+
+                    PlayerInterface playercontroller = loader.getController();
+
+                    playercontroller.initData(user);
+
+                    Stage stage = new Stage();
+                    stage.setScene(new Scene(root));
+                    stage.setTitle("SPORTIFY");
                     stage.show();
 
                     ((Stage) loginEmailField.getScene().getWindow()).close();

@@ -2,6 +2,7 @@ package services;
 
 import entities.Equipe;
 import entities.Terrain;
+import entities.Utilisateur;
 import utils.DB;
 
 import java.sql.*;
@@ -19,6 +20,25 @@ public class ServiceEquipe implements IService<Equipe> {
 
     @Override
     public void ajouter(Equipe equipe) throws SQLException {
+        String req = "INSERT INTO equipe (nom, niveau, IDCateg, isRandom, rank) VALUES (?, ?, ?, ?, ?)";
+        try (PreparedStatement pre = con.prepareStatement(req, Statement.RETURN_GENERATED_KEYS)) {
+            pre.setString(1, equipe.getNom());
+            pre.setString(2, equipe.getNiveau());
+           // pre.setInt(3, equipe.getIDCateg().getID_Categ());
+            pre.setBoolean(4, equipe.getRandom());
+            pre.setInt(5, equipe.getRank());
+            pre.executeUpdate();
+
+            // Retrieve the generated keys (including id) after insertion
+            try (ResultSet generatedKeys = pre.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    int equipeId = generatedKeys.getInt(1); // Get the generated id for the Equipe
+                    equipe.setID(equipeId); // Set the id of the Equipe object
+                } else {
+                    throw new SQLException("Creating Equipe failed, no ID obtained.");
+                }
+            }
+        }
 
 
     }
@@ -31,6 +51,11 @@ public class ServiceEquipe implements IService<Equipe> {
     @Override
     public void supprimer(int t) throws SQLException {
 
+        String req = "DELETE FROM equipe WHERE IDEquipe = ?";
+        try (PreparedStatement pre = con.prepareStatement(req)) {
+            pre.setInt(1, t);
+            pre.executeUpdate();
+        }
     }
 
     @Override
@@ -82,5 +107,42 @@ public class ServiceEquipe implements IService<Equipe> {
         return equipe;
     }
 
+
+    public void ajouterMembre(Equipe equipe, Utilisateur utilisateur) throws SQLException {
+        String req = "INSERT INTO equipe_members (equipe_id, user_id) VALUES (?, ?)";
+        try (PreparedStatement pre = con.prepareStatement(req)) {
+            pre.setInt(1, equipe.getID());
+            pre.setInt(2, utilisateur.getId());
+            pre.executeUpdate();
+        }
+    }
+    public void supprimerMembre(Equipe equipe, Utilisateur utilisateur) throws SQLException {
+        String req = "DELETE FROM equipe_members WHERE equipe_id = ? AND user_id = ?";
+        try (PreparedStatement pre = con.prepareStatement(req)) {
+            pre.setInt(1, equipe.getID());
+            pre.setInt(2, utilisateur.getId());
+            pre.executeUpdate();
+        }
+    }
+
+    public List<Utilisateur> getEquipeMembres(Equipe equipe) throws SQLException {
+        List<Utilisateur> membres = new ArrayList<>();
+        String req = "SELECT u.* FROM equipe_members em " +
+                "JOIN utilisateur u ON em.user_id = u.ID_User " +
+                "WHERE em.equipe_id = ?";
+        try (PreparedStatement pre = con.prepareStatement(req)) {
+            pre.setInt(1, equipe.getID());
+            try (ResultSet res = pre.executeQuery()) {
+                while (res.next()) {
+                    Utilisateur utilisateur = new Utilisateur();
+                    utilisateur.setId(res.getInt("ID_User"));
+                    utilisateur.setNom(res.getString("Nom"));
+                    // Set other user properties as needed
+                    membres.add(utilisateur);
+                }
+            }
+        }
+        return membres;
+    }
 
 }

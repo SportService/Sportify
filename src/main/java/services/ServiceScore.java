@@ -84,9 +84,9 @@ public class ServiceScore implements IService<Score>{
 
                  score.setIdScore(resultSet.getInt("idScore"));
 
-                CompetitionService competitionService = new CompetitionService() ;
-                       Competition compet=competitionService.getById(resultSet.getInt("competitionId"));
-                score.setCompetition(compet);
+                /*CompetitionService competitionService = new CompetitionService() ;
+                //Competition compet=competitionService.getById(resultSet.getInt("competitionId"));
+                score.setCompetition(compet); */
 
                 ServiceEquipe EquipeService = new ServiceEquipe() ;
                 Equipe winner=EquipeService.getById(resultSet.getInt("winnerId"));

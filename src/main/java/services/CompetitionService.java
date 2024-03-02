@@ -79,7 +79,7 @@ public class CompetitionService implements IService<Competition> {
 
         String req ="SELECT c.*, t.*, e1.*, e2.* " +
                 "FROM Competition c " +
-                "LEFT JOIN Terrain t ON c.Terrain_id = t.ID_Terrain " +
+                "LEFT JOIN Terrain t ON c.terrain_id = t.ID_Terrain " +
                 "LEFT JOIN Equipe e1 ON c.equipe1_id = e1.IDEquipe " +
                 "LEFT JOIN Equipe e2 ON c.equipe2_id = e2.IDEquipe";
         try (PreparedStatement pre = con.prepareStatement(req);
@@ -90,6 +90,7 @@ public class CompetitionService implements IService<Competition> {
                 c.setNom(res.getString("nom"));
                 c.setDescription(res.getString("Description"));
                 c.setType(res.getString("Type"));
+                c.setHeure(res.getTime("Heure"));
                 c.setHeure(res.getTime("Heure"));
                 try {
                     Date date = res.getDate("Date");
@@ -104,7 +105,7 @@ public class CompetitionService implements IService<Competition> {
                     e.printStackTrace();
                 }
 
-                if (res.getObject("Terrain_id") != null) {
+                if (res.getObject("terrain_id") != null) {
                     Terrain terrain = new Terrain();
                     terrain.setID_Terrain(res.getInt("ID_Terrain"));
                     terrain.setNomTerrain(res.getString("NomTerrain"));
@@ -131,7 +132,6 @@ public class CompetitionService implements IService<Competition> {
                 equipe2.setRandom(res.getBoolean("e2.isRandom"));
 
 
-
                 // Set other attributes for equipe2
 
                 c.setEquipe1(equipe1);
@@ -143,9 +143,12 @@ public class CompetitionService implements IService<Competition> {
     }
 
 
-    public Competition getById(int id) throws SQLException {
+   public Competition getById(int id) throws SQLException {
         Competition competition = null;
-        String query = "SELECT * FROM Competition WHERE ID_Competition = ?";
+       String query = "SELECT c.*, t.ID_Terrain, t.NomTerrain, t.Type_surface, t.Localisation, t.Prix " +
+               "FROM Competition c " +
+               "LEFT JOIN Terrain t ON c.terrain_id = t.ID_Terrain " +
+               "WHERE c.ID_Competition = ?";
         try (PreparedStatement statement = con.prepareStatement(query)) {
             statement.setInt(1, id);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -153,6 +156,55 @@ public class CompetitionService implements IService<Competition> {
                     competition = new Competition();
                     competition.setID_competiton(resultSet.getInt("ID_Competition"));
                     competition.setNom(resultSet.getString("nom"));
+                    competition.setDescription(resultSet.getString("Description"));
+                    competition.setType(resultSet.getString("Type"));
+                    competition.setHeure(resultSet.getTime("Heure"));
+                    try {
+                        Date date = resultSet.getDate("Date");
+                        if (date != null && !date.toLocalDate().equals(LocalDate.of(0000, 1, 1))) {
+                            competition.setDate(date);
+                        } else {
+                            // Set a default date or handle the zero date case
+                            competition.setDate(null); // Or set to a default date
+                        }
+                    } catch (SQLException e) {
+                        // Handle SQLException
+                        e.printStackTrace();
+                    }
+
+                        Terrain terrain = new Terrain();
+                        terrain.setID_Terrain(resultSet.getInt("ID_Terrain"));
+                        terrain.setNomTerrain(resultSet.getString("NomTerrain"));
+                        terrain.setType_surface(resultSet.getString("Type_surface"));
+                        terrain.setLocalisation(resultSet.getString("Localisation"));
+                        terrain.setPrix(resultSet.getDouble("Prix"));
+                        competition.setTerrain(terrain);
+
+
+                    if (resultSet.getObject("terrain_id") != null) {
+
+                        ServiceEquipe EquipeService = new ServiceEquipe();
+                        Equipe equipe1 = EquipeService.getById(resultSet.getInt("equipe1_id"));
+                        Equipe equipe2 = EquipeService.getById(resultSet.getInt("equipe2_id"));
+                        competition.setEquipe1(equipe1);
+                        competition.setEquipe2(equipe2);
+
+                    }
+
+                    // Set other attributes for equipe2
+
+
+
+                    else {
+                        Equipe defaultEquipe1 = new Equipe();
+                        Equipe defaultEquipe2 = new Equipe();
+                        // Set default values or leave them as null
+                        competition.setEquipe1(defaultEquipe1); // Set the terrain to null if it's not associated
+                        competition.setEquipe2(defaultEquipe2); // Set the terrain to null if it's not associated
+                    }
+
+
+
                     // Populate other attributes as needed
                 }
             }

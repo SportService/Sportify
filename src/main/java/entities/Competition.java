@@ -51,6 +51,7 @@ public class Competition  {
         this.terrain=terrain ;
     }
 
+
     public int getID_competiton() {
         return ID_competiton;
     }
