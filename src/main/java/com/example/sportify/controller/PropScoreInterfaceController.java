@@ -1,5 +1,6 @@
 package com.example.sportify.controller;
 
+import entities.ClassementEquipe;
 import entities.Competition;
 import entities.Equipe;
 import entities.Score;
@@ -11,10 +12,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import services.ServiceClassementEquipe;
 import services.ServiceScore;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.Comparator;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class PropScoreInterfaceController implements Initializable {
@@ -50,6 +54,8 @@ public class PropScoreInterfaceController implements Initializable {
     private ServiceScore scoreService= new ServiceScore() ;
 
     private Score score ;
+
+    private ServiceClassementEquipe classementEquipeService = new ServiceClassementEquipe(); // Initialize your service
 
 
     @FXML
@@ -97,33 +103,38 @@ public class PropScoreInterfaceController implements Initializable {
                 int scoreE2 = Integer.parseInt(scoreequipe2.getText());
 
 
-        if (scoreE1 > scoreE2) {
-            winner = competsave.getEquipe1();
-            loser = competsave.getEquipe2();
-        } else if (scoreE1 < scoreE2) {
-            winner = competsave.getEquipe2();
-            loser = competsave.getEquipe1();
-        } else {
-            winner = null;
-            loser = null;
-        }
-            if (score == null) {
-                score = new Score(competsave, winner, loser, scoreE1, scoreE2, "", "");
-                scoreService.ajouter(score);
-            } else {
-                Score scoree = new Score(score.getIdScore(),competsave, winner, loser, scoreE1, scoreE2, "", "");
-                // Update the existing score in the database
-                scoreService.modifier(scoree);
-            }
+                boolean isDraw = false;
+                if (scoreE1 > scoreE2) {
+                    winner = competsave.getEquipe1();
+                    loser = competsave.getEquipe2();
+                } else if (scoreE1 < scoreE2) {
+                    winner = competsave.getEquipe2();
+                    loser = competsave.getEquipe1();
+                } else {
+                    winner = null;
+                    loser = null;
+                    isDraw = true;
+                }
+                if (score == null) {
+                    score = new Score(competsave, winner, loser, scoreE1, scoreE2, "", "");
+                    scoreService.ajouter(score);
+                } else {
+                    Score scoree = new Score(score.getIdScore(), competsave, winner, loser, scoreE1, scoreE2, "", "");
+                    // Update the existing score in the database
+                    scoreService.modifier(scoree);
+                }
 
-            Stage stage = (Stage) save_btn.getScene().getWindow();
-            stage.close();
+                updateClassement(winner, loser, isDraw);
 
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Success");
-            alert.setContentText("Score Enregistrer ");
-            alert.showAndWait();
-        } catch (SQLException e) {
+
+                Stage stage = (Stage) save_btn.getScene().getWindow();
+                stage.close();
+
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Success");
+                alert.setContentText("Score Enregistrer ");
+                alert.showAndWait();
+            } catch (SQLException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setContentText(e.getMessage());
@@ -133,7 +144,126 @@ public class PropScoreInterfaceController implements Initializable {
 
     }
 
-    @Override
+   /* private void updateClassement(Equipe winner, Equipe loser, boolean isDraw) {
+         boolean newwinner=true ;
+         boolean newloser=true ;
+
+        try {
+            List<ClassementEquipe> AllClassement = classementEquipeService.afficher() ;
+            for ( ClassementEquipe table:AllClassement) {
+                if ( winner.getID() == table.getEquipe().getID()) {
+                    newwinner=false ;
+                }
+                 if ( loser.getID() == table.getEquipe().getID()) {
+                    newloser=false ;
+                }
+            }
+            if (newwinner==true) {
+                ClassementEquipe AddWinner= new ClassementEquipe(winner,3,1,1,1,0,0) ;
+                classementEquipeService.ajouter(AddWinner);
+            }
+           if (newloser==true) {
+                ClassementEquipe Addloser= new ClassementEquipe(loser,0,1,1,0,1,0) ;
+                classementEquipeService.ajouter(Addloser);
+            }
+
+
+
+            List<ClassementEquipe> classementEquipeList = classementEquipeService.afficher();
+
+            for (ClassementEquipe classementEquipe : classementEquipeList) {
+                if (classementEquipe.getEquipe().getID() == winner.getID()) {
+                    classementEquipe.setPoints(classementEquipe.getPoints() +  3);
+                    classementEquipe.setWin(classementEquipe.getWin() + 1);
+                    classementEquipe.setNbre_de_match(classementEquipe.getNbre_de_match() + 1);
+                } else if (classementEquipe.getEquipe().getID() == loser.getID()) {
+                    classementEquipe.setLoss(classementEquipe.getLoss() + 1);
+                    classementEquipe.setNbre_de_match(classementEquipe.getNbre_de_match() + 1);
+
+                } else if (isDraw) {
+                    classementEquipe.setDraw(classementEquipe.getDraw() + 1);
+                }
+
+                // Calculate the rank based on points (you need to implement this logic)
+                // Update the classementEquipe entry in the database
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        }*/
+
+    private void updateClassement(Equipe winner, Equipe loser, boolean isDraw) {
+        try {
+            // Check if winner and loser are already in the classement
+            boolean newWinner = true;
+            boolean newLoser = true;
+
+            List<ClassementEquipe> allClassement = classementEquipeService.afficher();
+            for (ClassementEquipe table : allClassement) {
+                if (winner.getID() == table.getEquipe().getID()) {
+                    newWinner = false;
+                }
+                if (loser.getID() == table.getEquipe().getID()) {
+                    newLoser = false;
+                }
+            }
+
+            // If winner is not in the classement, add them
+            if (newWinner) {
+                ClassementEquipe addWinner = new ClassementEquipe(winner, 0, 0, 0, 0, 0, 0);
+                classementEquipeService.ajouter(addWinner);
+            }
+
+            // If loser is not in the classement, add them
+            if (newLoser) {
+                ClassementEquipe addLoser = new ClassementEquipe(loser, 0, 0, 0, 0, 0, 0);
+                classementEquipeService.ajouter(addLoser);
+
+
+            }
+            else {
+
+            // Update points, wins, and matches played for both winner and loser
+            List<ClassementEquipe> classementEquipeList = classementEquipeService.afficher();
+            for (ClassementEquipe classementEquipe : classementEquipeList) {
+                if (classementEquipe.getEquipe().getID() == winner.getID()) {
+                    classementEquipe.setPoints(classementEquipe.getPoints() + 3);
+                    classementEquipe.setWin(classementEquipe.getWin() + 1);
+                    classementEquipe.setNbre_de_match(classementEquipe.getNbre_de_match() + 1);
+                } else if (classementEquipe.getEquipe().getID() == loser.getID()) {
+                    classementEquipe.setLoss(classementEquipe.getLoss() + 1);
+                    classementEquipe.setNbre_de_match(classementEquipe.getNbre_de_match() + 1);
+                }
+
+                // Calculate rank based on points
+                // You may need to implement this logic
+            }
+
+            // Update ranks
+            updateRanks(classementEquipeList);
+        }} catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+    private void updateRanks(List<ClassementEquipe> classementEquipeList) {
+        // Sort teams by points in descending order
+        classementEquipeList.sort(Comparator.comparingInt(ClassementEquipe::getPoints).reversed());
+
+        // Update ranks based on sorted list
+        int rank = 1;
+        for (ClassementEquipe classementEquipe : classementEquipeList) {
+            classementEquipe.setRank(rank++);
+            try {
+                classementEquipeService.modifier(classementEquipe);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+        @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         scoreequipe1.setText("-");
         scoreequipe2.setText("-");
