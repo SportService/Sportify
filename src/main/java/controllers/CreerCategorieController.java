@@ -46,7 +46,6 @@ public class CreerCategorieController {
 
     @FXML
     private void initialize() {
-        // Set initial selected item
         MenuItem defaultItem = menuButton.getItems().get(0);
         defaultItem.fire();
     }

@@ -33,7 +33,6 @@ public class EquipeController {
 
     @FXML
     void Check(ActionEvent event) {
-        // Load DashboardCategorieClient.fxml
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/DashboardCategorieClient.fxml"));
         try {
             Parent root = loader.load();
@@ -49,7 +48,6 @@ public class EquipeController {
 
     @FXML
     void create(ActionEvent event) {
-        // Load CreationEquipe.fxml
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/CreationEquipe.fxml"));
         try {
             Parent root = loader.load();

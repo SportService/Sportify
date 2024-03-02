@@ -210,6 +210,7 @@
                                   <Button fx:id="modifierButton" layoutX="611.0" layoutY="504.0" mnemonicParsing="false" onAction="#modifier" prefHeight="26.0" prefWidth="166.0" style="-fx-background-color: #64dd17;" text="Modifier " />
                                   <Button fx:id="supprimerButton" layoutX="611.0" layoutY="543.0" mnemonicParsing="false" onAction="#supprimer" prefHeight="26.0" prefWidth="166.0" style="-fx-background-color: #64dd17;" text="Supprimer " />
                                   <Button fx:id="returnButton" layoutX="611.0" layoutY="588.0" mnemonicParsing="false" onAction="#retourner" prefHeight="26.0" prefWidth="166.0" style="-fx-background-color: #64dd17;" text="Retourner " />
+                        <TextField fx:id="search" layoutX="277.0" layoutY="39.0" onAction="#searchForCategorie" promptText="Rechercher" />
                             </children>
                         </AnchorPane>
                     </bottom>

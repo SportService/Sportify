@@ -2,7 +2,6 @@ package controllers;
 
 import entities.Categorie;
 import entities.Equipe;
-import javafx.beans.Observable;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,14 +13,12 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import services.ServiceCategorie;
 import services.ServiceEquipe;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-
+import javafx.scene.control.Alert;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class DashboardEquipeController {
 
@@ -43,6 +40,8 @@ public class DashboardEquipeController {
 
     @FXML
     private MenuButton menuSports;
+    @FXML
+    private TextField id;
 
     @FXML
     private TableView<Equipe> tvEquipe;
@@ -71,7 +70,8 @@ public class DashboardEquipeController {
 
     @FXML
     private Button supprimerButton;
-
+    @FXML
+    private TextField search;
 
     public ServiceCategorie serviceCategorie = new ServiceCategorie();
 
@@ -89,7 +89,18 @@ public class DashboardEquipeController {
                 return new SimpleBooleanProperty(equipe.isRandom);
             });
 
+
+
             colRank.setCellValueFactory(new PropertyValueFactory<>("rank"));
+            tvEquipe.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+                if (newSelection != null) {
+                    nom.setText(newSelection.getNom());
+                    idCateg.setText(String.valueOf(newSelection.getIDCateg().getID_Categ())); // Assuming getId() retrieves the ID
+                    niveau.setText(newSelection.getNiveau());
+                    random.setText(String.valueOf(newSelection.getRandom()));
+                    rank.setText(String.valueOf(newSelection.getRank()));
+                }
+            });
         }catch (SQLException e){
             System.out.println(e.getMessage());
 
@@ -98,62 +109,66 @@ public class DashboardEquipeController {
     @FXML
     void ajouter(ActionEvent event) {
         try {
-            // Retrieve values from input fields
-            String nomEquipe = nom.getText();
-            String niveauEquipe = niveau.getText();
-            boolean isRandom = Boolean.parseBoolean(random.getText());
-            int rankEquipe = Integer.parseInt(rank.getText());
-            int categorieId = Integer.parseInt(idCateg.getText()); // Assuming you get the category ID from a text field
-
-            // Retrieve the Categorie object corresponding to the category ID
-            Categorie categorie = serviceCategorie.getCategorieById(categorieId); // Assuming you have a method to retrieve Categorie by ID
-
-            // Create a new Equipe object
-            Equipe newEquipe = new Equipe(nomEquipe, niveauEquipe,categorie, isRandom, rankEquipe);
-
-            // Call the service method to add the Equipe to the database
+            if (nom.getText().isEmpty() || niveau.getText().isEmpty() || random.getText().isEmpty() || rank.getText().isEmpty() || idCateg.getText().isEmpty()) {
+                afficherErreur("Veuillez remplir tous les champs.");
+                return;
+            }
+            boolean isRandom;
+            try {
+                isRandom = Boolean.parseBoolean(random.getText());
+            } catch (Exception e) {
+                afficherErreur("Le champ \"Random\" doit être un booléen (true/false).");
+                return;
+            }
+            int rankEquipe;
+            try {
+                rankEquipe = Integer.parseInt(rank.getText());
+            } catch (NumberFormatException e) {
+                afficherErreur("Le champ \"Rank\" doit être un entier.");
+                return;
+            }
+            int categorieId;
+            try {
+                categorieId = Integer.parseInt(idCateg.getText());
+            } catch (NumberFormatException e) {
+                afficherErreur("Le champ \"ID Categorie\" doit être un entier.");
+                return;
+            }
+            Categorie categorie = serviceCategorie.getCategorieById(categorieId);
+            if (categorie == null) {
+                afficherErreur("La catégorie spécifiée n'existe pas.");
+                return;
+            }
+            Equipe newEquipe = new Equipe(nom.getText(), niveau.getText(), categorie, isRandom, rankEquipe);
             serviceEquipe.ajouter(newEquipe);
-
-            // Refresh the TableView to reflect the changes
             refreshTableView();
-
-            // Clear input fields after adding
             clearFields();
+            afficherSucces("Équipe créée avec succès !");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
+
     @FXML
     void modifier(ActionEvent event) {
         try {
-            // Get the selected Equipe from the TableView
             Equipe selectedEquipe = tvEquipe.getSelectionModel().getSelectedItem();
 
             if (selectedEquipe != null) {
-                // Retrieve updated values from input fields
                 String nomEquipe = nom.getText();
                 String niveauEquipe = niveau.getText();
                 boolean isRandom = Boolean.parseBoolean(random.getText());
                 int rankEquipe = Integer.parseInt(rank.getText());
-                int categorieId = Integer.parseInt(idCateg.getText()); // Assuming you get the category ID from a text field
-
-                // Retrieve the Categorie object corresponding to the category ID
-                Categorie categorie = serviceCategorie.getCategorieById(categorieId); // Assuming you have a method to retrieve Categorie by ID
-
-                // Update the selected Equipe object
+                int categorieId = Integer.parseInt(idCateg.getText());
+                Categorie categorie = serviceCategorie.getCategorieById(categorieId);
                 selectedEquipe.setNom(nomEquipe);
                 selectedEquipe.setIDCateg(categorie);
                 selectedEquipe.setNiveau(niveauEquipe);
                 selectedEquipe.setRandom(isRandom);
                 selectedEquipe.setRank(rankEquipe);
 
-                // Call the service method to update the Equipe in the database
                 serviceEquipe.modifier(selectedEquipe);
-
-                // Refresh the TableView to reflect the changes
                 refreshTableView();
-
-                // Clear input fields after modifying
                 clearFields();
             }
         } catch (SQLException e) {
@@ -164,14 +179,10 @@ public class DashboardEquipeController {
     @FXML
     void supprimer(ActionEvent event) {
         try {
-            // Get the selected Equipe from the TableView
             Equipe selectedEquipe = tvEquipe.getSelectionModel().getSelectedItem();
 
             if (selectedEquipe != null) {
-                // Call the service method to delete the selected Equipe from the database
                 serviceEquipe.supprimer(selectedEquipe);
-
-                // Refresh the TableView to reflect the changes
                 refreshTableView();
             }
         } catch (SQLException e) {
@@ -179,13 +190,11 @@ public class DashboardEquipeController {
         }
     }
 
-    // Helper method to refresh the TableView with updated data
     private void refreshTableView() throws SQLException {
         ObservableList<Equipe> observableList = FXCollections.observableList(serviceEquipe.afficher());
         tvEquipe.setItems(observableList);
     }
 
-    // Helper method to clear input fields
     private void clearFields() {
         nom.clear();
         idCateg.clear();
@@ -193,6 +202,45 @@ public class DashboardEquipeController {
         random.clear();
         rank.clear();
     }
+    private void afficherErreur(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Erreur");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+    private void afficherSucces(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Succès");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+    @FXML
+    void searchForEquipe(ActionEvent event) {
+        try {
+            tvEquipe.getItems().clear();
+            String searchText = search.getText();
+            ObservableList<Equipe> observableList = FXCollections.observableList(serviceEquipe.afficher());
+
+            List<Equipe> filteredList = observableList.stream()
+                    .filter(e -> e.getNom().toLowerCase().contains(searchText.toLowerCase()))
+                    .collect(Collectors.toList());
+
+            ObservableList<Equipe> newList = FXCollections.observableList(filteredList);
+
+            tvEquipe.setItems(newList);
+
+            colNom.setCellValueFactory(new PropertyValueFactory<>("Nom"));
+            colIDCateg.setCellValueFactory(new PropertyValueFactory<>("IDCateg"));
+            colNiveau.setCellValueFactory(new PropertyValueFactory<>("Niveau"));
+            colRank.setCellValueFactory(new PropertyValueFactory<>("rank"));
+
+        }catch ( SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
 
 

@@ -22,6 +22,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
+<?import javafx.scene.layout.HBox?>
 <AnchorPane prefHeight="535.0" prefWidth="746.0" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.EquipeController">
     <children>
         <AnchorPane layoutX="94.0" layoutY="62.0" prefHeight="600.0" prefWidth="1100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -200,8 +201,10 @@
                                                 <Bloom />
                                              </effect>
                                           </Text>
-                                          <Button fx:id="btnCreate" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#create" prefHeight="40.0" prefWidth="593.0" style="-fx-background-color: linear-gradient(to right, #333333, #666666); -fx-effect: dropshadow(three-pass-box, #64b759, 3, 0, 0, 3); -fx-pref-width: 150px; -fx-pref-height: 75px; -fx-font-size: 1.8em; -fx-font-family: Calibri Light; -fx-text-fill: white; -fx-alignment: center; -fx-padding: 10px; -fx-spacing: 10px; -fx-font-weight: bold; -fx-translate-x: 50%; -fx-translate-y: 50%;" styleClass="btn" stylesheets="@../css/styles.css" text="Créer équipe" textAlignment="CENTER" />
-                                           <Button fx:id="btnCheck" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#Check" prefHeight="40.0" prefWidth="593.0" style="-fx-background-color: linear-gradient(to right, #333333, #666666); -fx-effect: dropshadow(three-pass-box, #64b759, 3, 0, 0, 3); -fx-pref-width: 150px; -fx-pref-height: 75px; -fx-font-size: 1.8em; -fx-font-family: Calibri Light; -fx-text-fill: white; -fx-alignment: center; -fx-padding: 10px; -fx-spacing: 10px; -fx-font-weight: bold; -fx-translate-x: 50%; -fx-translate-y: 50%;" styleClass="btn" stylesheets="@../css/styles.css" text="Check Categorie List" textAlignment="CENTER" />
+                                           <HBox spacing="10">
+                                               <Button fx:id="btnCreate" mnemonicParsing="false" onAction="#create" style="-fx-background-color: linear-gradient(to right, #333333, #666666); -fx-effect: dropshadow(three-pass-box, #333333, 3, 0, 0, 3); -fx-min-width: 100px; -fx-min-height: 50px; -fx-font-size: 14px; -fx-font-family: 'Calibri Light'; -fx-font-weight: bold; -fx-text-fill: white; -fx-alignment: center; -fx-padding: 5px;" text="Créer équipe" />
+                                               <Button fx:id="btnCheck" layoutX="10.0" layoutY="175.0" mnemonicParsing="false" onAction="#Check" style="-fx-background-color: linear-gradient(to right, #333333, #666666); -fx-effect: dropshadow(three-pass-box, #333333, 3, 0, 0, 3); -fx-min-width: 100px; -fx-min-height: 50px; -fx-font-size: 14px; -fx-font-family: 'Calibri Light'; -fx-font-weight: bold; -fx-text-fill: white; -fx-alignment: center; -fx-padding: 5px;" text="Check Categorie List" />
+                                           </HBox>
                                        </children>
                                     </VBox>
                                  </children></StackPane>

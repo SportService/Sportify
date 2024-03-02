@@ -26,12 +26,10 @@ public class ServiceEquipe implements IService<Equipe> {
             pre.setBoolean(4, equipe.getRandom());
             pre.setInt(5, equipe.getRank());
             pre.executeUpdate();
-
-            // Retrieve the generated keys (including id) after insertion
             try (ResultSet generatedKeys = pre.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
-                    int equipeId = generatedKeys.getInt(1); // Get the generated id for the Equipe
-                    equipe.setID(equipeId); // Set the id of the Equipe object
+                    int equipeId = generatedKeys.getInt(1);
+                    equipe.setID(equipeId);
                 } else {
                     throw new SQLException("Creating Equipe failed, no ID obtained.");
                 }
@@ -53,21 +51,17 @@ public class ServiceEquipe implements IService<Equipe> {
 
     @Override
     public void modifier(Equipe equipe) throws SQLException {
-        String req = "UPDATE equipe SET nom=?, niveau=?, IDCateg=?, isRandom=?, rank=?, id_createur=? WHERE IDEquipe=?";
+        String req = "UPDATE equipe SET nom=?, niveau=?, IDCateg=?, isRandom=?, rank=? WHERE IDEquipe=?";
         try (PreparedStatement pre = con.prepareStatement(req)) {
             pre.setString(1, equipe.getNom());
             pre.setString(2, equipe.getNiveau());
             pre.setInt(3, equipe.getIDCateg().getID_Categ());
             pre.setBoolean(4, equipe.getRandom());
             pre.setInt(5, equipe.getRank());
-            pre.setInt(6, equipe.getId_createur().getID_User());
-            pre.setInt(7, equipe.getID());
+            pre.setInt(6, equipe.getID());
             pre.executeUpdate();
         }
     }
-
-
-
 
     public List<Equipe> afficher() throws SQLException {
         List<Equipe> eq = new ArrayList<>();
@@ -112,11 +106,6 @@ public class ServiceEquipe implements IService<Equipe> {
         }
         return eq;
     }
-
-
-
-
-
     public Equipe getByID(int equipeId) throws SQLException {
         String query = "SELECT * FROM equipe WHERE IDEquipe = ?";
         try (PreparedStatement preparedStatement = con.prepareStatement(query)) {
@@ -129,48 +118,37 @@ public class ServiceEquipe implements IService<Equipe> {
                     equipe.setNiveau(resultSet.getString("Niveau"));
                     equipe.setRandom(resultSet.getBoolean("isRandom"));
                     equipe.setRank(resultSet.getInt("rank"));
-                    // Assuming you have a method to retrieve IDCateg from Categorie
                     Categorie categorie = new Categorie();
                     categorie.setIDCateg(resultSet.getInt("IDCateg"));
                     equipe.setIDCateg(categorie);
-
-                    // Assuming you have a method to retrieve id_createur from Utilisateur
                     Utilisateur createur = new Utilisateur();
                     createur.setID_User(resultSet.getInt("id_createur"));
                     equipe.setId_createur(createur);
 
                     return equipe;
                 } else {
-                    return null; // Equipe with the specified ID not found
+                    return null;
                 }
             }
         }
     }
-
-    // Method to retrieve the category ID associated with an Equipe
     public int getCategoryID(Equipe equipe) throws SQLException {
-        int idCategorie = -1; // Default value if not found
+        int idCategorie = -1;
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
 
         try {
-            conn = DB.getInstance().getConnection(); // Your method to get database connection
-
-            // Prepare SQL query
+            conn = DB.getInstance().getConnection();
             String query = "SELECT IDCateg FROM Equipe WHERE id = ?";
             stmt = conn.prepareStatement(query);
             stmt.setInt(1, equipe.getIDCateg().getID_Categ());
-
-            // Execute query
             rs = stmt.executeQuery();
 
-            // If result found, retrieve the category ID
             if (rs.next()) {
                 idCategorie = rs.getInt("IDCateg");
             }
         } finally {
-            // Close resources
             if (rs != null) rs.close();
             if (stmt != null) stmt.close();
             if (conn != null) conn.close();

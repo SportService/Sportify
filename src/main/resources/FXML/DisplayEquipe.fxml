@@ -13,7 +13,6 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.paint.LinearGradient?>
 <?import javafx.scene.paint.Stop?>
@@ -193,7 +192,6 @@
 
 
                                                 <Text fx:id="tfNomEquipe" />
-                                                <ListView fx:id="membersListView" prefHeight="450.0" prefWidth="380.0" VBox.vgrow="ALWAYS" />
 
                                                <Text fx:id="membersText" />
 
@@ -204,6 +202,7 @@
                                     </children>
                                 </GridPane>
                                 <Line endX="1635.4927978515625" endY="-6.999997138977051" layoutX="-363.0" layoutY="3.0" startX="363.0000305175781" startY="-6.999997138977051" stroke="#fff6f6" />
+                                          <ListView fx:id="membersListView" layoutX="21.0" layoutY="165.0" prefHeight="270.0" prefWidth="700.0" />
                                 <MenuButton fx:id="menuSports" layoutX="888.0" layoutY="51.0" mnemonicParsing="false" text="FootBall">
                                     <items>
                                         <MenuItem mnemonicParsing="false" text="Padel" />
@@ -211,6 +210,9 @@
                                     </items>
                                 </MenuButton>
                                            <Button fx:id="bntRetour" layoutX="442.0" layoutY="561.0" mnemonicParsing="false" onAction="#Retourner" style="-fx-background-color: linear-gradient(to right, #333333, #666666); -fx-effect: dropshadow(three-pass-box, #333333, 3, 0, 0, 3); -fx-min-width: 100px; -fx-min-height: 50px; -fx-font-size: 14px; -fx-font-family: 'Calibri Light'; -fx-font-weight: bold; -fx-text-fill: white; -fx-alignment: center; -fx-padding: 5px;" text="Retourner" />
+                        <TextField fx:id="searchTextField" layoutX="201.0" layoutY="51.0" />
+                        <Button fx:id="searchButton" layoutX="383.0" layoutY="51.0" mnemonicParsing="false" onAction="#search" text="Search" />
+                        <Button fx:id="exporter" layoutX="129.0" layoutY="51.0" mnemonicParsing="false" onAction="#exportToPdf" text="Exporter" />
                             </children>
                         </AnchorPane>
                     </bottom>

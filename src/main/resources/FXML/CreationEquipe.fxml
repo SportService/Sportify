@@ -193,19 +193,19 @@
                                         <VBox fx:id="vbox1" prefHeight="474.0" prefWidth="629.0" spacing="10" styleClass="black-background" stylesheets="@../css/styles.css">
                                             <children>
                                                 <Text fx:id="tfNom" fill="WHITE" lineSpacing="15.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-pref-height: 350; -fx-background-color: #FFFFFF; -fx-font-size: 30 px; -fx-font-weight: bold; -fx-alignment: center;" text="Nom de l'équipe:" wrappingWidth="584.888671875" />
-                                                <TextField fx:id="tfNomEquipe" text="Flame" />
+                                                <TextField fx:id="tfNomEquipe" promptText="Nom de l'équipe" />
                                                 <Text fx:id="tfListe" fill="WHITE" lineSpacing="15.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-pref-height: 350; -fx-background-color: #FFFFFF; -fx-font-size: 30 px; -fx-font-weight: bold; -fx-alignment: center;" text="Liste des coéquipiers:" wrappingWidth="584.888671875" />
-                                                <TextField fx:id="tfmembre1" text="Mariem" />
-                                                <TextField fx:id="tfmembre2" text="Sahar" />
-                                                <TextField fx:id="tfMembre3" text="Chaima" />
-                                                <TextField fx:id="tfMembre4" text="Wael" />
-                                                <TextField fx:id="tfMembre5" text="Wassim" />
-                                                <TextField fx:id="tfMembre6" text="Louay" />
-                                                <TextField fx:id="tfMembre7" text="Mariem" />
-                                                <TextField fx:id="tfMembre8" text="Zack" />
-                                                <TextField fx:id="tfMembre9" text="Isac" />
-                                                <TextField fx:id="tfMembre10" text="Manel" />
-                                                <TextField fx:id="tfMembre11" text="Mohamed" />
+                                                <TextField fx:id="tfmembre1" promptText="Membre" />
+                                                <TextField fx:id="tfmembre2" promptText="Membre" />
+                                                <TextField fx:id="tfMembre3" promptText="Membre" />
+                                                <TextField fx:id="tfMembre4" promptText="Membre" />
+                                                <TextField fx:id="tfMembre5" promptText="Membre" />
+                                                <TextField fx:id="tfMembre6" promptText="Membre" />
+                                                <TextField fx:id="tfMembre7" promptText="Membre" />
+                                                <TextField fx:id="tfMembre8" promptText="Membre" />
+                                                <TextField fx:id="tfMembre9" promptText="Membre" />
+                                                <TextField fx:id="tfMembre10" promptText="Membre" />
+                                                <TextField fx:id="tfMembre11" promptText="Membre" />
                                                 <HBox spacing="10">
                                                     <Button fx:id="bntCreate" mnemonicParsing="false" onAction="#create" style="-fx-background-color: linear-gradient(to right, #333333, #666666); -fx-effect: dropshadow(three-pass-box, #333333, 3, 0, 0, 3); -fx-min-width: 100px; -fx-min-height: 50px; -fx-font-size: 14px; -fx-font-family: 'Calibri Light'; -fx-font-weight: bold; -fx-text-fill: white; -fx-alignment: center; -fx-padding: 5px;" text="Confirmer la création" />
                                                     <Button fx:id="btnAfficher" layoutX="10.0" layoutY="175.0" mnemonicParsing="false" onAction="#afficher" style="-fx-background-color: linear-gradient(to right, #333333, #666666); -fx-effect: dropshadow(three-pass-box, #333333, 3, 0, 0, 3); -fx-min-width: 100px; -fx-min-height: 50px; -fx-font-size: 14px; -fx-font-family: 'Calibri Light'; -fx-font-weight: bold; -fx-text-fill: white; -fx-alignment: center; -fx-padding: 5px;" text="Afficher" />
@@ -218,10 +218,12 @@
                                 <Line endX="1635.4927978515625" endY="-6.999997138977051" layoutX="-363.0" layoutY="3.0" startX="363.0000305175781" startY="-6.999997138977051" stroke="#fff6f6" />
                                 <MenuButton fx:id="menuButton" layoutX="888.0" layoutY="51.0" mnemonicParsing="false" stylesheets="@../css/styles.css" text="FootBall">
                                     <items>
-                                        <MenuItem mnemonicParsing="false"  text="Padel" style="-fx-text-fill: black;" />
-                                        <MenuItem mnemonicParsing="false"  text="Tennis" style="-fx-text-fill: black;" />
+                                        <MenuItem mnemonicParsing="false" style="-fx-text-fill: black;" text="Padel" />
+                                        <MenuItem mnemonicParsing="false" style="-fx-text-fill: black;" text="Tennis" />
                                     </items>
                                 </MenuButton>
+                        <TextField fx:id="existingEmailTextField" layoutX="562.0" layoutY="39.0" promptText="Entrez un e-mail existant" />
+                        <Button layoutX="730.0" layoutY="39.0" mnemonicParsing="false" onAction="#selectExistingUser" text="Sélectionner" />
                             </children>
                         </AnchorPane>
                     </bottom>

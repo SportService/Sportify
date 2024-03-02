@@ -70,12 +70,7 @@ public class CreerController {
     @FXML
     void create(ActionEvent event) {
         try{
-            // Retrieve Categorie object based on the entered ID
             Categorie categorie = retrieveCategorieById(Integer.parseInt(tfIDCateg.getText()));
-
-            // Retrieve Utilisateur object based on the entered ID
-          //  Utilisateur createur = retrieveUtilisateurById(Integer.parseInt(tfid_createur.getText()));
-
             serviceEquipe.ajouter(new Equipe(tfNomEquipe.getText(), tfNiveau.getText(), categorie, Boolean.parseBoolean(tfisRandom.getText()), Integer.parseInt(tfRank.getText())));
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Success");
@@ -89,7 +84,6 @@ public class CreerController {
         }
     }
     private Categorie retrieveCategorieById(int id) throws SQLException {
-        // Assuming you have a service for Categorie
         ServiceCategorie serviceCategorie = new ServiceCategorie();
         return serviceCategorie.getCategorieById(id);
     }

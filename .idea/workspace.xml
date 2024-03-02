@@ -5,24 +5,32 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c1690012-a5ed-42cd-9aca-88afcc146081" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/sportify/HelloApplication.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/sportify/HelloController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/entities/Equipe.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/Equipe.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/AfficherEquipeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/AfficherEquipeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/CategorieClientController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/CategorieClientController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/CreerCategorieController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/CreerCategorieController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/CreerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/CreerController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/DashboardCategorieController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/DashboardCategorieController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/DashboardEquipeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/DashboardEquipeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/DisplayEquipeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/DisplayEquipeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/EquipeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/EquipeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/ModifierCategorieController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/SportsDataController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/services/ServiceCategorie.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/services/ServiceCategorie.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/services/ServiceEquipe.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/services/ServiceEquipe.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/test/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/test/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/sportify/hello-view.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/sportify/HelloApplication.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/sportify/HelloController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/sportify/hello-view.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/entities/Equipe.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/entities/Equipe.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/services/ServiceUtilisateur.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/services/ServiceUtilisateur.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/test/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/test/App.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/FXML/CreationEquipe.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/FXML/CreationEquipe.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/FXML/DashboardCategorieAdmin.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/FXML/DashboardCategorieAdmin.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/FXML/DashboardCategorieClient.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/FXML/DashboardCategorieClient.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/FXML/DashboardEquipe.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/FXML/DashboardEquipe.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/FXML/DisplayEquipe.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/FXML/DisplayEquipe.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/FXML/Equipes.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/FXML/Equipes.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/FXML/ModifierCategorie.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/FXML/SportsData.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/module-info.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/module-info.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/services/ServiceCategorie.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/services/ServiceCategorie.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/services/ServiceEquipe.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/services/ServiceEquipe.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/test/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/test/Main.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,12 +78,16 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;git-widget-placeholder&quot;: &quot;mariem&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/MAYYEM/Desktop/Sporitfy/src/main/resources/img&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/MAYYEM/Downloads/core-3.5.3-javadoc.jar&quot;,
     &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.project.maven.importing&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -87,7 +99,7 @@
       <recent name="C:\Users\MAYYEM\Desktop\Sporitfy\src\main\resources\img" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.App">
+  <component name="RunManager" selected="Application.AppAdmin">
     <configuration name="App" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="test.App" />
       <module name="Sportify" />
@@ -171,8 +183,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.App" />
         <item itemvalue="Application.AppAdmin" />
+        <item itemvalue="Application.App" />
         <item itemvalue="Application.Main" />
         <item itemvalue="Maven.Sportify [javafx:run]" />
         <item itemvalue="Application.HelloApplication" />
@@ -212,7 +224,26 @@
       <workItem from="1708587034386" duration="9789000" />
       <workItem from="1708668885997" duration="3107000" />
       <workItem from="1708703589445" duration="4422000" />
-      <workItem from="1708772367852" duration="303000" />
+      <workItem from="1708772367852" duration="2854000" />
+      <workItem from="1708884751021" duration="6354000" />
+      <workItem from="1708935598688" duration="4387000" />
+      <workItem from="1708941449264" duration="98000" />
+      <workItem from="1708941726025" duration="178000" />
+      <workItem from="1708958773042" duration="4436000" />
+      <workItem from="1709024291858" duration="291000" />
+      <workItem from="1709025494661" duration="125000" />
+      <workItem from="1709062783940" duration="4440000" />
+      <workItem from="1709105157578" duration="3262000" />
+      <workItem from="1709125206846" duration="2253000" />
+      <workItem from="1709202868209" duration="58000" />
+      <workItem from="1709204322463" duration="4034000" />
+      <workItem from="1709213126922" duration="1877000" />
+      <workItem from="1709286761912" duration="14172000" />
+      <workItem from="1709324041555" duration="10784000" />
+      <workItem from="1709364371362" duration="2197000" />
+      <workItem from="1709366597669" duration="4159000" />
+      <workItem from="1709397902999" duration="625000" />
+      <workItem from="1709401069959" duration="1796000" />
     </task>
     <servers />
   </component>

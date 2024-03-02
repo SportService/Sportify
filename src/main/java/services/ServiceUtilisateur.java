@@ -17,27 +17,19 @@ public class ServiceUtilisateur implements IService<Utilisateur>{
         con = DB.getInstance().getConnection();
     }
 
-
-    // Method to retrieve Utilisateur object by ID
-    public Utilisateur retrieveUtilisateurById(int id) throws SQLException {
+    public Utilisateur retrieveUtilisateurByEmail(String email) throws SQLException {
         Utilisateur utilisateur = null;
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
 
         try {
-            // Establish a connection to your database
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/sportify", "root", null);
 
-            // Prepare the SQL statement to retrieve Utilisateur by ID
-            String query = "SELECT * FROM Utilisateur WHERE ID_User = ?";
+            String query = "SELECT * FROM Utilisateur WHERE Email = ?";
             statement = connection.prepareStatement(query);
-            statement.setInt(1, id);
-
-            // Execute the query
+            statement.setString(1, email);
             resultSet = statement.executeQuery();
-
-            // If a record is found, create a Utilisateur object
             if (resultSet.next()) {
                 utilisateur = new Utilisateur(
                         resultSet.getInt("ID_User"),
@@ -53,7 +45,6 @@ public class ServiceUtilisateur implements IService<Utilisateur>{
                 );
             }
         } finally {
-            // Close resources
             if (resultSet != null) {
                 resultSet.close();
             }
@@ -67,6 +58,48 @@ public class ServiceUtilisateur implements IService<Utilisateur>{
 
         return utilisateur;
     }
+    public Utilisateur getUserByEmail(String email) throws SQLException {
+        Utilisateur utilisateur = null;
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/sportify", "root", null);
+
+            String query = "SELECT * FROM Utilisateur WHERE Email = ?";
+            statement = connection.prepareStatement(query);
+            statement.setString(1, email);
+            resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                utilisateur = new Utilisateur(
+                        resultSet.getInt("ID_User"),
+                        resultSet.getString("Nom"),
+                        resultSet.getString("Prenom"),
+                        resultSet.getString("Email"),
+                        resultSet.getString("Mot_de_passe"),
+                        resultSet.getString("Image"),
+                        resultSet.getString("Niveau_competence"),
+                        resultSet.getString("Role"),
+                        resultSet.getString("Adresse"),
+                        resultSet.getString("Sexe")
+                );
+            }
+        } finally {
+            if (resultSet != null) {
+                resultSet.close();
+            }
+            if (statement != null) {
+                statement.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
+        }
+
+        return utilisateur;
+    }
+
 
     @Override
     public void ajouter(Utilisateur utilisateur) throws SQLException {

@@ -4,11 +4,15 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 import entities.Categorie;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,6 +26,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import services.ServiceCategorie;
+import utils.DB;
 
 public class DashboardCategorieController implements Initializable {
 
@@ -67,6 +72,9 @@ public class DashboardCategorieController implements Initializable {
 
     @FXML
     private VBox vbox2;
+    @FXML
+    private TextField search;
+    ObservableList<Categorie> dataList= FXCollections.observableArrayList();
 
     ServiceCategorie serviceCategorie=new ServiceCategorie();
 
@@ -78,9 +86,7 @@ public class DashboardCategorieController implements Initializable {
         File selectedFile = fileChooser.showOpenDialog(stage);
 
         if (selectedFile != null) {
-            // Get the selected file path
             String imageUrl = selectedFile.toURI().toString();
-            // Set the text of the tfImage TextField with the selected file path
             imageField.setText(imageUrl);
         }
     }
@@ -97,23 +103,41 @@ public class DashboardCategorieController implements Initializable {
             System.out.println(e.getMessage());
         }
     }*/
-    @FXML
-    void ajouter(ActionEvent event) {
+   @FXML
+   void ajouter(ActionEvent event) {
+       try {
+           if (nomField.getText().isEmpty() || description.getText().isEmpty() || imageField.getText().isEmpty()) {
+               afficherErreur("Veuillez remplir tous les champs.");
+               return;
+           }
+           if (isInteger(nomField.getText()) || isInteger(description.getText()) || isInteger(imageField.getText())) {
+               afficherErreur("Veuillez saisir des chaînes de caractères dans les champs appropriés.");
+               return;
+           }
+
+           Categorie nouvelleCategorie = new Categorie(nomField.getText(), description.getText(), imageField.getText());
+           ServiceCategorie serviceCategorie = new ServiceCategorie();
+           serviceCategorie.ajouter(nouvelleCategorie);
+
+           ObservableList<Categorie> observableList = tv2.getItems();
+           observableList.add(nouvelleCategorie);
+           afficherSucces("Catégorie ajoutée");
+           clearFields();
+       } catch (SQLException e) {
+           afficherErreur("Erreur lors de l'ajout de la catégorie: " + e.getMessage());
+       }
+   }
+    private boolean isInteger(String str) {
         try {
-            ServiceCategorie serviceCategorie = new ServiceCategorie();
-            System.out.println("*********");
-            serviceCategorie.ajouter(new Categorie(nomField.getText(), description.getText(), imageField.getText()));
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Success");
-            alert.setContentText("Categorie ajoutée");
-            alert.showAndWait();
-        } catch (SQLException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("ERROR");
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
+            Integer.parseInt(str);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
         }
     }
+
+
+
 
     @FXML
     void modifier(ActionEvent event) {
@@ -190,30 +214,78 @@ public class DashboardCategorieController implements Initializable {
             colNom.setCellValueFactory(new PropertyValueFactory<>("Nom"));
             colDesc.setCellValueFactory(new PropertyValueFactory<>("Description"));
             colImage.setCellValueFactory(new PropertyValueFactory<>("Image"));
+
+
+           // List<Categorie> categorieList = serviceCategorie.afficher();
+
+           // Set items to your TableView (assuming it's named tv2)
+           // tv2.setItems(observableList);
+
+
+          /*  Categorie categorie1= new Categorie("Volleyball","feel it in the air","/img/istockphoto-1371823675-612x612.jpg");
+            Categorie categorie2= new Categorie("Football","feel it in the air","/img/clubs-foot-europeens-plus-suivis-reseaux-sociaux-min.jpeg");
+            Categorie categorie3= new Categorie("Rugby","feel it in the air","/img/sport-le-nouvel-equipement-a-400-euros-qui-arrive-sur-les-pelouses-de-rugby-1451176.jpg");
+            Categorie categorie4= new Categorie("Basketball","feel it in the air","/img/180358.jpg");
+            dataList.addAll(categorie1,categorie2,categorie3,categorie4);*/
+           // FilteredList<Categorie> filteredData = new FilteredList<>(dataList,b ->true );
+
+         /*   search.textProperty().addListener((observable, oldValue, newValue) -> {
+                filteredData.setPredicate(categorie -> {
+
+
+                    if (newValue == null || newValue.isEmpty()) {
+                        return true;
+                    }
+
+                    String lowerCaseFilter = newValue.toLowerCase();
+
+                    if (categorie.getNom().toLowerCase().indexOf(lowerCaseFilter) != -1 ) {
+                        return true;
+                    } else if (categorie.getDescription().toLowerCase().indexOf(lowerCaseFilter) != -1) {
+                        return true;
+                    }
+                    else if (categorie.getImage().toLowerCase().indexOf(lowerCaseFilter)!=-1)
+                        return true;
+                    else
+                        return false;
+                });
+            });
+
+            SortedList<Categorie> sortedData = new SortedList<>(filteredData);
+
+            sortedData.comparatorProperty().bind(tv2.comparatorProperty());
+
+            tv2.setItems(sortedData);
+*/
+            tv2.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+                if (newSelection != null) {
+                    nomField.setText(newSelection.getNom());
+                    description.setText(newSelection.getDescription());
+                    imageField.setText(newSelection.getImage());
+                } else {
+                    nomField.clear();
+                    description.clear();
+                    imageField.clear();
+                }
+            });
         } catch(SQLException e) {
             System.out.println(e.getMessage());
         }
 
         for (MenuItem item : menuSports.getItems()) {
-            item.setOnAction(this::handleMenuItemAction); // Assigning the event handler
+            item.setOnAction(this::handleMenuItemAction);
         }
     }
-    // Event handler for MenuItem action
     private void handleMenuItemAction(ActionEvent event) {
         MenuItem menuItem = (MenuItem) event.getSource();
-        menuSports.setText(menuItem.getText()); // Update the text of the MenuButton
+        menuSports.setText(menuItem.getText());
     }
     @FXML
     void retourner(ActionEvent event) {
         try {
-            // Load the FXML file for DashboardEquipe
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/DashboardEquipe.fxml"));
             Parent root = loader.load();
-
-            // Get the controller for DashboardEquipe
             DashboardEquipeController controller = loader.getController();
-
-            // Show the scene
             Stage stage = (Stage) returnButton.getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.show();
@@ -221,5 +293,44 @@ public class DashboardCategorieController implements Initializable {
             e.printStackTrace();
         }
     }
+    private void afficherErreur(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Erreur");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+    private void afficherSucces(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Succès");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+        @FXML
+        void searchForCategorie(ActionEvent event) {
+            try {
+                tv2.getItems().clear();
+                String searchText = search.getText();
+                ObservableList<Categorie> observableList = FXCollections.observableList(serviceCategorie.afficher());
+
+                List<Categorie> filteredList = observableList.stream()
+                        .filter(e -> e.getNom().toLowerCase().contains(searchText.toLowerCase()))
+                        .collect(Collectors.toList());
+
+                ObservableList<Categorie> newList = FXCollections.observableList(filteredList);
+
+                tv2.setItems(newList);
+
+                colNom.setCellValueFactory(new PropertyValueFactory<>("Nom"));
+                colDesc.setCellValueFactory(new PropertyValueFactory<>("Description"));
+                colImage.setCellValueFactory(new PropertyValueFactory<>("Image"));
+
+
+            }catch ( SQLException e) {
+                e.printStackTrace();
+            }
+        }
 
 }
