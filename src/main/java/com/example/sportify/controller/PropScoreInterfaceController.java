@@ -31,11 +31,7 @@ public class PropScoreInterfaceController implements Initializable {
     private Text equipe2;
 
 
-    @FXML
-    private TextField playere1;
 
-    @FXML
-    private TextField playere2;
 
     @FXML
     private Button save_btn;

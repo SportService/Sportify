@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -14,6 +15,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
+import javafx.stage.Stage;
 import services.CompetitionService;
 import services.ServiceEquipe;
 
@@ -48,6 +52,13 @@ public class JoueurTeamVScontroller implements Initializable {
     private Competition Competition;
 
     private int matchId;
+
+    @FXML
+    private Button localisationButton;
+
+
+    private static final String GOOGLE_MAPS_API_KEY = "AIzaSyBa8l76bfCyfPiwJeFLJCMFhRb_lOSS58M";
+
 
 
     CompetitionService competservice = new CompetitionService();
@@ -222,6 +233,28 @@ public class JoueurTeamVScontroller implements Initializable {
     }
 
     @FXML
+    void showTerrainLocation(MouseEvent event) {
+        String terrainLocation = "36.89587754985445,10.193551893128049"; // Assuming the getLocation() method returns the location as "latitude,longitude"
+
+        // Construct the URL for displaying the map
+        String mapUrl = "https://www.google.com/maps/embed/v1/view?key=" + GOOGLE_MAPS_API_KEY + "&center=" + terrainLocation + "&zoom=15";
+
+        // Create a WebView to display the map
+        WebView webView = new WebView();
+        WebEngine webEngine = webView.getEngine();
+
+        // Load the HTML content with the embedded Google Maps iframe
+        String htmlContent = "<html><iframe width=800 height=650 style=border:0 loading=lazy allowfullscreen src=https://www.google.com/maps/embed/v1/place?q=place_id:ChIJO6D7WQvL4hIRu3dDvh-FGaE&key=AIzaSyBa8l76bfCyfPiwJeFLJCMFhRb_lOSS58M></iframe></html>"  ;
+        webEngine.loadContent(htmlContent);
+
+        // Create a new stage to display the map
+        Stage mapStage = new Stage();
+        mapStage.setTitle("Terrain Localisation");
+        mapStage.setScene(new Scene(webView, 800, 600));
+        mapStage.show();
+    }
+
+    @FXML
     private void joinButtonE2Clicked(ActionEvent event) {
         try {
             equipeservice.ajouterMembre(compet.getEquipe2(), loggedUser);
@@ -235,7 +268,7 @@ public class JoueurTeamVScontroller implements Initializable {
         }
     }
 
-
+   @FXML
     private void QuitButtonClicked(ActionEvent event) {
         try {
             equipeservice.supprimerMembre(compet.getEquipe2(), loggedUser);

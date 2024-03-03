@@ -16,7 +16,7 @@
             <Image url="file:/C:/Users/wassim/Desktop/PIDEV/dev/Sportify/src/image/teams%20VS.jpg" />
          </image>
       </ImageView>
-      <VBox fx:id="detailsVbox" layoutX="97.0" layoutY="14.0" prefHeight="70.0" prefWidth="671.0" />
+      <VBox fx:id="detailsVbox" layoutX="27.0" layoutY="16.0" prefHeight="70.0" prefWidth="671.0" />
       <TextField fx:id="nomEquipe1" alignment="CENTER" editable="false" layoutX="97.0" layoutY="93.0" prefHeight="45.0" prefWidth="248.0" style="-fx-background-color: #9e1010; -fx-border-color: white; -fx-text-fill: white;" text="EQUIPE 1">
          <font>
             <Font name="System Bold" size="28.0" />
@@ -42,6 +42,11 @@
       <Button fx:id="weatherButton" layoutX="807.0" layoutY="28.0" mnemonicParsing="false" onMouseClicked="#fetchWeather" prefHeight="46.0" prefWidth="129.0" text="WEATHER" textFill="#2d941d">
          <font>
             <Font name="System Bold" size="16.0" />
+         </font>
+      </Button>
+      <Button fx:id="localisationButton" contentDisplay="RIGHT" layoutX="641.0" layoutY="29.0" mnemonicParsing="false" onMouseClicked="#showTerrainLocation" prefHeight="46.0" prefWidth="155.0" text="Localisation Terrain" textFill="#2d941d">
+         <font>
+            <Font name="System Bold" size="14.0" />
          </font>
       </Button>
    </children>

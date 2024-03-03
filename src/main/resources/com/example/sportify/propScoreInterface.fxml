@@ -15,21 +15,8 @@
             <Image url="https://i.ibb.co/s28GZQT/CUSTOMIZABLE-SPORTS-SCOREBOARD-Made-with-Poster-My-Wall.jpg" />
          </image>
       </ImageView>
-      <TextField id="red" alignment="CENTER" editable="false" layoutX="299.0" layoutY="190.0" prefHeight="50.0" prefWidth="158.0" style="-fx-background-color: black;" stylesheets="file:/C:/Users/wassim/Desktop/PIDEV/dev/Sportify/src/css/stylesheet.css">
-         <font>
-            <Font name="Bodoni MT" size="25.0" />
-         </font>
-      </TextField>
-      <TextField id="red" fx:id="playere1" alignment="CENTER" editable="false" layoutX="95.0" layoutY="190.0" prefHeight="51.0" prefWidth="227.0" style="-fx-background-color: #06345E;" stylesheets="file:/C:/Users/wassim/Desktop/PIDEV/dev/Sportify/src/css/stylesheet.css" text="JOUEUR 1">
-         <font>
-            <Font size="24.0" />
-         </font></TextField>
       <Button id="yellow" fx:id="save_btn" layoutX="382.0" layoutY="428.0" mnemonicParsing="false" onMouseClicked="#save" prefHeight="58.0" prefWidth="191.0" stylesheets="file:/C:/Users/wassim/Desktop/PIDEV/dev/Sportify/src/css/stylesheet.css" text="ENREGISTRER" />
       <Button id="yellow" fx:id="annuler_btn" layoutX="215.0" layoutY="428.0" mnemonicParsing="false" onMouseClicked="#close" prefHeight="58.0" prefWidth="167.0" stylesheets="file:/C:/Users/wassim/Desktop/PIDEV/dev/Sportify/src/css/stylesheet.css" text="Annuler" />
-      <TextField id="red" fx:id="playere2" alignment="CENTER" cache="true" editable="false" layoutX="431.0" layoutY="190.0" prefHeight="50.0" prefWidth="218.0" style="-fx-background-color: #78252B;" stylesheets="file:/C:/Users/wassim/Desktop/PIDEV/dev/Sportify/src/css/stylesheet.css" text="JOUEUR 2">
-         <font>
-            <Font name="Bookshelf Symbol 7" size="22.0" />
-         </font></TextField>
       <TextField fx:id="scoreequipe1" alignment="CENTER" layoutX="65.0" layoutY="94.0" prefHeight="51.0" prefWidth="45.0" promptText="2" style="-fx-background-color: transparent;" text="1">
          <font>
             <Font name="Montserrat Bold" size="24.0" />

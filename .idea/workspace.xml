@@ -7,10 +7,10 @@
     <list default="true" id="c1690012-a5ed-42cd-9aca-88afcc146081" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/sportify/HelloApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/sportify/HelloApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/sportify/controller/JoueurTeamVScontroller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/sportify/controller/JoueurTeamVScontroller.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/sportify/controller/PropScoreInterfaceController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/sportify/controller/PropScoreInterfaceController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/sportify/JoueurTeamVS.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/sportify/JoueurTeamVS.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/sportify/propScoreInterface.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/sportify/propScoreInterface.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,7 +71,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Problems",
+    "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.4827586",
     "settings.editor.selected.configurable": "reference.settings.project.maven.repository.indices",
@@ -186,7 +186,8 @@
       <workItem from="1709406522009" duration="3397000" />
       <workItem from="1709416270743" duration="763000" />
       <workItem from="1709417055739" duration="3291000" />
-      <workItem from="1709457401942" duration="13930000" />
+      <workItem from="1709457401942" duration="18964000" />
+      <workItem from="1709489907924" duration="6092000" />
     </task>
     <servers />
   </component>
