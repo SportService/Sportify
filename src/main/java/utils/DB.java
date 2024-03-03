@@ -7,14 +7,13 @@ import java.sql.SQLException;
 public class DB {
     private final String URL = "jdbc:mysql://localhost:3306/sportify";
     private final String USERNAME = "root";
-    private final String PASSWORD = "PHW#84#jeor";
-    //private final String PASSWORD = "";
+    private final String PASSWORD = "";
     private static DB instance;
     private Connection connection;
 
     private DB() {
         try {
-            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            connection = DriverManager.getConnection(URL, USERNAME, null);
             System.out.println("Connected");
         } catch (SQLException e) {
             System.out.println(e.getMessage());

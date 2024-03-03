@@ -72,13 +72,14 @@ public class ServicUtilisateur implements IService<Utilisateur> {
     public List<Utilisateur> afficher() throws SQLException {
         List<Utilisateur> utilisateurs = new ArrayList<>();
         String query = "SELECT * FROM utilisateur";
-        try (Statement st = con.createStatement(); ResultSet rs = st.executeQuery(query)) {
+        try (Statement st = con.createStatement();
+             ResultSet rs = st.executeQuery(query)) {
             while (rs.next()) {
                 Utilisateur utilisateur = new Utilisateur();
                 utilisateur.setId(rs.getInt("id"));
                 utilisateur.setNom(rs.getString("nom"));
                 utilisateur.setPrenom(rs.getString("prenom"));
-                utilisateur.setMot_de_passe(rs.getString("mot_de_passe")); // Consider security implications
+                utilisateur.setMot_de_passe(rs.getString("mot_de_passe"));
                 utilisateur.setEmail(rs.getString("email"));
                 utilisateur.setImage(rs.getString("image"));
                 utilisateur.setAdresse(rs.getString("adresse"));
@@ -94,6 +95,27 @@ public class ServicUtilisateur implements IService<Utilisateur> {
         }
         return utilisateurs;
     }
+
+    @Override
+    public void ajouter_v2(Utilisateur utilisateur) throws SQLException {
+
+    }
+
+    @Override
+    public void modifier_v2(Utilisateur utilisateur) throws SQLException {
+
+    }
+
+    @Override
+    public void supprimer_v2(Utilisateur utilisateur) throws SQLException {
+
+    }
+
+    @Override
+    public List<Utilisateur> afficher_v2() throws SQLException {
+        return null;
+    }
+
     public Utilisateur getById(int id)throws SQLException{
         return afficher().stream().filter(u->u.getId()==id).findFirst().orElse(null);
     }
@@ -143,6 +165,90 @@ public class ServicUtilisateur implements IService<Utilisateur> {
         }
         return null;
     }
+    public Utilisateur retrieveUtilisateurByEmail(String email) throws SQLException {
+        Utilisateur utilisateur = null;
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
 
+        try {
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/sportify", "root", null);
+
+            String query = "SELECT * FROM utilisateur WHERE email = ?";
+            statement = connection.prepareStatement(query);
+            statement.setString(1, email);
+            resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                utilisateur = new Utilisateur(
+                        resultSet.getInt("id"),
+                        resultSet.getString("nom"),
+                        resultSet.getString("prenom"),
+                        resultSet.getString("mot_de_passe"),
+                        resultSet.getString("email"),
+                        resultSet.getString("image"),
+                        resultSet.getString("adresse"),
+                        resultSet.getString("niveau_competence"),
+                        resultSet.getDate("date_de_naissance"),
+                      //  resultSet.getRole(Role.valueOf(resultSet.getString("role")));
+                        resultSet.getBoolean("verified")
+                );
+            }
+        } finally {
+            if (resultSet != null) {
+                resultSet.close();
+            }
+            if (statement != null) {
+                statement.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
+        }
+
+        return utilisateur;
+    }
+    public Utilisateur getUserByEmail(String email) throws SQLException {
+        Utilisateur utilisateur = null;
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/sportify", "root", null);
+
+            String query = "SELECT * FROM utilisateur WHERE email = ?";
+            statement = connection.prepareStatement(query);
+            statement.setString(1, email);
+            resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                utilisateur = new Utilisateur(
+                        resultSet.getInt("id"),
+                        resultSet.getString("nom"),
+                        resultSet.getString("prenom"),
+                        resultSet.getString("mot_de_passe"),
+                        resultSet.getString("email"),
+                        resultSet.getString("image"),
+                        resultSet.getString("adresse"),
+                        resultSet.getString("niveau_competence"),
+                        resultSet.getDate("date_de_naissance"),
+                        //  resultSet.getRole(Role.valueOf(resultSet.getString("role")));
+                        resultSet.getBoolean("verified")
+
+                );
+            }
+        } finally {
+            if (resultSet != null) {
+                resultSet.close();
+            }
+            if (statement != null) {
+                statement.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
+        }
+
+        return utilisateur;
+    }
 
 }
