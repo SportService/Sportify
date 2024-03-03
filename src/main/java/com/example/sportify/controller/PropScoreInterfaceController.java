@@ -1,9 +1,6 @@
 package com.example.sportify.controller;
 
-import entities.ClassementEquipe;
-import entities.Competition;
-import entities.Equipe;
-import entities.Score;
+import entities.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -13,6 +10,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import services.ServiceClassementEquipe;
+import services.ServiceClassementUser;
+import services.ServiceEquipe;
 import services.ServiceScore;
 
 import java.net.URL;
@@ -56,6 +55,8 @@ public class PropScoreInterfaceController implements Initializable {
     private Score score ;
 
     private ServiceClassementEquipe classementEquipeService = new ServiceClassementEquipe(); // Initialize your service
+    private ServiceClassementUser classementUserService = new ServiceClassementUser(); // Initialize your service
+    private ServiceEquipe EquipeMembreService = new ServiceEquipe(); // Initialize your service
 
 
     @FXML
@@ -123,8 +124,13 @@ public class PropScoreInterfaceController implements Initializable {
                     // Update the existing score in the database
                     scoreService.modifier(scoree);
                 }
+                if  (competsave.getType() == "Equipe" ) {
+                    updateClassement(winner, loser, isDraw);
+                }
+                else {
+                    updateClassementUser(winner, loser, isDraw);
+                }
 
-                updateClassement(winner, loser, isDraw);
 
 
                 Stage stage = (Stage) save_btn.getScene().getWindow();
@@ -246,7 +252,71 @@ public class PropScoreInterfaceController implements Initializable {
         }
     }
 
+    private void updateClassementUser(Equipe winner, Equipe loser, boolean isDraw) {
+        try {
+            // Check if winner and loser are already in the classement
+            boolean newWinner = true;
+            boolean newLoser = true;
 
+            List<Utilisateur> playersWinner = EquipeMembreService.getEquipeMembres(winner);
+            List<Utilisateur> playersLoser = EquipeMembreService.getEquipeMembres(loser);
+
+            // For solo matches, handle each player individually
+                for (Utilisateur playerW : playersWinner) {
+                    newWinner = true; // Reset for each player
+                    for (ClassementUser table : classementUserService.afficher()) {
+                        if (playerW.getId() == table.getUser().getId()) {
+                            newWinner = false;
+                            break; // No need to continue checking if found
+                        }
+                    }
+                    if (newWinner) {
+                        ClassementUser addWinner = new ClassementUser(playerW, 0, 0, 0, 0, 0, 0);
+                        classementUserService.ajouter(addWinner);
+                    }
+                }
+
+
+                for (Utilisateur playerL : playersLoser) {
+                    newLoser = true; // Reset for each player
+                    for (ClassementUser table : classementUserService.afficher()) {
+                        if (playerL.getId() == table.getUser().getId()) {
+                            newLoser = false;
+                            break; // No need to continue checking if found
+                        }
+                    }
+                    if (newLoser) {
+                        ClassementUser addLoser = new ClassementUser(playerL, 0, 0, 0, 0, 0, 0);
+                        classementUserService.ajouter(addLoser);
+                    }
+                }
+
+            List<ClassementUser> classementUserList = classementUserService.afficher();
+            for (ClassementUser classementUser : classementUserList) {
+                for (Utilisateur player : playersWinner) {
+                    if (classementUser.getUser().getId() == player.getId()) {
+                        classementUser.setPoints(classementUser.getPoints() + 3);
+                        classementUser.setWin(classementUser.getWin() + 1);
+                        classementUser.setNbre_de_match(classementUser.getNbre_de_match() + 1);
+                    }
+                }
+                for (Utilisateur player : playersLoser) {
+                    if (classementUser.getUser().getId() == player.getId()) {
+                        classementUser.setLoss(classementUser.getLoss() + 1);
+                        classementUser.setNbre_de_match(classementUser.getNbre_de_match() + 1);
+                    }
+                }
+            }
+
+
+
+
+            updateUserRanks(classementUserList);
+            // Note: You may need to call updateRanks method if the ranks are not updated automatically.
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     private void updateRanks(List<ClassementEquipe> classementEquipeList) {
         // Sort teams by points in descending order
@@ -258,6 +328,22 @@ public class PropScoreInterfaceController implements Initializable {
             classementEquipe.setRank(rank++);
             try {
                 classementEquipeService.modifier(classementEquipe);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void updateUserRanks(List<ClassementUser> classementUserList) {
+        // Sort users by points in descending order
+        classementUserList.sort(Comparator.comparingInt(ClassementUser::getPoints).reversed());
+
+        // Update ranks based on sorted list
+        int rank = 1;
+        for (ClassementUser classementUser : classementUserList) {
+            classementUser.setRank(rank++);
+            try {
+                classementUserService.modifier(classementUser);
             } catch (SQLException e) {
                 e.printStackTrace();
             }

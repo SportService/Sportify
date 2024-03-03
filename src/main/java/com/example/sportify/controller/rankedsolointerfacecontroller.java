@@ -1,6 +1,7 @@
 package com.example.sportify.controller;
 
 import entities.ClassementEquipe;
+import entities.ClassementUser;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -8,6 +9,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import services.ServiceClassementEquipe;
+import services.ServiceClassementUser;
 
 import java.io.IOException;
 import java.net.URL;
@@ -22,20 +24,20 @@ public class rankedsolointerfacecontroller implements Initializable {
     @FXML
     private VBox vboxall;
 
-    ServiceClassementEquipe classementEqService= new ServiceClassementEquipe() ;
+    ServiceClassementUser classementUSService= new ServiceClassementUser() ;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         boolean color1=true ;
         boolean color2= false ;
         try {
-            List<ClassementEquipe> tables = classementEqService.afficher() ;
-            for (ClassementEquipe table : tables) {
+            List<ClassementUser> tables = classementUSService.afficher() ;
+            for (ClassementUser table : tables) {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/sportify/soloitem.fxml"));
                 try {
                     HBox hboxitems = fxmlLoader.load();
                     soloitem items= fxmlLoader.getController() ;
-                    items.SetText(table.getNbre_de_match(),table.getEquipe().getNom(),table.getPoints(),table.getRank());
+                    items.SetText(table.getNbre_de_match(),table.getUser().getNom(),table.getPoints(),table.getRank());
 
                     if (color1) {
                         hboxitems.setStyle("-fx-background-color: #3A2F05");

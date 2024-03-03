@@ -146,7 +146,6 @@ public class ServiceClassementEquipe implements IService<ClassementEquipe>{
 
 
 
-
     public ClassementEquipe getClassementByEquipe(Equipe equipe) {
         ClassementEquipe tableequipe = null;
         String query = "SELECT * FROM score WHERE equipe_id = ?";
