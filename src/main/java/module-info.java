@@ -1,10 +1,9 @@
+
 module com.example.sportify {
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.graphics;
     requires java.sql;
-    requires javafx.web;
-    requires javafx.media; // Add this line if you haven't already
     requires jbcrypt;
     requires javax.mail.api;
     requires org.controlsfx.controls;
