@@ -4,34 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c1690012-a5ed-42cd-9aca-88afcc146081" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/AfficherEquipeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/AfficherEquipeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/CategorieClientController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/CategorieClientController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/CreerCategorieController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/CreerCategorieController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/CreerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/CreerController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/DashboardCategorieController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/DashboardCategorieController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/DashboardEquipeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/DashboardEquipeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/DisplayEquipeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/DisplayEquipeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/EquipeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/EquipeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/ModifierCategorieController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/SportsDataController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/services/ServiceEquipe.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/services/ServiceEquipe.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/services/ServiceUtilisateur.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/services/ServiceUtilisateur.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/test/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/test/App.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/FXML/CreationEquipe.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/FXML/CreationEquipe.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/FXML/DashboardCategorieAdmin.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/FXML/DashboardCategorieAdmin.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/FXML/DashboardCategorieClient.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/FXML/DashboardCategorieClient.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/FXML/DashboardEquipe.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/FXML/DashboardEquipe.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/FXML/DisplayEquipe.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/FXML/DisplayEquipe.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/FXML/Equipes.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/FXML/Equipes.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/FXML/ModifierCategorie.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/FXML/SportsData.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/module-info.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/module-info.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/services/ServiceEquipe.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/services/ServiceEquipe.class" afterDir="false" />
-    </list>
+    <list default="true" id="c1690012-a5ed-42cd-9aca-88afcc146081" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
