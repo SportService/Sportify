@@ -82,7 +82,7 @@ public class ServiceClassementEquipe implements IService<ClassementEquipe>{
 
         String req = "SELECT c.*, e.* " +
                 "FROM classementequipe c " +
-                "LEFT JOIN Equipe e ON c.equipe_id = e.IDEquipe";
+                "LEFT JOIN Equipe e ON c.equipe_id = e.IDEquipe ORDER BY c.rank ASC";
 
         try (PreparedStatement pre = con.prepareStatement(req);
              ResultSet res = pre.executeQuery()) {

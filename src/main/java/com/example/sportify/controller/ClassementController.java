@@ -14,27 +14,28 @@ public class ClassementController {
 
     @FXML
     private AnchorPane interfacechange;
+    private AnchorPane classementinterface;
 
     @FXML
     void EquipeButton(MouseEvent event) throws IOException {
-
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/sportify/rankedteam.fxml"));
-        AnchorPane classementinterface = fxmlLoader.load();
-        //scene.setFill(Color.TRANSPARENT); // to make rounded corners
-        //stage.initStyle(StageStyle.TRANSPARENT); // to make rounded corners
-        interfacechange.getChildren().add(classementinterface) ;
-
+        loadFXML("/com/example/sportify/rankedteam.fxml");
     }
 
     @FXML
     void SoloButton(MouseEvent event) throws IOException {
-        System.out.println("----------PROFIL CLASSEMENT");
+        loadFXML("/com/example/sportify/rankedsoloclassement.fxml");
+    }
 
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/sportify/rankedsoloclassement.fxml"));
-        AnchorPane classementinterface = fxmlLoader.load();
-        //scene.setFill(Color.TRANSPARENT); // to make rounded corners
-        //stage.initStyle(StageStyle.TRANSPARENT); // to make rounded corners
-        interfacechange.getChildren().add(classementinterface) ;
+    private void loadFXML(String fxmlFilePath) throws IOException {
+        // Clear the interfacechange anchor pane
+        interfacechange.getChildren().clear();
+
+        // Load the FXML file
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxmlFilePath));
+        classementinterface = fxmlLoader.load();
+
+        // Add the loaded interface to the interfacechange anchor pane
+        interfacechange.getChildren().add(classementinterface);
     }
 
 }

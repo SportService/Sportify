@@ -16,11 +16,11 @@ public class soloitem {
     @FXML
     private Label rank;
 
-    void SetText(String nbre ,String nomm , String pts, String ranking) {
-        nbrematch.setText(nbre);
+    void SetText(int nbre ,String nomm , int pts, int ranking) {
+        nbrematch.setText(String.valueOf(nbre));
         nom.setText(nomm);
-        points.setText(pts);
-        rank.setText(ranking);
+        points.setText(String.valueOf(pts));
+        rank.setText(String.valueOf(ranking));
     }
 
 
