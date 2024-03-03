@@ -7,22 +7,29 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import services.CompetitionService;
 import services.ServiceEquipe;
 
+
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.Provider;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
+import org.json.JSONObject;
 
-public class JoueurTeamVScontroller implements Initializable{
+public class JoueurTeamVScontroller implements Initializable {
     @FXML
     private VBox PlayersBox;
     @FXML
@@ -38,31 +45,46 @@ public class JoueurTeamVScontroller implements Initializable{
 
     @FXML
     private TextField nomEquipe2;
-    private Competition Competition ;
+    private Competition Competition;
 
     private int matchId;
 
 
+    CompetitionService competservice = new CompetitionService();
 
+    ServiceEquipe equipeservice = new ServiceEquipe();
 
-    CompetitionService competservice = new CompetitionService() ;
-
-    ServiceEquipe equipeservice = new ServiceEquipe() ;
-
-     private Competition compet  ;
+    private Competition compet;
     private Utilisateur loggedUser;
+
+
+    @FXML
+    private Button weatherButton;
+
+    String city = "London"; // Change to your desired city
+    String country = "GB"; // Change to your desired country code
+    String apiKey = "YOUR_API_KEY"; // Replace with your OpenWeatherMap API key
+
+    String urlString = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "," + country + "&appid=" + apiKey;
+    String competitionDate ;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // No need to call loadAll() here as it will be called after matchId is set
     }
 
+
+
+
+
+
     public void initData(Utilisateur User) {
-        this.loggedUser=User ;
+        this.loggedUser = User;
     }
+
     public void setMatchDetails(int matchId) throws SQLException {
-        boolean userInE1 = false ;
-        boolean userInE2 = false ;
+        boolean userInE1 = false;
+        boolean userInE2 = false;
         this.matchId = matchId;
         this.compet = competservice.getById(matchId);
         if (compet != null) {
@@ -70,7 +92,7 @@ public class JoueurTeamVScontroller implements Initializable{
             if ((compet.getEquipe1() != null) || (compet.getEquipe2() != null)) {
                 nomEquipe1.setText(compet.getEquipe1().getNom());
                 List<Utilisateur> membresEquipe1 = equipeservice.getEquipeMembres(compet.getEquipe1());
-                for ( Utilisateur membre:membresEquipe1) {
+                for (Utilisateur membre : membresEquipe1) {
 
                     TextField textField = new TextField(membre.getNom());
                     textField.setEditable(false); // Set the text field as read-only
@@ -101,10 +123,9 @@ public class JoueurTeamVScontroller implements Initializable{
                 System.out.println("Membre equipe");
 
                 //--- EQUIPE 2
-            nomEquipe2.setText(compet.getEquipe2().getNom());
+                nomEquipe2.setText(compet.getEquipe2().getNom());
                 List<Utilisateur> membresEquipe2 = equipeservice.getEquipeMembres(compet.getEquipe2());
-                for ( Utilisateur membre:membresEquipe2) {
-
+                for (Utilisateur membre : membresEquipe2) {
 
 
                     TextField textField = new TextField(membre.getNom());
@@ -117,25 +138,26 @@ public class JoueurTeamVScontroller implements Initializable{
                     PlayersBoxE2.getChildren().add(textField);
                 }
 
-                    Button joinButtonE2 = new Button("JOIN");
-                    joinButtonE2.setOnAction(this::joinButtonE2Clicked);
-                    joinButtonE2.setStyle("-fx-background-color: " +
-                            "#090a0c," +
-                            "linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%)," +
-                            "linear-gradient(#20262b, #191d22)," +
-                            "radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));" +
-                            "-fx-background-radius: 5,4,3,5;" +
-                            "-fx-background-insets: 0,1,2,0;" +
-                            "-fx-text-fill: white;" +
-                            "-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );" +
-                            "-fx-font-family: Arial;" +
-                            "-fx-text-fill: linear-gradient(white, #d0d0d0);" +
-                            "-fx-font-size: 12px;" +
-                            "-fx-padding: 10 20 10 20;");
-                    PlayersBoxE2.getChildren().add(joinButtonE2);
+                Button joinButtonE2 = new Button("JOIN");
+                joinButtonE2.setOnAction(this::joinButtonE2Clicked);
+                joinButtonE2.setStyle("-fx-background-color: " +
+                        "#090a0c," +
+                        "linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%)," +
+                        "linear-gradient(#20262b, #191d22)," +
+                        "radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));" +
+                        "-fx-background-radius: 5,4,3,5;" +
+                        "-fx-background-insets: 0,1,2,0;" +
+                        "-fx-text-fill: white;" +
+                        "-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );" +
+                        "-fx-font-family: Arial;" +
+                        "-fx-text-fill: linear-gradient(white, #d0d0d0);" +
+                        "-fx-font-size: 12px;" +
+                        "-fx-padding: 10 20 10 20;");
+                PlayersBoxE2.getChildren().add(joinButtonE2);
 
-             } else {
-            System.out.println("les 2 equipes not found "); }
+            } else {
+                System.out.println("les 2 equipes not found ");
+            }
         } else {
             System.out.println("Competition not found for matchId: " + matchId);
             // Handle the case where competition is null
@@ -145,25 +167,69 @@ public class JoueurTeamVScontroller implements Initializable{
     @FXML
     private void joinButtonClicked(ActionEvent event) {
         try {
-            equipeservice.ajouterMembre(compet.getEquipe1() ,loggedUser);
+            equipeservice.ajouterMembre(compet.getEquipe1(), loggedUser);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         try {
-            reloadMembersE1List() ;
+            reloadMembersE1List();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
+
+    @FXML
+    void fetchWeather(MouseEvent event) {
+        String city = "Tunis"; // Change to your desired city
+        String apiKey = "3a08efe2a3814f50bdf123437240303"; // Replace with your WeatherAPI key
+        competitionDate= "2024-03-18" ;
+
+
+        String urlString = "https://api.weatherapi.com/v1/forecast.json?key=" + apiKey + "&q=" + city + "&dt=" + competitionDate;
+
+        try {
+            URL url = new URL(urlString);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                response.append(line);
+            }
+            reader.close();
+
+            // Parse JSON response
+            JSONObject jsonResponse = new JSONObject(response.toString());
+            JSONObject forecast = jsonResponse.getJSONObject("forecast");
+            JSONObject forecastDay = forecast.getJSONArray("forecastday").getJSONObject(0); // Assuming only one forecast for the day
+            JSONObject day = forecastDay.getJSONObject("day");
+            double temperatureCelsius = day.getDouble("avgtemp_c");
+
+            // Display weather information in an alert
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Weather Information");
+            alert.setHeaderText(null);
+            alert.setContentText("Temperature on 18th March 2024 in Tunis: " + String.format("%.2f", temperatureCelsius) + "°C");
+
+            alert.showAndWait();
+
+            connection.disconnect();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @FXML
     private void joinButtonE2Clicked(ActionEvent event) {
         try {
-            equipeservice.ajouterMembre(compet.getEquipe2() ,loggedUser);
+            equipeservice.ajouterMembre(compet.getEquipe2(), loggedUser);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         try {
-            reloadMembersE2List() ;
+            reloadMembersE2List();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -172,7 +238,7 @@ public class JoueurTeamVScontroller implements Initializable{
 
     private void QuitButtonClicked(ActionEvent event) {
         try {
-            equipeservice.supprimerMembre(compet.getEquipe2() ,loggedUser);
+            equipeservice.supprimerMembre(compet.getEquipe2(), loggedUser);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -277,7 +343,8 @@ public class JoueurTeamVScontroller implements Initializable{
                 "-fx-padding: 10 20 10 20;");
         PlayersBoxE2.getChildren().add(QuitButton);
     }
-    boolean searchUser(String nom ) {
-        return this.loggedUser.getNom() == nom ;
+
+    boolean searchUser(String nom) {
+        return this.loggedUser.getNom() == nom;
     }
 }

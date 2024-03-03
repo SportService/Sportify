@@ -8,6 +8,7 @@ module com.example.sportify {
     requires de.jensd.fx.glyphs.materialdesignicons;
     requires de.jensd.fx.glyphs.fontawesome;
     requires MaterialFX;
+    requires org.json;
 
     opens entities to javafx.base;
 
